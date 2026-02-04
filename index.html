@@ -621,20 +621,22 @@
                 data[key] = value;
             });
             
-            data.items = collectItems();
-            
-            // تحديد نوع النموذج
-            data.formType = 'PR';
-            
-            try {
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                });
+           data.items = collectItems();
+
+// تحديد نوع النموذج
+data.formType = 'PR';
+
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzca8lep1fEEcO0pahSXIR4D6bJmAkYZmLERsENxqFPOG4sCAbeXCKyYrcvbwOqRFqkOA/exec';
+
+try {
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    });
                 
                 showAlert('✅ تم إرسال الطلب بنجاح إلى Google Sheets!', 'success');
                 
