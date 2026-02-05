@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نموذج طلب شراء</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arabic Typesetting', 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border: 3px solid #3b0764;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #3b0764;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+        }
+        
+        .logo-section {
+            flex-shrink: 0;
+            order: 1;
+        }
+        
+        .logo-image {
+            width: 200px;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .title-section {
+            flex: 1;
+            order: 2;
+        }
+        
+        .header h1 {
+            color: #3b0764;
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .form-section {
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            background: linear-gradient(135deg, #3b0764 0%, #5b21b6 100%);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            font-weight: bold;
+            color: #3b0764;
+            margin-bottom: 5px;
+            font-size: 20px;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="number"],
+        textarea,
+        select {
+            padding: 10px;
+            border: 2px solid #ddd6fe;
+            border-radius: 4px;
+            font-family: 'Arabic Typesetting', Arial, sans-serif;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="date"]:focus,
+        input[type="number"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #5b21b6;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .table-section {
+            margin-bottom: 25px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+        
+        table th {
+            background: linear-gradient(135deg, #3b0764 0%, #5b21b6 100%);
+            color: white;
+            padding: 12px;
+            text-align: right;
+            font-weight: bold;
+        }
+        
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #bdc3c7;
+        }
+        
+        table tr:nth-child(even) {
+            background-color: #faf5ff;
+        }
+        
+        .add-row-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-size: 16px;
+            transition: transform 0.2s;
+        }
+        
+        .add-row-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+        }
+        
+        .totals {
+            display: grid;
+            grid-template-columns: 1fr 200px;
+            gap: 20px;
+            margin: 20px 0;
+            justify-content: end;
+        }
+        
+        .total-row {
+            display: grid;
+            grid-template-columns: 100px 100px;
+            gap: 20px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .total-label {
+            text-align: left;
+            color: #3b0764;
+        }
+        
+        .total-value {
+            text-align: right;
+            border-bottom: 1px solid #ddd6fe;
+            padding-bottom: 5px;
+            color: #3b0764;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 12px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #3b0764 0%, #5b21b6 100%);
+            color: white;
+            transition: transform 0.2s;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 7, 100, 0.7);
+        }
+        
+        .btn-reset {
+            background-color: #95a5a6;
+            color: white;
+        }
+        
+        .btn-reset:hover {
+            background-color: #7f8c8d;
+        }
+        
+        .btn-print {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            transition: transform 0.2s;
+        }
+        
+        .btn-print:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+        }
+        
+        input[type="number"].item-quantity,
+        input[type="number"].item-price {
+            width: 100%;
+        }
+        
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            .buttons {
+                display: none;
+            }
+            .add-row-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-image">
+                        <img src="https://i.imgur.com/nnXro9u.png" alt="Value Capital Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+                <div class="title-section">
+                    <h1>📋 نموذج طلب شراء</h1>
+                    <p>Purchase Order Form</p>
+                </div>
+            </div>
+        </div>
+        
+        <form id="purchaseForm">
+            <div class="form-section">
+                <div class="section-title">معلومات الطلب</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>رقم الطلب</label>
+                        <input type="text" name="poNumber" placeholder="سيتم توليده تلقائياً" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>التاريخ</label>
+                        <input type="date" name="poDate">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>تاريخ التسليم المتوقع</label>
+                        <input type="date" name="deliveryDate">
+                    </div>
+                    <div class="form-group">
+                        <label>حالة الطلب</label>
+                        <select name="status">
+                            <option value="معلق">معلق</option>
+                            <option value="مؤكد">مؤكد</option>
+                            <option value="تحت المعالجة">تحت المعالجة</option>
+                            <option value="مسلم">مسلم</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <div class="section-title">معلومات المشتري</div>
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label>اسم الشركة / المشتري</label>
+                        <input type="text" name="buyerName" placeholder="أدخل اسم الشركة">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>البريد الإلكتروني</label>
+                        <input type="email" name="buyerEmail" placeholder="example@company.com">
+                    </div>
+                    <div class="form-group">
+                        <label>رقم الهاتف</label>
+                        <input type="tel" name="buyerPhone" placeholder="+966 50 0000000">
+                    </div>
+                </div>
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label>العنوان</label>
+                        <input type="text" name="buyerAddress" placeholder="الشارع والمدينة">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <div class="section-title">معلومات البائع / المورد</div>
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label>اسم الشركة / المورد</label>
+                        <input type="text" name="sellerName" placeholder="أدخل اسم الشركة">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>البريد الإلكتروني</label>
+                        <input type="email" name="sellerEmail" placeholder="supplier@company.com">
+                    </div>
+                    <div class="form-group">
+                        <label>رقم الهاتف</label>
+                        <input type="tel" name="sellerPhone" placeholder="+966 50 0000000">
+                    </div>
+                </div>
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label>العنوان</label>
+                        <input type="text" name="sellerAddress" placeholder="الشارع والمدينة">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-section">
+                <div class="section-title">تفاصيل المنتجات والخدمات</div>
+                <button type="button" class="add-row-btn" onclick="addRow()">+ إضافة صف جديد</button>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 40%">وصف المنتج</th>
+                            <th style="width: 15%">الكمية</th>
+                            <th style="width: 15%">السعر الوحدة</th>
+                            <th style="width: 20%">المبلغ</th>
+                            <th style="width: 10%"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemsTable">
+                        <tr class="item-row">
+                            <td><input type="text" class="item-description" placeholder="وصف المنتج"></td>
+                            <td><input type="number" class="item-quantity" value="1" min="1" onchange="calculateTotal()"></td>
+                            <td><input type="number" class="item-price" value="0" min="0" step="0.01" onchange="calculateTotal()"></td>
+                            <td><span class="item-total">0.00</span></td>
+                            <td><button type="button" class="delete-btn" onclick="deleteRow(this)">حذف</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="form-section">
+                <div class="section-title">ملاحظات وشروط إضافية</div>
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label>ملاحظات</label>
+                        <textarea name="notes" placeholder="أي ملاحظات أو تعليقات خاصة..."></textarea>
+                    </div>
+                </div>
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label>الشروط والأحكام</label>
+                        <textarea name="terms" placeholder="الشروط والأحكام المتفق عليها..."></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="totals">
+                <div></div>
+                <div>
+                    <div class="total-row">
+                        <div class="total-label">المجموع الفرعي:</div>
+                        <div class="total-value" id="subtotal">0.00 ر.س</div>
+                    </div>
+                    <div class="total-row">
+                        <div class="total-label">ضريبة (%):</div>
+                        <input type="number" id="taxRate" value="15" min="0" max="100" style="width: 60px; padding: 5px;" onchange="calculateTotal()"> %
+                    </div>
+                    <div class="total-row">
+                        <div class="total-label">قيمة الضريبة:</div>
+                        <div class="total-value" id="taxAmount">0.00 ر.س</div>
+                    </div>
+                    <div class="total-row" style="border-top: 2px solid #3b0764; padding-top: 10px; margin-top: 10px;">
+                        <div class="total-label" style="font-size: 18px;">الإجمالي:</div>
+                        <div class="total-value" id="total" style="font-size: 18px; border: none;">0.00 ر.س</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="buttons">
+                <button type="button" class="btn-print" onclick="window.print()">🖨️ طباعة</button>
+                <button type="submit" class="btn-submit">✓ حفظ الطلب</button>
+                <button type="reset" class="btn-reset">↻ مسح البيانات</button>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzGevmTZWEFasnGQZwVNcqZBdmyhm1qVNzFm0wY8wOEZa-UHCExdZs9QNmQSSYmmw4GoA/exec';
+        
+        async function generatePONumber() {
+            const timestamp = Date.now();
+            const random = Math.floor(Math.random() * 1000);
+            return `PO-${new Date().getFullYear()}-${String(timestamp).slice(-5)}${String(random).padStart(3, '0')}`;
+        }
+        
+        async function initializeForm() {
+            document.querySelector('input[name="poDate"]').valueAsDate = new Date();
+            const poNumber = await generatePONumber();
+            document.querySelector('input[name="poNumber"]').value = poNumber;
+        }
+        
+        initializeForm();
+        
+        function addRow() {
+            const table = document.getElementById('itemsTable');
+            const row = document.createElement('tr');
+            row.className = 'item-row';
+            row.innerHTML = `
+                <td><input type="text" class="item-description" placeholder="وصف المنتج"></td>
+                <td><input type="number" class="item-quantity" value="1" min="1" onchange="calculateTotal()"></td>
+                <td><input type="number" class="item-price" value="0" min="0" step="0.01" onchange="calculateTotal()"></td>
+                <td><span class="item-total">0.00</span></td>
+                <td><button type="button" class="delete-btn" onclick="deleteRow(this)">حذف</button></td>
+            `;
+            table.appendChild(row);
+        }
+        
+        function deleteRow(btn) {
+            const rows = document.querySelectorAll('.item-row');
+            if (rows.length > 1) {
+                btn.parentElement.parentElement.remove();
+                calculateTotal();
+            } else {
+                alert('يجب أن يكون هناك منتج واحد على الأقل');
+            }
+        }
+        
+        function calculateTotal() {
+            const rows = document.querySelectorAll('.item-row');
+            let subtotal = 0;
+            
+            rows.forEach(row => {
+                const quantity = parseFloat(row.querySelector('.item-quantity').value) || 0;
+                const price = parseFloat(row.querySelector('.item-price').value) || 0;
+                const total = quantity * price;
+                row.querySelector('.item-total').textContent = total.toFixed(2);
+                subtotal += total;
+            });
+            
+            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+            const taxAmount = (subtotal * taxRate) / 100;
+            const totalAmount = subtotal + taxAmount;
+            
+            document.getElementById('subtotal').textContent = subtotal.toFixed(2) + ' ر.س';
+            document.getElementById('taxAmount').textContent = taxAmount.toFixed(2) + ' ر.س';
+            document.getElementById('total').textContent = totalAmount.toFixed(2) + ' ر.س';
+        }
+        
+        document.getElementById('purchaseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('.btn-submit');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ جاري الإرسال...';
+            
+            const formData = new FormData(this);
+            const data = {};
+            
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+            
+            // جمع بيانات المنتجات
+            const rows = document.querySelectorAll('.item-row');
+            const items = [];
+            rows.forEach(row => {
+                const desc = row.querySelector('.item-description').value;
+                const qty = row.querySelector('.item-quantity').value;
+                const price = row.querySelector('.item-price').value;
+                const total = row.querySelector('.item-total').textContent;
+                if (desc || qty) {
+                    items.push(`${desc} (الكمية: ${qty} - السعر: ${price} - المجموع: ${total})`);
+                }
+            });
+            data.items = items.join(' | ');
+            
+            // إضافة الإجماليات
+            data.subtotal = document.getElementById('subtotal').textContent;
+            data.tax = document.getElementById('taxAmount').textContent;
+            data.total = document.getElementById('total').textContent;
+            
+            // تحديد نوع النموذج
+            data.formType = 'PO';
+            
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                alert('✅ تم حفظ طلب الشراء بنجاح!');
+                this.reset();
+                calculateTotal();
+                initializeForm();
+            })
+            .catch(error => {
+                alert('⚠️ حدث خطأ في الإرسال. يرجى المحاولة مرة أخرى.');
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            });
+        });
+        
+        calculateTotal();
+    </script>
+</body>
+</html>
