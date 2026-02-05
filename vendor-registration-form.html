@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نموذج إعداد المورد - Value Capital</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arabic Typesetting', 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border: 3px solid #3b0764;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #3b0764;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+        }
+        
+        .logo-section {
+            flex-shrink: 0;
+            order: 1;
+        }
+        
+        .logo-image {
+            width: 200px;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .logo-image:hover {
+            box-shadow: 0 4px 12px rgba(59, 7, 100, 0.2);
+        }
+        
+        .logo-image svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .title-section {
+            flex: 1;
+            order: 2;
+        }
+        
+        .header h1 {
+            color: #3b0764;
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        .header h2 {
+            color: #5b21b6;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .alert.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .form-section {
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            background: linear-gradient(135deg, #3b0764 0%, #5b21b6 100%);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+        
+        .form-row.three-cols {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            font-weight: bold;
+            color: #3b0764;
+            margin-bottom: 5px;
+            font-size: 18px;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="number"],
+        textarea,
+        select {
+            padding: 10px;
+            border: 2px solid #ddd6fe;
+            border-radius: 4px;
+            font-family: 'Arabic Typesetting', Arial, sans-serif;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="date"]:focus,
+        input[type="number"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #5b21b6;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 10px;
+            background: #faf5ff;
+            border-radius: 4px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #ddd6fe;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .checkbox-item:hover {
+            border-color: #5b21b6;
+            background: #f3e8ff;
+        }
+        
+        .checkbox-item input[type="checkbox"],
+        .checkbox-item input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #5b21b6;
+        }
+        
+        .checkbox-item label {
+            margin: 0;
+            font-weight: normal;
+            cursor: pointer;
+        }
+        
+        .documents-checklist {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .doc-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            background: #faf5ff;
+            border-radius: 4px;
+            border: 1px solid #ddd6fe;
+        }
+        
+        .doc-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #5b21b6;
+        }
+        
+        .signatures-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .signature-box {
+            border: 2px solid #ddd6fe;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .signature-box h4 {
+            background: linear-gradient(135deg, #3b0764 0%, #5b21b6 100%);
+            color: white;
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .signature-area {
+            height: 80px;
+            border: 1px dashed #bdc3c7;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #95a5a6;
+            font-size: 14px;
+        }
+        
+        .signature-box input {
+            width: 100%;
+            margin-bottom: 8px;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 12px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #3b0764 0%, #5b21b6 100%);
+            color: white;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 7, 100, 0.4);
+        }
+        
+        .btn-print {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+        }
+        
+        .btn-print:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+        }
+        
+        .btn-reset {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            color: white;
+        }
+        
+        .btn-reset:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(107, 114, 128, 0.4);
+        }
+        
+        .note-box {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+            color: #92400e;
+        }
+        
+        .form-number-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #faf5ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 1px solid #ddd6fe;
+        }
+        
+        .form-number-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-number-item label {
+            margin: 0;
+        }
+        
+        .form-number-item input {
+            width: 180px;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                border: none;
+            }
+            
+            .buttons {
+                display: none;
+            }
+            
+            .signature-area {
+                border: 1px solid #ccc;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row.three-cols {
+                grid-template-columns: 1fr;
+            }
+            
+            .signatures-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .documents-checklist {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-image" id="logoDisplay">
+                        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/4QsFaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLwA8P3hwYWNrZXQgYmVnaW49J++7vycgaWQ9J1c1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCc/Pgo8eDp4bXBtZXRhIHhtbG5zOng9J2Fkb2JlOm5zOm1ldGEvJyB4OnhtcHRrPSdJbWFnZTo6RXhpZlRvb2wgMTIuNjUnPgo8cmRmOlJERiB4bWxuczpyZGY9J2h0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMnPgoKIDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PScnCiAgeG1sbnM6cGRmPSdodHRwOi8vbnMuYWRvYmUuY29tL3BkZi8xLjMvJz4KICA8cGRmOlByb2R1Y2VyPkltZzJHbzwvcGRmOlByb2R1Y2VyPgogPC9yZGY6RGVzY3JpcHRpb24+CjwvcmRmOlJERj4KPC94OnhtcG1ldGE+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCjw/eHBhY2tldCBlbmQ9J3cnPz7/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCACxAo4DASIAAhEBAxEB/8QAHQABAAEFAQEBAAAAAAAAAAAAAAcBBAUGCAIDCf/EAFgQAAEDAwEEBAcKCAsGBAcAAAEAAgMEBREGBxIhMRNBUWEIInF0gZGxFBUXMjY3orKz0iNCUlNzgoOTFjM0NVRidpKUitEkQ1ZjwcJYVWXhJUZoY4Okw//EABoBAQADAQEBAAAAAAAAAAAAAAABAgMEBQb/xAApEQEAAgEEAQMDBAMAAAAAAAAAAQIDBBESMSEFE0EyUYEUImGxI0KR/9oADAMBAAIRAxEAPwDstERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBFRzmsaXvcGtaMkk8AFrM+udJwVHu1l9omeH7r2DpCxjuxxAJHpQbOihPbBrOfTtvipLdMyl6djq+6ym5Oxjf6JkIGcDMjyWtHmOaivTmvtQT0U2prtqG5T0sDwJJqCjjoxM3sLRG0NP6r3OWubRYKZa1nz0rnuY8J+w+rL6W87Ua3O8RJVRUYz/ANHGf+5SRRzRVNLFUU0rJoJmB8cjDlr2kZBB7CFGEH8m3xbTz1ksd/4xc5HfiG1Xk8pLfv8AiCotevvLl6dXeY4tfouIZIIqiCSCaN0kUjSx7GcC4EYI9C0+TY/s8kq/dp0bZuvdLvJE6ks/W3S4+ceiP1u9lYVbJy/DdMWd8MJPMHtXJdFu0kHRu/CSOy0/wA/8KjuP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" alt="قيمة المالية" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+                <div class="title-section">
+                    <h1>نموذج إعداد المورد</h1>
+                    <h2>Vendor Setup Form</h2>
+                    <p>للاستخدام الداخلي فقط - Internal Use Only</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="alertBox" class="alert"></div>
+        
+        <form id="vendorForm">
+            <!-- رقم النموذج والتاريخ -->
+            <div class="form-number-section">
+                <div class="form-number-item">
+                    <label>رقم النموذج:</label>
+                    <input type="text" name="formNumber" readonly>
+                </div>
+                <div class="form-number-item">
+                    <label>التاريخ:</label>
+                    <input type="date" name="formDate">
+                </div>
+            </div>
+            
+            <!-- القسم الأول: البيانات الأساسية -->
+            <div class="form-section">
+                <div class="section-title">القسم الأول: البيانات الأساسية للمورد</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>اسم الشركة / المؤسسة (بالعربي) *</label>
+                        <input type="text" name="companyNameAr" placeholder="الاسم الرسمي بالعربي" required>
+                    </div>
+                    <div class="form-group">
+                        <label>اسم الشركة / المؤسسة (بالإنجليزي) *</label>
+                        <input type="text" name="companyNameEn" placeholder="Official Company Name" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>رقم السجل التجاري *</label>
+                        <input type="text" name="crNumber" placeholder="1010XXXXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label>الرقم الضريبي (VAT) *</label>
+                        <input type="text" name="vatNumber" placeholder="3XXXXXXXXXXXXXX3" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>رقم شهادة الزكاة والدخل</label>
+                        <input type="text" name="zatcaNumber" placeholder="رقم الشهادة">
+                    </div>
+                    <div class="form-group">
+                        <label>تاريخ انتهاء شهادة الزكاة</label>
+                        <input type="date" name="zatcaExpiry">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- القسم الثاني: معلومات التواصل -->
+            <div class="form-section">
+                <div class="section-title">القسم الثاني: معلومات التواصل</div>
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label>العنوان *</label>
+                        <input type="text" name="address" placeholder="العنوان الكامل" required>
+                    </div>
+                </div>
+                <div class="form-row three-cols">
+                    <div class="form-group">
+                        <label>المدينة *</label>
+                        <input type="text" name="city" placeholder="المدينة" required>
+                    </div>
+                    <div class="form-group">
+                        <label>الرمز البريدي</label>
+                        <input type="text" name="postalCode" placeholder="XXXXX">
+                    </div>
+                    <div class="form-group">
+                        <label>صندوق البريد</label>
+                        <input type="text" name="poBox" placeholder="ص.ب XXXX">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>رقم الهاتف *</label>
+                        <input type="tel" name="phone" placeholder="+966 XX XXX XXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label>رقم الفاكس</label>
+                        <input type="tel" name="fax" placeholder="+966 XX XXX XXXX">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>البريد الإلكتروني *</label>
+                        <input type="email" name="email" placeholder="info@company.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>الموقع الإلكتروني</label>
+                        <input type="text" name="website" placeholder="www.company.com">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- القسم الثالث: بيانات الشخص المسؤول -->
+            <div class="form-section">
+                <div class="section-title">القسم الثالث: بيانات الشخص المسؤول</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>اسم الشخص المسؤول *</label>
+                        <input type="text" name="contactName" placeholder="الاسم الكامل" required>
+                    </div>
+                    <div class="form-group">
+                        <label>المسمى الوظيفي</label>
+                        <input type="text" name="contactTitle" placeholder="مدير المبيعات">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>رقم الجوال *</label>
+                        <input type="tel" name="contactMobile" placeholder="+966 5X XXX XXXX" required>
+                    </div>
+                    <div class="form-group">
+                        <label>البريد الإلكتروني</label>
+                        <input type="email" name="contactEmail" placeholder="contact@company.com">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- القسم الرابع: البيانات البنكية -->
+            <div class="form-section">
+                <div class="section-title">القسم الرابع: البيانات البنكية</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>اسم البنك *</label>
+                        <input type="text" name="bankName" placeholder="اسم البنك" required>
+                    </div>
+                    <div class="form-group">
+                        <label>فرع البنك</label>
+                        <input type="text" name="bankBranch" placeholder="الفرع">
+                    </div>
+                </div>
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label>اسم صاحب الحساب (كما هو مسجل بالبنك) *</label>
+                        <input type="text" name="accountName" placeholder="الاسم المسجل في البنك" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>رقم الآيبان (IBAN) *</label>
+                        <input type="text" name="iban" placeholder="SA00 0000 0000 0000 0000 0000" required>
+                    </div>
+                    <div class="form-group">
+                        <label>رمز السويفت (SWIFT)</label>
+                        <input type="text" name="swiftCode" placeholder="XXXXXXXX">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- القسم الخامس: نوع الخدمات -->
+            <div class="form-section">
+                <div class="section-title">القسم الخامس: الخدمات / المنتجات المقدمة</div>
+                <div class="form-row full">
+                    <div class="form-group">
+                        <label>وصف الخدمات أو المنتجات *</label>
+                        <textarea name="servicesDescription" placeholder="وصف تفصيلي للخدمات أو المنتجات التي يقدمها المورد..." required></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- القسم السادس: شروط الدفع -->
+            <div class="form-section">
+                <div class="section-title">القسم السادس: شروط الدفع المفضلة</div>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="radio" name="paymentTerms" value="immediate" id="pt1">
+                        <label for="pt1">فوري</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="radio" name="paymentTerms" value="30days" id="pt2">
+                        <label for="pt2">30 يوم</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="radio" name="paymentTerms" value="60days" id="pt3">
+                        <label for="pt3">60 يوم</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="radio" name="paymentTerms" value="90days" id="pt4">
+                        <label for="pt4">90 يوم</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="radio" name="paymentTerms" value="other" id="pt5">
+                        <label for="pt5">أخرى</label>
+                    </div>
+                </div>
+                <div class="form-row full" style="margin-top: 15px;">
+                    <div class="form-group">
+                        <label>في حال اختيار "أخرى" يرجى التحديد:</label>
+                        <input type="text" name="otherPaymentTerms" placeholder="حدد شروط الدفع المفضلة...">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- القسم السابع: المستندات المطلوبة -->
+            <div class="form-section">
+                <div class="section-title">القسم السابع: المستندات المطلوبة (يرجى التأشير على المرفق)</div>
+                <div class="documents-checklist">
+                    <div class="doc-item">
+                        <input type="checkbox" name="doc_cr" id="doc1">
+                        <label for="doc1">صورة السجل التجاري</label>
+                    </div>
+                    <div class="doc-item">
+                        <input type="checkbox" name="doc_zatca" id="doc2">
+                        <label for="doc2">شهادة الزكاة والدخل سارية المفعول</label>
+                    </div>
+                    <div class="doc-item">
+                        <input type="checkbox" name="doc_gosi" id="doc3">
+                        <label for="doc3">شهادة التأمينات الاجتماعية</label>
+                    </div>
+                    <div class="doc-item">
+                        <input type="checkbox" name="doc_vat" id="doc4">
+                        <label for="doc4">شهادة ضريبة القيمة المضافة (VAT)</label>
+                    </div>
+                    <div class="doc-item">
+                        <input type="checkbox" name="doc_bank" id="doc5">
+                        <label for="doc5">خطاب تعريف بنكي</label>
+                    </div>
+                    <div class="doc-item">
+                        <input type="checkbox" name="doc_catalog" id="doc6">
+                        <label for="doc6">عرض سعر / كتالوج المنتجات</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- القسم الثامن: التوقيعات -->
+            <div class="form-section">
+                <div class="section-title">القسم الثامن: التوقيعات والاعتمادات</div>
+                <div class="signatures-section">
+                    <div class="signature-box">
+                        <h4>توقيع المورد</h4>
+                        <div class="signature-area">التوقيع</div>
+                        <input type="text" name="vendorSignName" placeholder="الاسم">
+                        <input type="date" name="vendorSignDate">
+                    </div>
+                    <div class="signature-box">
+                        <h4>اعتماد المشتريات</h4>
+                        <div class="signature-area">التوقيع</div>
+                        <input type="text" name="procurementSignName" placeholder="الاسم">
+                        <input type="date" name="procurementSignDate">
+                    </div>
+                    <div class="signature-box">
+                        <h4>اعتماد الإدارة المالية</h4>
+                        <div class="signature-area">التوقيع</div>
+                        <input type="text" name="financeSignName" placeholder="الاسم">
+                        <input type="date" name="financeSignDate">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="note-box">
+                ⚠️ ملاحظة: يرجى التأكد من إرفاق جميع المستندات المطلوبة مع هذا النموذج
+            </div>
+            
+            <div class="buttons">
+                <button type="button" class="btn-print" onclick="window.print()">🖨️ طباعة</button>
+                <button type="submit" class="btn-submit" id="submitBtn">✓ حفظ وإرسال</button>
+                <button type="reset" class="btn-reset">↻ مسح البيانات</button>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        // توليد رقم النموذج
+        function generateFormNumber() {
+            const timestamp = Date.now();
+            const random = Math.floor(Math.random() * 1000);
+            return `VS-${new Date().getFullYear()}-${String(timestamp).slice(-5)}${String(random).padStart(3, '0')}`;
+        }
+        
+        // تهيئة النموذج
+        async function initializeForm() {
+            document.querySelector('input[name="formDate"]').valueAsDate = new Date();
+            document.querySelector('input[name="formNumber"]').value = generateFormNumber();
+            loadSavedLogo();
+        }
+        
+        // تحميل اللوقو المحفوظ
+        async function loadSavedLogo() {
+            try {
+                const result = await window.storage.get('company-logo');
+                if (result) {
+                    const logoDisplay = document.getElementById('logoDisplay');
+                    logoDisplay.innerHTML = `<img src="${result.value}" alt="Value Capital" style="width: 100%; height: 100%; object-fit: contain;">`;
+                }
+            } catch (error) {
+                console.log('لا يوجد لوقو محفوظ');
+            }
+        }
+        
+        // إعداد رفع اللوقو
+        function setupLogoUpload() {
+            const logoDisplay = document.getElementById('logoDisplay');
+            logoDisplay.addEventListener('click', function() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/*';
+                input.onchange = async function(e) {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    
+                    const img = new Image();
+                    img.onload = async function() {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+                        
+                        if (width > 600 || height > 400) {
+                            const ratio = Math.min(600 / width, 400 / height);
+                            width = width * ratio;
+                            height = height * ratio;
+                        }
+                        
+                        canvas.width = width;
+                        canvas.height = height;
+                        
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        
+                        const base64 = canvas.toDataURL('image/png', 0.9);
+                        
+                        try {
+                            await window.storage.set('company-logo', base64);
+                            logoDisplay.innerHTML = `<img src="${base64}" alt="Value Capital" style="width: 100%; height: 100%; object-fit: contain;">`;
+                            alert('✅ تم حفظ اللوقو بنجاح!');
+                        } catch (error) {
+                            alert('❌ حدث خطأ في حفظ اللوقو');
+                        }
+                    };
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        img.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                };
+                input.click();
+            });
+        }
+        
+        setupLogoUpload();
+        initializeForm();
+        
+        // عرض التنبيهات
+        function showAlert(message, type) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.textContent = message;
+            alertBox.className = `alert ${type}`;
+            alertBox.style.display = 'block';
+            
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 5000);
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // إرسال النموذج
+        document.getElementById('vendorForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ جاري الإرسال...';
+            
+            const formData = new FormData(this);
+            const data = {};
+            
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+            
+            data.formType = 'VENDOR';
+            
+            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzGevmTZWEFasnGQZwVNcqZBdmyhm1qVNzFm0wY8wOEZa-UHCExdZs9QNmQSSYmmw4GoA/exec';
+            
+            try {
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                showAlert('✅ تم حفظ بيانات المورد وإرسالها بنجاح!', 'success');
+                
+            } catch (error) {
+                showAlert('⚠️ حدث خطأ في الإرسال. يرجى المحاولة مرة أخرى.', 'error');
+                console.error('Error:', error);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '✓ حفظ وإرسال';
+            }
+        });
+    </script>
+</body>
+</html>
