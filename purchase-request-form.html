@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>نموذج أمر شراء - نسخة مطورة</title>
+  <title>نموذج طلب شراء - نسخة مطورة</title>
   <style>
     :root {
       --primary: #442182;
@@ -127,7 +127,7 @@
       font-size: 14px;
     }
 
-    .po-badge {
+    .pr-badge {
       justify-self: end;
       background: rgba(255,255,255,0.12);
       border: 1px solid rgba(255,255,255,0.18);
@@ -136,13 +136,13 @@
       min-width: 240px;
     }
 
-    .po-badge .label {
+    .pr-badge .label {
       font-size: 12px;
       opacity: 0.8;
       margin-bottom: 6px;
     }
 
-    .po-badge .value {
+    .pr-badge .value {
       font-size: 22px;
       font-weight: 800;
       letter-spacing: 0.5px;
@@ -370,7 +370,7 @@
         grid-template-columns: 1fr;
       }
 
-      .po-badge { justify-self: stretch; }
+      .pr-badge { justify-self: stretch; }
     }
 
     @media print {
@@ -412,7 +412,7 @@
   <div class="container">
     <div class="toolbar hidden-print">
       <div class="title-wrap">
-        <h1>نموذج أمر شراء - نسخة مطورة</h1>
+        <h1>نموذج طلب شراء - نسخة مطورة</h1>
         <p>تمت إضافة مرحلة اعتماد رسمية تشمل إدارة المشتريات ونائب الرئيس والرئيس التنفيذي.</p>
       </div>
       <div class="actions">
@@ -429,26 +429,26 @@
           <img src="لوقو شفاف.png" alt="Value Capital Logo" />
         </div>
         <div class="brand">
-          <h2>Purchase Order Form</h2>
-          <p>نموذج احترافي لتنظيم طلبات الشراء واعتمادها داخليًا قبل التنفيذ.</p>
+          <h2>Purchase Request Form</h2>
+          <p>نموذج احترافي لرفع طلبات الشراء الداخلية واعتمادها قبل البدء في إجراءات الشراء.</p>
         </div>
-        <div class="po-badge">
-          <div class="label">رقم أمر الشراء</div>
-          <div class="value" id="poBadge">PO-2026-001</div>
+        <div class="pr-badge">
+          <div class="label">رقم طلب الشراء</div>
+          <div class="value" id="prBadge">PR-2026-001</div>
         </div>
       </div>
 
       <div class="content">
         <div class="section">
-          <h3 class="section-title">معلومات أمر الشراء</h3>
+          <h3 class="section-title">معلومات طلب الشراء</h3>
           <div class="grid">
             <div class="field">
-              <label for="poNumber">رقم أمر الشراء</label>
-              <input id="poNumber" type="text" placeholder="PO-2026-001" oninput="syncPoNumber()" />
+              <label for="prNumber">رقم طلب الشراء</label>
+              <input id="prNumber" type="text" placeholder="PR-2026-001" oninput="syncPrNumber()" />
             </div>
             <div class="field">
-              <label for="poDate">تاريخ الأمر</label>
-              <input id="poDate" type="date" />
+              <label for="requestDate">تاريخ الطلب</label>
+              <input id="requestDate" type="date" />
             </div>
             <div class="field">
               <label for="department">القسم / الإدارة</label>
@@ -462,7 +462,7 @@
         </div>
 
         <div class="section">
-          <h3 class="section-title">معلومات البائع / المورد</h3>
+          <h3 class="section-title">الاحتياج والمورد المقترح</h3>
           <div class="grid">
             <div class="field">
               <label for="vendorName">اسم الشركة / المورد</label>
@@ -543,7 +543,7 @@
 
         <div class="section">
           <h3 class="section-title">اعتماد الطلب</h3>
-          <div class="notice">يعتمد هذا الطلب بعد استكمال التوقيعات النظامية أدناه قبل الإرسال أو التنفيذ النهائي.</div>
+          <div class="notice">يعتمد هذا الطلب بعد استكمال التوقيعات النظامية أدناه قبل البدء في إجراءات الشراء أو التنفيذ النهائي.</div>
           <div class="signature-grid">
             <div class="signature-box">
               <div>
@@ -596,9 +596,9 @@
       return `${num.toFixed(2)} ر.س`;
     }
 
-    function syncPoNumber() {
-      const val = document.getElementById('poNumber').value.trim();
-      document.getElementById('poBadge').textContent = val || 'PO-2026-001';
+    function syncPrNumber() {
+      const val = document.getElementById('prNumber').value.trim();
+      document.getElementById('prBadge').textContent = val || 'PR-2026-001';
     }
 
     function addRow(item = {}) {
@@ -675,9 +675,9 @@
       });
       itemsBody.innerHTML = '';
       addRow();
-      syncPoNumber();
+      syncPrNumber();
       calculateTotals();
-      localStorage.removeItem('valueCapitalPOv2');
+      localStorage.removeItem('valueCapitalPRv2');
     }
 
     function saveDraft() {
@@ -688,8 +688,8 @@
       }));
 
       const data = {
-        poNumber: document.getElementById('poNumber').value,
-        poDate: document.getElementById('poDate').value,
+        prNumber: document.getElementById('prNumber').value,
+        requestDate: document.getElementById('requestDate').value,
         department: document.getElementById('department').value,
         deliveryDate: document.getElementById('deliveryDate').value,
         vendorName: document.getElementById('vendorName').value,
@@ -704,17 +704,17 @@
         rows
       };
 
-      localStorage.setItem('valueCapitalPOv2', JSON.stringify(data));
+      localStorage.setItem('valueCapitalPRv2', JSON.stringify(data));
       alert('تم حفظ الطلب محليًا على هذا المتصفح.');
     }
 
     function loadDraft() {
-      const raw = localStorage.getItem('valueCapitalPOv2');
+      const raw = localStorage.getItem('valueCapitalPRv2');
       if (!raw) return;
       try {
         const data = JSON.parse(raw);
-        document.getElementById('poNumber').value = data.poNumber || '';
-        document.getElementById('poDate').value = data.poDate || '';
+        document.getElementById('prNumber').value = data.prNumber || '';
+        document.getElementById('requestDate').value = data.requestDate || '';
         document.getElementById('department').value = data.department || '';
         document.getElementById('deliveryDate').value = data.deliveryDate || '';
         document.getElementById('vendorName').value = data.vendorName || '';
@@ -734,18 +734,18 @@
           addRow();
         }
 
-        syncPoNumber();
+        syncPrNumber();
         calculateTotals();
       } catch (e) {
         addRow();
       }
     }
 
-    if (!localStorage.getItem('valueCapitalPOv2')) {
+    if (!localStorage.getItem('valueCapitalPRv2')) {
       addRow();
     }
     loadDraft();
-    syncPoNumber();
+    syncPrNumber();
     calculateTotals();
   </script>
 </body>
