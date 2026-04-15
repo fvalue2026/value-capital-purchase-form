@@ -3,19 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>نموذج طلب شراء - نسخة مطورة</title>
+  <title>نموذج طلب شراء</title>
   <style>
     :root {
       --primary: #442182;
       --secondary: #9f8fbb;
-      --accent: #f5f5dc;
-      --text: #1f1f1f;
+      --soft: #f5f3fa;
+      --line: #ddd7ea;
+      --text: #1f2937;
       --muted: #6b7280;
-      --line: #d9d6e3;
-      --bg: #f7f7fb;
       --white: #ffffff;
-      --success: #0f766e;
-      --danger: #b91c1c;
     }
 
     * { box-sizing: border-box; }
@@ -23,174 +20,159 @@
     body {
       margin: 0;
       font-family: "Segoe UI", Tahoma, Arial, sans-serif;
-      background: linear-gradient(180deg, #f7f7fb 0%, #f2f0f8 100%);
+      background: #f6f4fb;
       color: var(--text);
-      line-height: 1.5;
     }
 
-    .container {
-      max-width: 1200px;
-      margin: 32px auto;
-      padding: 0 20px 40px;
+    .page {
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
     }
 
     .toolbar {
       display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 18px;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
     }
 
-    .toolbar .title-wrap h1 {
+    .toolbar h1 {
       margin: 0;
-      font-size: 28px;
       color: var(--primary);
+      font-size: 26px;
     }
 
-    .toolbar .title-wrap p {
-      margin: 6px 0 0;
+    .toolbar p {
+      margin: 4px 0 0;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 13px;
     }
 
     .actions {
       display: flex;
+      gap: 8px;
       flex-wrap: wrap;
-      gap: 10px;
     }
 
     button {
       border: 0;
-      border-radius: 12px;
-      padding: 12px 16px;
-      font-size: 14px;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
       font-weight: 700;
       cursor: pointer;
-      transition: 0.2s ease;
     }
 
-    .btn-primary {
-      background: var(--primary);
-      color: var(--white);
-    }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-light { background: #fff; color: var(--primary); border: 1px solid var(--line); }
 
-    .btn-secondary {
-      background: var(--secondary);
-      color: var(--white);
-    }
-
-    .btn-light {
-      background: var(--white);
-      color: var(--primary);
-      border: 1px solid var(--line);
-    }
-
-    button:hover { transform: translateY(-1px); }
-
-    .card {
-      background: var(--white);
-      border: 1px solid rgba(68, 33, 130, 0.08);
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(68, 33, 130, 0.08);
+    .sheet {
+      background: #fff;
+      border: 1px solid rgba(68,33,130,.08);
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(68,33,130,.08);
       overflow: hidden;
     }
 
     .header {
-      padding: 22px 24px;
-      background: linear-gradient(135deg, var(--primary) 0%, #5c2cae 100%);
-      color: var(--white);
+      background: linear-gradient(135deg, var(--primary) 0%, #5a2ca7 100%);
+      color: #fff;
+      padding: 18px 20px;
       display: grid;
-      grid-template-columns: auto 1fr auto;
+      grid-template-columns: 180px 1fr 190px;
       gap: 16px;
       align-items: center;
     }
 
-    .logo img {
-      height: 70px;
-      max-width: 220px;
+    .logo-box {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    .logo-box img {
+      max-width: 170px;
+      max-height: 60px;
       object-fit: contain;
-      background: #ffffff;
-      padding: 6px 10px;
+      background: #fff;
       border-radius: 10px;
+      padding: 6px 10px;
     }
 
-    .brand h2 {
+    .title-box {
+      text-align: center;
+    }
+
+    .title-box h2 {
       margin: 0;
-      font-size: 24px;
+      font-size: 26px;
     }
 
-    .brand p {
-      margin: 8px 0 0;
-      opacity: 0.9;
-      font-size: 14px;
+    .title-box p {
+      margin: 6px 0 0;
+      font-size: 13px;
+      opacity: .95;
     }
 
-    .pr-badge {
-      justify-self: end;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 16px;
-      padding: 16px 18px;
-      min-width: 240px;
+    .number-box {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 14px;
+      padding: 12px 14px;
+      text-align: center;
     }
 
-    .pr-badge .label {
+    .number-box .label {
       font-size: 12px;
-      opacity: 0.8;
-      margin-bottom: 6px;
+      opacity: .85;
+      margin-bottom: 4px;
     }
 
-    .pr-badge .value {
+    .number-box .value {
       font-size: 22px;
       font-weight: 800;
-      letter-spacing: 0.5px;
     }
 
     .content {
-      padding: 24px;
+      padding: 16px;
       display: grid;
-      gap: 20px;
+      gap: 14px;
     }
 
     .section {
       border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 18px;
+      border-radius: 14px;
+      padding: 14px;
       background: #fff;
     }
 
     .section-title {
-      margin: 0 0 14px;
-      color: var(--primary);
-      font-size: 18px;
+      margin: 0 0 10px;
+      font-size: 16px;
       font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      color: var(--primary);
     }
 
-    .grid {
+    .grid-4, .grid-3, .grid-2 {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
+      gap: 10px;
     }
 
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-    }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
 
     .field {
       display: flex;
       flex-direction: column;
-      gap: 7px;
+      gap: 5px;
     }
 
     .field label {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       color: #374151;
     }
@@ -200,185 +182,142 @@
     .field select {
       width: 100%;
       border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-size: 14px;
-      background: #fff;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 13px;
       color: var(--text);
+      background: #fff;
     }
 
     .field textarea {
-      min-height: 110px;
+      min-height: 84px;
       resize: vertical;
     }
 
-    .field input:focus,
-    .field textarea:focus,
-    .field select:focus {
-      outline: none;
-      border-color: var(--secondary);
-      box-shadow: 0 0 0 3px rgba(159, 143, 187, 0.18);
+    .readonly {
+      background: #f3f4f6 !important;
+      color: #6b7280;
+      cursor: not-allowed;
+      font-weight: 700;
     }
 
     .table-wrap {
-      overflow-x: auto;
       border: 1px solid var(--line);
-      border-radius: 16px;
+      border-radius: 12px;
+      overflow-x: auto;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 900px;
+      min-width: 760px;
       background: #fff;
     }
 
-    thead {
-      background: #f4f1fb;
-    }
-
     th, td {
-      padding: 12px;
-      border-bottom: 1px solid #ebe8f3;
+      border-bottom: 1px solid #ece8f4;
+      padding: 9px;
       text-align: right;
+      font-size: 13px;
       vertical-align: middle;
-      font-size: 14px;
     }
 
+    thead { background: var(--soft); }
     th { color: var(--primary); }
 
-    td input {
+    td input, td select {
       width: 100%;
-      border: 1px solid #ddd8ea;
-      border-radius: 10px;
-      padding: 10px 12px;
-      font-size: 14px;
-    }
-
-    .row-actions {
-      text-align: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 12px;
     }
 
     .remove-btn {
-      background: #fef2f2;
-      color: var(--danger);
-      border: 1px solid #fecaca;
-      padding: 8px 10px;
-      border-radius: 10px;
+      background: #fff1f2;
+      color: #b91c1c;
+      border: 1px solid #fecdd3;
+      padding: 7px 9px;
+      border-radius: 8px;
+      font-size: 12px;
       font-weight: 700;
     }
 
     .table-tools {
-      margin-top: 12px;
+      margin-top: 10px;
       display: flex;
       justify-content: flex-start;
     }
 
-    .summary {
-      display: grid;
-      grid-template-columns: 1.4fr 0.9fr;
-      gap: 20px;
-      align-items: start;
-    }
-
-    .totals {
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 16px;
-      background: #fcfbff;
-    }
-
-    .totals-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px dashed #ded9ea;
-      gap: 12px;
-      font-size: 15px;
-    }
-
-    .totals-row:last-child {
-      border-bottom: 0;
-      font-size: 18px;
-      font-weight: 800;
-      color: var(--primary);
-      padding-top: 14px;
-    }
-
     .signature-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 10px;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 12px;
     }
 
     .signature-box {
-      border: 1.5px dashed #c9c1dc;
-      border-radius: 16px;
-      padding: 16px;
-      min-height: 180px;
+      border: 1px dashed #cfc6e2;
+      border-radius: 12px;
+      padding: 12px;
+      min-height: 110px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      background: #fff;
     }
 
     .signature-box h4 {
-      margin: 0 0 8px;
+      margin: 0;
       color: var(--primary);
-      font-size: 16px;
+      font-size: 14px;
     }
 
-    .sig-lines {
-      display: grid;
-      gap: 10px;
-      margin-top: 18px;
+    .signature-box p {
+      margin: 4px 0 0;
+      font-size: 12px;
+      color: var(--muted);
     }
 
     .sig-line {
-      border-top: 1px solid #b8afcf;
-      padding-top: 8px;
-      font-size: 13px;
+      border-top: 1px solid #beb5d2;
+      padding-top: 6px;
+      font-size: 11px;
       color: #4b5563;
-    }
-
-    .notice {
-      background: #f8f5ff;
-      border: 1px solid #ddd3f4;
-      color: #4b2d87;
-      border-radius: 14px;
-      padding: 14px 16px;
-      font-size: 14px;
+      margin-top: 10px;
     }
 
     .footer-note {
       text-align: center;
+      font-size: 12px;
       color: var(--muted);
-      font-size: 13px;
-      margin-top: 8px;
+      margin-top: 2px;
     }
 
-    .hidden-print { display: block; }
-
-    @media (max-width: 980px) {
+    @media (max-width: 900px) {
       .header,
-      .summary,
-      .grid,
+      .grid-4,
+      .grid-3,
       .grid-2,
       .signature-grid {
         grid-template-columns: 1fr;
       }
 
-      .pr-badge { justify-self: stretch; }
+      .title-box { text-align: right; }
     }
 
     @media print {
-      body {
-        background: #fff;
+      @page {
+        size: A4;
+        margin: 5mm;
       }
 
-      .container {
+      body {
+        background: #fff;
+        zoom: 0.65;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .page {
         max-width: 100%;
         margin: 0;
         padding: 0;
@@ -386,65 +325,133 @@
 
       .toolbar,
       .table-tools,
-      .remove-btn,
-      .hidden-print {
+      .remove-btn {
         display: none !important;
       }
 
-      .card,
+      .sheet,
       .section,
       .table-wrap,
-      .totals,
       .signature-box {
         box-shadow: none;
+        break-inside: avoid;
+        page-break-inside: avoid;
       }
 
-      .section,
-      .signature-box,
-      .totals,
-      .table-wrap {
-        break-inside: avoid;
+      .header { padding: 8px 10px; }
+      .logo-box img { max-height: 32px; }
+      .title-box h2 { font-size: 14px; }
+      .title-box p { font-size: 9px; }
+      .number-box .value { font-size: 12px; }
+      .content { padding: 6px; gap: 6px; }
+      .section { padding: 6px; }
+      .section-title { font-size: 11px; margin-bottom: 4px; }
+      .field label { font-size: 8px; }
+      .field input, .field textarea, .field select {
+        font-size: 8px;
+        padding: 4px 6px;
       }
+      .field textarea { min-height: 28px; }
+      th, td {
+        font-size: 7px;
+        padding: 3px;
+      }
+      .signature-box {
+        min-height: 50px;
+        padding: 5px;
+      }
+      .signature-box h4 { font-size: 9px; }
+      .signature-box p,
+      .sig-line,
+      .footer-note { font-size: 7px; }
+    }
+
+      body {
+        background: #fff;
+        zoom: 0.78;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .page {
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .toolbar,
+      .table-tools,
+      .remove-btn {
+        display: none !important;
+      }
+
+      .sheet,
+      .section,
+      .table-wrap,
+      .signature-box {
+        box-shadow: none;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .header { padding: 12px 14px; }
+      .logo-box img { max-height: 42px; }
+      .title-box h2 { font-size: 18px; }
+      .title-box p { font-size: 11px; }
+      .number-box .value { font-size: 16px; }
+      .content { padding: 10px; gap: 8px; }
+      .section { padding: 10px; }
+      .section-title { font-size: 13px; margin-bottom: 6px; }
+      .field label { font-size: 10px; }
+      .field input, .field textarea, .field select { font-size: 10px; padding: 6px 8px; }
+      .field textarea { min-height: 48px; }
+      th, td { font-size: 9px; padding: 5px; }
+      .signature-box { min-height: 78px; padding: 8px; }
+      .signature-box h4 { font-size: 11px; }
+      .signature-box p, .sig-line, .footer-note { font-size: 9px; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="toolbar hidden-print">
-      <div class="title-wrap">
-        <h1>نموذج طلب شراء - نسخة مطورة</h1>
-        <p>تمت إضافة مرحلة اعتماد رسمية تشمل إدارة المشتريات ونائب الرئيس والرئيس التنفيذي.</p>
+  <div class="page">
+    <div class="toolbar">
+      <div>
+        <h1>نموذج طلب شراء</h1>
+        <p>نسخة داخلية مختصرة ومنظمة ومناسبة للطباعة في صفحة واحدة.</p>
       </div>
       <div class="actions">
         <button class="btn-light" onclick="addRow()">+ إضافة صف</button>
-        <button class="btn-secondary" onclick="saveDraft()">✓ حفظ الطلب</button>
-        <button class="btn-light" onclick="resetForm()">↻ مسح</button>
-        <button class="btn-primary" onclick="window.print()">🖨️ طباعة</button>
+        <button class="btn-light" onclick="saveDraft()">حفظ محلي</button>
+        <button class="btn-light" onclick="resetForm()">مسح</button>
+        <button class="btn-primary" onclick="window.print()">طباعة</button>
       </div>
     </div>
 
-    <div class="card">
+    <div class="sheet">
       <div class="header">
-        <div class="logo">
-          <img src="لوقو شفاف.png" alt="Value Capital Logo" />
+        <div class="logo-box">
+          <!-- Embedded Value Capital Logo -->
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..." alt="Value Capital Logo" />
         </div>
-        <div class="brand">
+
+        <div class="title-box">
           <h2>Purchase Request Form</h2>
-          <p>نموذج احترافي لرفع طلبات الشراء الداخلية واعتمادها قبل البدء في إجراءات الشراء.</p>
+          <p>طلب شراء داخلي لرفع الاحتياج واعتماده قبل البدء في إجراءات الشراء.</p>
         </div>
-        <div class="pr-badge">
+
+        <div class="number-box">
           <div class="label">رقم طلب الشراء</div>
-          <div class="value" id="prBadge">PR-2026-001</div>
+          <div class="value" id="requestBadge">PR-2026-001</div>
         </div>
       </div>
 
       <div class="content">
         <div class="section">
-          <h3 class="section-title">معلومات طلب الشراء</h3>
-          <div class="grid">
+          <h3 class="section-title">بيانات الطلب</h3>
+          <div class="grid-4">
             <div class="field">
-              <label for="prNumber">رقم طلب الشراء</label>
-              <input id="prNumber" type="text" placeholder="PR-2026-001" oninput="syncPrNumber()" />
+              <label for="requestNumber">رقم طلب الشراء</label>
+              <input id="requestNumber" class="readonly" type="text" value="PR-2026-001" readonly />
             </div>
             <div class="field">
               <label for="requestDate">تاريخ الطلب</label>
@@ -452,138 +459,128 @@
             </div>
             <div class="field">
               <label for="department">القسم / الإدارة</label>
-              <input id="department" type="text" placeholder="إدارة المشتريات" />
+              <input id="department" type="text" placeholder="اسم القسم أو الإدارة" />
+            </div>
+            
+          </div>
+
+          <div class="grid-3" style="margin-top:10px;">
+            <div class="field">
+              <label for="requesterName">اسم مقدم الطلب</label>
+              <input id="requesterName" type="text" placeholder="الاسم الكامل" />
             </div>
             <div class="field">
-              <label for="deliveryDate">تاريخ التسليم المطلوب</label>
-              <input id="deliveryDate" type="date" />
+              <label for="jobTitle">المسمى الوظيفي</label>
+              <input id="jobTitle" type="text" placeholder="المسمى الوظيفي" />
+            </div>
+            <div class="field">
+              <label for="neededDate">تاريخ الاستلام المطلوب</label>
+              <input id="neededDate" type="date" />
             </div>
           </div>
         </div>
 
         <div class="section">
-          <h3 class="section-title">الاحتياج والمورد المقترح</h3>
-          <div class="grid">
+          <h3 class="section-title">تفاصيل الطلب</h3>
+          <div class="grid-3">
             <div class="field">
-              <label for="vendorName">اسم الشركة / المورد</label>
-              <input id="vendorName" type="text" placeholder="اسم المورد" />
+              <label for="requestType">نوع الطلب</label>
+              <select id="requestType">
+                <option value="">اختر</option>
+                <option>احتياج قسم</option>
+                <option>عهدة فردية</option>
+                <option>عهدة مشتركة</option>
+                <option>خدمة</option>
+                <option>أصل</option>
+                <option>تشغيلي</option>
+              </select>
             </div>
             <div class="field">
-              <label for="vendorEmail">البريد الإلكتروني</label>
-              <input id="vendorEmail" type="email" placeholder="vendor@email.com" />
+              <label for="priority">الأولوية</label>
+              <select id="priority">
+                <option value="">اختر</option>
+                <option>عالية</option>
+                <option>متوسطة</option>
+                <option>منخفضة</option>
+              </select>
             </div>
             <div class="field">
-              <label for="vendorPhone">رقم الهاتف</label>
-              <input id="vendorPhone" type="text" placeholder="05XXXXXXXX" />
-            </div>
-            <div class="field">
-              <label for="vendorVat">الرقم الضريبي</label>
-              <input id="vendorVat" type="text" placeholder="الرقم الضريبي" />
+              <label for="vendor">المورد المقترح</label>
+              <input id="vendor" type="text" placeholder="اختياري" />
             </div>
           </div>
-          <div class="grid-2" style="margin-top:14px;">
+
+          <div class="grid-2" style="margin-top:10px;">
             <div class="field">
-              <label for="vendorAddress">العنوان</label>
-              <textarea id="vendorAddress" placeholder="عنوان المورد"></textarea>
+              <label for="purpose">الغرض من الطلب</label>
+              <textarea id="purpose" placeholder="اذكر الغرض التشغيلي أو الإداري للطلب"></textarea>
             </div>
             <div class="field">
-              <label for="requestJustification">مبررات الطلب</label>
-              <textarea id="requestJustification" placeholder="اذكر مبررات الشراء والاحتياج التشغيلي أو الإداري"></textarea>
+              <label for="notes">ملاحظات</label>
+              <textarea id="notes" placeholder="أي ملاحظات إضافية"></textarea>
             </div>
           </div>
         </div>
 
         <div class="section">
-          <h3 class="section-title">تفاصيل المنتجات والخدمات</h3>
+          <h3 class="section-title">الأصناف المطلوبة</h3>
           <div class="table-wrap">
             <table>
               <thead>
                 <tr>
-                  <th style="width: 42px;">م</th>
-                  <th>وصف المنتج / الخدمة</th>
-                  <th style="width: 120px;">الكمية</th>
-                  <th style="width: 150px;">السعر / الوحدة</th>
-                  <th style="width: 150px;">المبلغ</th>
-                  <th style="width: 100px;">حذف</th>
+                  <th style="width: 40px;">م</th>
+                  <th>الصنف / الوصف</th>
+                  <th style="width: 90px;">الكمية</th>
+                  <th style="width: 110px;">الوحدة</th>
+                  <th style="width: 120px;">فئة الطلب</th>
+                  <th style="width: 90px;">حذف</th>
                 </tr>
               </thead>
               <tbody id="itemsBody"></tbody>
             </table>
           </div>
-          <div class="table-tools hidden-print">
-            <button class="btn-light" onclick="addRow()">+ إضافة صف جديد</button>
-          </div>
-        </div>
-
-        <div class="summary">
-          <div class="section">
-            <h3 class="section-title">ملاحظات وشروط</h3>
-            <div class="grid-2">
-              <div class="field">
-                <label for="notes">ملاحظات</label>
-                <textarea id="notes" placeholder="أي ملاحظات إضافية"></textarea>
-              </div>
-              <div class="field">
-                <label for="terms">الشروط والأحكام</label>
-                <textarea id="terms" placeholder="شروط التسليم، الضمان، مدة التنفيذ، أو أي شروط تعاقدية"></textarea>
-              </div>
-            </div>
-          </div>
-
-          <div class="totals">
-            <div class="field" style="margin-bottom:12px;">
-              <label for="vatRate">ضريبة القيمة المضافة (%)</label>
-              <input id="vatRate" type="number" value="15" min="0" step="0.01" oninput="calculateTotals()" />
-            </div>
-            <div class="totals-row"><span>المجموع الفرعي</span><strong id="subtotal">0.00 ر.س</strong></div>
-            <div class="totals-row"><span>قيمة الضريبة</span><strong id="vatAmount">0.00 ر.س</strong></div>
-            <div class="totals-row"><span>الإجمالي</span><strong id="grandTotal">0.00 ر.س</strong></div>
+          <div class="table-tools">
+            <button class="btn-light" onclick="addRow()">+ إضافة صنف</button>
           </div>
         </div>
 
         <div class="section">
-          <h3 class="section-title">اعتماد الطلب</h3>
-          <div class="notice">يعتمد هذا الطلب بعد استكمال التوقيعات النظامية أدناه قبل البدء في إجراءات الشراء أو التنفيذ النهائي.</div>
+          <h3 class="section-title">الاعتماد</h3>
           <div class="signature-grid">
             <div class="signature-box">
               <div>
-                <h4>توقيع إدارة المشتريات</h4>
-                <p style="margin:0;color:var(--muted);font-size:13px;">مراجعة الطلب، التحقق من اكتمال البيانات، واعتماد المسار الشرائي.</p>
+                <h4>إدارة المشتريات</h4>
+                <p>مراجعة الطلب واكتمال البيانات</p>
               </div>
-              <div class="sig-lines">
+              <div>
                 <div class="sig-line">الاسم:</div>
                 <div class="sig-line">التوقيع:</div>
-                <div class="sig-line">التاريخ:</div>
               </div>
             </div>
-
             <div class="signature-box">
               <div>
-                <h4>توقيع نائب الرئيس</h4>
-                <p style="margin:0;color:var(--muted);font-size:13px;">اعتماد إداري ومالي وفق الصلاحيات المعتمدة.</p>
+                <h4>نائب الرئيس</h4>
+                <p>الاعتماد الإداري والمالي</p>
               </div>
-              <div class="sig-lines">
+              <div>
                 <div class="sig-line">الاسم:</div>
                 <div class="sig-line">التوقيع:</div>
-                <div class="sig-line">التاريخ:</div>
               </div>
             </div>
-
             <div class="signature-box">
               <div>
-                <h4>توقيع الرئيس التنفيذي</h4>
-                <p style="margin:0;color:var(--muted);font-size:13px;">الاعتماد النهائي للطلب حسب السياسة المعتمدة.</p>
+                <h4>الرئيس التنفيذي</h4>
+                <p>الاعتماد النهائي</p>
               </div>
-              <div class="sig-lines">
+              <div>
                 <div class="sig-line">الاسم:</div>
                 <div class="sig-line">التوقيع:</div>
-                <div class="sig-line">التاريخ:</div>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="footer-note">نسخة مطورة قابلة للطباعة والحفظ محليًا عبر المتصفح.</div>
+        <div class="footer-note">هذا النموذج مخصص لطلب الشراء الداخلي قبل إصدار أمر الشراء.</div>
       </div>
     </div>
   </div>
@@ -591,47 +588,44 @@
   <script>
     const itemsBody = document.getElementById('itemsBody');
 
-    function money(value) {
-      const num = Number(value || 0);
-      return `${num.toFixed(2)} ر.س`;
-    }
-
-    function syncPrNumber() {
-      const val = document.getElementById('prNumber').value.trim();
-      document.getElementById('prBadge').textContent = val || 'PR-2026-001';
+    function syncRequestNumber() {
+      const val = document.getElementById('requestNumber').value.trim() || 'PR-2026-001';
+      document.getElementById('requestBadge').textContent = val;
     }
 
     function addRow(item = {}) {
       const row = document.createElement('tr');
       row.innerHTML = `
         <td class="row-index"></td>
-        <td><input type="text" class="desc" placeholder="وصف الصنف أو الخدمة" value="${item.desc || ''}"></td>
-        <td><input type="number" class="qty" min="0" step="1" value="${item.qty || 1}"></td>
-        <td><input type="number" class="price" min="0" step="0.01" value="${item.price || 0}"></td>
-        <td><input type="text" class="amount" value="0.00" readonly></td>
-        <td class="row-actions"><button type="button" class="remove-btn" onclick="removeRow(this)">حذف</button></td>
+        <td><input type="text" class="desc" placeholder="اسم الصنف أو وصفه" value="${item.desc || ''}"></td>
+        <td><input type="number" class="qty" min="1" step="1" value="${item.qty || 1}"></td>
+        <td><input type="text" class="unit" placeholder="حبة / جهاز / خدمة" value="${item.unit || ''}"></td>
+        <td>
+          <select class="category">
+            <option value="">اختر</option>
+            <option ${item.category === 'تقنية معلومات' ? 'selected' : ''}>تقنية معلومات</option>
+            <option ${item.category === 'مكتبي' ? 'selected' : ''}>مكتبي</option>
+            <option ${item.category === 'أثاث' ? 'selected' : ''}>أثاث</option>
+            <option ${item.category === 'تشغيلي' ? 'selected' : ''}>تشغيلي</option>
+            <option ${item.category === 'أخرى' ? 'selected' : ''}>أخرى</option>
+          </select>
+        </td>
+        <td><button type="button" class="remove-btn" onclick="removeRow(this)">حذف</button></td>
       `;
       itemsBody.appendChild(row);
-
-      row.querySelector('.qty').addEventListener('input', calculateTotals);
-      row.querySelector('.price').addEventListener('input', calculateTotals);
-      calculateTotals();
       updateIndexes();
     }
 
     function removeRow(btn) {
       const rows = itemsBody.querySelectorAll('tr');
       if (rows.length === 1) {
-        const qty = rows[0].querySelector('.qty');
-        const price = rows[0].querySelector('.price');
-        const desc = rows[0].querySelector('.desc');
-        qty.value = 1;
-        price.value = 0;
-        desc.value = '';
+        rows[0].querySelector('.desc').value = '';
+        rows[0].querySelector('.qty').value = 1;
+        rows[0].querySelector('.unit').value = '';
+        rows[0].querySelector('.category').value = '';
       } else {
         btn.closest('tr').remove();
       }
-      calculateTotals();
       updateIndexes();
     }
 
@@ -641,91 +635,51 @@
       });
     }
 
-    function calculateTotals() {
-      let subtotal = 0;
-      document.querySelectorAll('#itemsBody tr').forEach(row => {
-        const qty = Number(row.querySelector('.qty').value || 0);
-        const price = Number(row.querySelector('.price').value || 0);
-        const amount = qty * price;
-        row.querySelector('.amount').value = amount.toFixed(2);
-        subtotal += amount;
-      });
-
-      const vatRate = Number(document.getElementById('vatRate').value || 0);
-      const vat = subtotal * (vatRate / 100);
-      const total = subtotal + vat;
-
-      document.getElementById('subtotal').textContent = money(subtotal);
-      document.getElementById('vatAmount').textContent = money(vat);
-      document.getElementById('grandTotal').textContent = money(total);
-    }
-
-    function resetForm() {
-      if (!confirm('هل تريدين مسح جميع بيانات النموذج؟')) return;
-      document.querySelectorAll('input, textarea').forEach(el => {
-        if (el.type === 'number') {
-          if (el.id === 'vatRate') el.value = 15;
-          else if (el.classList.contains('qty')) el.value = 1;
-          else el.value = '';
-        } else if (el.type === 'date') {
-          el.value = '';
-        } else {
-          el.value = '';
-        }
-      });
-      itemsBody.innerHTML = '';
-      addRow();
-      syncPrNumber();
-      calculateTotals();
-      localStorage.removeItem('valueCapitalPRv2');
-    }
-
     function saveDraft() {
       const rows = [...document.querySelectorAll('#itemsBody tr')].map(row => ({
         desc: row.querySelector('.desc').value,
         qty: row.querySelector('.qty').value,
-        price: row.querySelector('.price').value
+        unit: row.querySelector('.unit').value,
+        category: row.querySelector('.category').value
       }));
 
       const data = {
-        prNumber: document.getElementById('prNumber').value,
+        requestNumber: document.getElementById('requestNumber').value,
         requestDate: document.getElementById('requestDate').value,
         department: document.getElementById('department').value,
-        deliveryDate: document.getElementById('deliveryDate').value,
-        vendorName: document.getElementById('vendorName').value,
-        vendorEmail: document.getElementById('vendorEmail').value,
-        vendorPhone: document.getElementById('vendorPhone').value,
-        vendorVat: document.getElementById('vendorVat').value,
-        vendorAddress: document.getElementById('vendorAddress').value,
-        requestJustification: document.getElementById('requestJustification').value,
+        
+        requesterName: document.getElementById('requesterName').value,
+        jobTitle: document.getElementById('jobTitle').value,
+        neededDate: document.getElementById('neededDate').value,
+        requestType: document.getElementById('requestType').value,
+        priority: document.getElementById('priority').value,
+        vendor: document.getElementById('vendor').value,
+        purpose: document.getElementById('purpose').value,
         notes: document.getElementById('notes').value,
-        terms: document.getElementById('terms').value,
-        vatRate: document.getElementById('vatRate').value,
         rows
       };
 
-      localStorage.setItem('valueCapitalPRv2', JSON.stringify(data));
-      alert('تم حفظ الطلب محليًا على هذا المتصفح.');
+      localStorage.setItem('valueCapitalPurchaseRequestCompact', JSON.stringify(data));
+      alert('تم حفظ النموذج محليًا.');
     }
 
     function loadDraft() {
-      const raw = localStorage.getItem('valueCapitalPRv2');
+      const raw = localStorage.getItem('valueCapitalPurchaseRequestCompact');
       if (!raw) return;
       try {
         const data = JSON.parse(raw);
-        document.getElementById('prNumber').value = data.prNumber || '';
+        document.getElementById('requestNumber').value = data.requestNumber || 'PR-2026-001';
         document.getElementById('requestDate').value = data.requestDate || '';
         document.getElementById('department').value = data.department || '';
-        document.getElementById('deliveryDate').value = data.deliveryDate || '';
-        document.getElementById('vendorName').value = data.vendorName || '';
-        document.getElementById('vendorEmail').value = data.vendorEmail || '';
-        document.getElementById('vendorPhone').value = data.vendorPhone || '';
-        document.getElementById('vendorVat').value = data.vendorVat || '';
-        document.getElementById('vendorAddress').value = data.vendorAddress || '';
-        document.getElementById('requestJustification').value = data.requestJustification || '';
+        
+        document.getElementById('requesterName').value = data.requesterName || '';
+        document.getElementById('jobTitle').value = data.jobTitle || '';
+        document.getElementById('neededDate').value = data.neededDate || '';
+        document.getElementById('requestType').value = data.requestType || '';
+        document.getElementById('priority').value = data.priority || '';
+        document.getElementById('vendor').value = data.vendor || '';
+        document.getElementById('purpose').value = data.purpose || '';
         document.getElementById('notes').value = data.notes || '';
-        document.getElementById('terms').value = data.terms || '';
-        document.getElementById('vatRate').value = data.vatRate || 15;
 
         itemsBody.innerHTML = '';
         if (data.rows && data.rows.length) {
@@ -734,19 +688,32 @@
           addRow();
         }
 
-        syncPrNumber();
-        calculateTotals();
+        syncRequestNumber();
       } catch (e) {
+        itemsBody.innerHTML = '';
         addRow();
+        syncRequestNumber();
       }
     }
 
-    if (!localStorage.getItem('valueCapitalPRv2')) {
+    function resetForm() {
+      if (!confirm('هل تريدين مسح بيانات النموذج؟')) return;
+      document.querySelectorAll('input, textarea, select').forEach(el => {
+        if (el.id === 'requestNumber') {
+          el.value = 'PR-2026-001';
+        } else {
+          el.value = '';
+        }
+      });
+      itemsBody.innerHTML = '';
       addRow();
+      syncRequestNumber();
+      localStorage.removeItem('valueCapitalPurchaseRequestCompact');
     }
+
     loadDraft();
-    syncPrNumber();
-    calculateTotals();
+    if (!itemsBody.querySelector('tr')) addRow();
+    syncRequestNumber();
   </script>
 </body>
 </html>
