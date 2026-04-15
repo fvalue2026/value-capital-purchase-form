@@ -306,64 +306,167 @@
 
     @media print {
       @page {
-        size: A4;
-        margin: 5mm;
+        size: A4 portrait;
+        margin: 6mm;
+      }
+
+      html, body {
+        width: 210mm;
+        height: 297mm;
       }
 
       body {
         background: #fff;
-        zoom: 0.65;
+        zoom: 0.74;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
 
       .page {
         max-width: 100%;
+        width: 100%;
         margin: 0;
         padding: 0;
       }
 
       .toolbar,
       .table-tools,
-      .remove-btn {
+      .remove-btn,
+      button {
         display: none !important;
+      }
+
+      .sheet {
+        width: 100%;
+        border-radius: 0;
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+
+      .header {
+        grid-template-columns: 120px 1fr 120px;
+        gap: 8px;
+        padding: 8px 10px;
+      }
+
+      .logo-box img {
+        max-width: 110px;
+        max-height: 32px;
+        padding: 4px 6px;
+      }
+
+      .title-box h2 {
+        font-size: 14px;
+      }
+
+      .title-box p {
+        font-size: 8px;
+        margin-top: 3px;
+      }
+
+      .number-box {
+        padding: 8px;
+      }
+
+      .number-box .label {
+        font-size: 8px;
+      }
+
+      .number-box .value {
+        font-size: 12px;
+      }
+
+      .content {
+        padding: 6px;
+        gap: 6px;
+      }
+
+      .section {
+        padding: 7px;
+        border-radius: 8px;
+      }
+
+      .section-title {
+        font-size: 11px;
+        margin-bottom: 5px;
+      }
+
+      .grid-4 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+      .grid-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+      .grid-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .signature-grid { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; }
+
+      .field {
+        gap: 3px;
+      }
+
+      .field label {
+        font-size: 8px;
+      }
+
+      .field input,
+      .field textarea,
+      .field select {
+        font-size: 8px;
+        padding: 4px 6px;
+        border-radius: 6px;
+      }
+
+      .field textarea {
+        min-height: 30px;
+      }
+
+      .table-wrap {
+        border-radius: 8px;
+      }
+
+      table {
+        min-width: 100%;
+      }
+
+      th, td {
+        font-size: 7px;
+        padding: 3px;
+      }
+
+      td input, td select {
+        font-size: 7px;
+        padding: 3px 4px;
+        border-radius: 5px;
+      }
+
+      .signature-box {
+        min-height: 62px;
+        padding: 6px;
+        border-radius: 8px;
+      }
+
+      .signature-box h4 {
+        font-size: 9px;
+      }
+
+      .signature-box p {
+        font-size: 7px;
+        margin-top: 2px;
+      }
+
+      .sig-line {
+        font-size: 7px;
+        margin-top: 6px;
+        padding-top: 4px;
+      }
+
+      .footer-note {
+        font-size: 7px;
       }
 
       .sheet,
       .section,
       .table-wrap,
       .signature-box {
-        box-shadow: none;
         break-inside: avoid;
         page-break-inside: avoid;
       }
-
-      .header { padding: 8px 10px; }
-      .logo-box img { max-height: 32px; }
-      .title-box h2 { font-size: 14px; }
-      .title-box p { font-size: 9px; }
-      .number-box .value { font-size: 12px; }
-      .content { padding: 6px; gap: 6px; }
-      .section { padding: 6px; }
-      .section-title { font-size: 11px; margin-bottom: 4px; }
-      .field label { font-size: 8px; }
-      .field input, .field textarea, .field select {
-        font-size: 8px;
-        padding: 4px 6px;
-      }
-      .field textarea { min-height: 28px; }
-      th, td {
-        font-size: 7px;
-        padding: 3px;
-      }
-      .signature-box {
-        min-height: 50px;
-        padding: 5px;
-      }
-      .signature-box h4 { font-size: 9px; }
-      .signature-box p,
-      .sig-line,
-      .footer-note { font-size: 7px; }
     }
 
       body {
