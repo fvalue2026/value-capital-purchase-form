@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>نموذج طلب شراء</title>
+  <title>نموذج طلب شراء — قيمة المالية</title>
   <style>
     :root {
-      --primary: #442182;
-      --secondary: #9f8fbb;
-      --soft: #f5f3fa;
+      --primary: #675398;
+      --primary-dark: #442182;
+      --gold: #C4981A;
+      --soft: #f6f3fb;
       --line: #ddd7ea;
       --text: #1f2937;
       --muted: #6b7280;
@@ -20,162 +21,191 @@
     body {
       margin: 0;
       font-family: "Segoe UI", Tahoma, Arial, sans-serif;
-      background: #f6f4fb;
+      background: #ede9f5;
       color: var(--text);
-    }
-
-    .page {
-      max-width: 860px;
-      margin: 24px auto;
-      padding: 0 12px 32px;
+      font-size: 13px;
     }
 
     .toolbar {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 14px 12px 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 10px;
-      margin-bottom: 14px;
       flex-wrap: wrap;
     }
 
     .toolbar h1 {
       margin: 0;
-      color: var(--primary);
-      font-size: 26px;
+      color: var(--primary-dark);
+      font-size: 20px;
     }
 
     .toolbar p {
-      margin: 4px 0 0;
+      margin: 3px 0 0;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 11px;
     }
 
     .actions {
       display: flex;
-      gap: 8px;
+      gap: 7px;
       flex-wrap: wrap;
     }
 
     button {
       border: 0;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-size: 13px;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 12px;
       font-weight: 700;
       cursor: pointer;
+      font-family: inherit;
+      transition: opacity .15s;
     }
 
-    .btn-primary { background: var(--primary); color: #fff; }
-    .btn-light { background: #fff; color: var(--primary); border: 1px solid var(--line); }
+    button:hover { opacity: .85; }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+    }
+
+    .btn-light {
+      background: #fff;
+      color: var(--primary-dark);
+      border: 1px solid var(--line);
+    }
 
     .sheet {
+      max-width: 760px;
+      margin: 0 auto 24px;
       background: #fff;
-      border: 1px solid rgba(68,33,130,.08);
-      border-radius: 18px;
-      box-shadow: 0 10px 30px rgba(68,33,130,.08);
+      border: 1px solid rgba(68,33,130,.1);
+      border-radius: 16px;
+      box-shadow: 0 10px 28px rgba(68,33,130,.08);
       overflow: hidden;
     }
 
     .header {
-      background: linear-gradient(135deg, var(--primary) 0%, #5a2ca7 100%);
+      background: linear-gradient(135deg, #5a4490 0%, #442182 100%);
       color: #fff;
-      padding: 16px 16px;
+      padding: 12px 14px;
       display: grid;
-      grid-template-columns: 110px 1fr 110px;
-      gap: 10px;
-      align-items: center;
-      align-items: center;
-      gap: 16px;
-      align-items: center;
-    }
-
-    .logo-box {
-      display: flex;
-      justify-content: flex-start;
+      grid-template-columns: 68px 1fr 92px;
+      gap: 8px;
       align-items: center;
     }
 
     .logo-box img {
-      max-width: 100px;
-      max-height: 42px;
+      max-width: 56px;
+      max-height: 24px;
       object-fit: contain;
       background: #fff;
-      border-radius: 8px;
-      padding: 4px 6px;
+      border-radius: 6px;
+      padding: 3px 4px;
+      display: block;
     }
 
-    .title-box {
-      text-align: center;
-    }
+    .title-box { text-align: center; }
 
     .title-box h2 {
       margin: 0;
-      font-size: 21px;
+      font-size: 15px;
+      letter-spacing: .2px;
     }
 
     .title-box p {
       margin: 4px 0 0;
-      font-size: 11px;
-      opacity: .95;
+      font-size: 9px;
+      opacity: .9;
+      line-height: 1.4;
     }
 
     .number-box {
-      background: rgba(255,255,255,.12);
-      border: 1px solid rgba(255,255,255,.18);
-      border-radius: 12px;
-      padding: 8px 10px;
+      background: rgba(255,255,255,.13);
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 10px;
+      padding: 7px 6px;
       text-align: center;
     }
 
     .number-box .label {
-      font-size: 12px;
-      opacity: .85;
-      margin-bottom: 4px;
+      font-size: 8px;
+      opacity: .9;
+      margin-bottom: 3px;
     }
 
     .number-box .value {
-      font-size: 16px;
+      font-size: 11px;
       font-weight: 800;
+      line-height: 1.25;
+      word-break: break-word;
     }
 
     .content {
-      padding: 12px;
+      padding: 10px;
       display: grid;
-      gap: 10px;
+      gap: 8px;
     }
 
     .section {
       border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 10px;
+      border-radius: 10px;
+      padding: 9px 10px;
       background: #fff;
     }
 
     .section-title {
-      margin: 0 0 10px;
-      font-size: 16px;
+      margin: 0 0 8px;
+      font-size: 13px;
       font-weight: 800;
-      color: var(--primary);
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 7px;
     }
 
-    .grid-4, .grid-3, .grid-2 {
+    .section-title::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 14px;
+      background: var(--gold);
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .grid-4 {
       display: grid;
-      gap: 10px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
     }
 
-    .grid-4 { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    .grid-3 { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    .grid-2 { grid-template-columns: 1fr; }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .gap-top { margin-top: 8px; }
 
     .field {
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 4px;
     }
 
     .field label {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       color: #374151;
     }
@@ -184,71 +214,99 @@
     .field textarea,
     .field select {
       width: 100%;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 10px 12px;
-      font-size: 13px;
+      border: 1px solid #ddd4f0;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 12px;
       color: var(--text);
-      background: #fff;
+      background: #faf9fd;
+      font-family: inherit;
+      transition: border-color .15s, box-shadow .15s;
+      outline: none;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(103,83,152,.12);
     }
 
     .field textarea {
-      min-height: 84px;
+      min-height: 64px;
       resize: vertical;
+      line-height: 1.5;
     }
 
     .readonly {
-      background: #f3f4f6 !important;
-      color: #6b7280;
-      cursor: not-allowed;
-      font-weight: 700;
+      background: #f0edf8 !important;
+      color: var(--primary-dark) !important;
+      font-weight: 800;
+      cursor: default;
     }
 
     .table-wrap {
       border: 1px solid var(--line);
-      border-radius: 12px;
+      border-radius: 10px;
+      overflow: hidden;
       overflow-x: auto;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 100%;
       background: #fff;
-      background: #fff;
-    }
-
-    th, td {
-      border-bottom: 1px solid #ece8f4;
-      padding: 7px;
-      text-align: right;
-      font-size: 12px;
-      vertical-align: middle;
+      table-layout: fixed;
     }
 
     thead { background: var(--soft); }
-    th { color: var(--primary); }
+
+    th, td {
+      border-bottom: 1px solid #ece8f4;
+      padding: 6px;
+      text-align: right;
+      font-size: 11px;
+      vertical-align: middle;
+      white-space: normal;
+      word-break: break-word;
+    }
+
+    tbody tr:last-child td { border-bottom: 0; }
+
+    th {
+      color: var(--primary-dark);
+      font-weight: 800;
+      font-size: 10px;
+    }
 
     td input, td select {
       width: 100%;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 8px 10px;
-      font-size: 12px;
+      border: 1px solid #ddd4f0;
+      border-radius: 7px;
+      padding: 6px 7px;
+      font-size: 10px;
+      background: #faf9fd;
+      font-family: inherit;
+      outline: none;
+    }
+
+    td input:focus, td select:focus {
+      border-color: var(--primary);
     }
 
     .remove-btn {
       background: #fff1f2;
       color: #b91c1c;
       border: 1px solid #fecdd3;
-      padding: 7px 9px;
-      border-radius: 8px;
-      font-size: 12px;
+      padding: 5px 8px;
+      border-radius: 7px;
+      font-size: 10px;
       font-weight: 700;
+      width: 100%;
     }
 
     .table-tools {
-      margin-top: 10px;
+      margin-top: 8px;
       display: flex;
       justify-content: flex-start;
     }
@@ -256,57 +314,57 @@
     .signature-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 10px;
+      gap: 8px;
     }
 
     .signature-box {
-      border: 1px dashed #cfc6e2;
-      border-radius: 12px;
-      padding: 12px;
-      min-height: 110px;
+      border: 1px dashed #c5bad8;
+      border-radius: 10px;
+      padding: 10px;
+      min-height: 82px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      background: #fdfcff;
     }
 
     .signature-box h4 {
-      margin: 0;
-      color: var(--primary);
-      font-size: 14px;
+      margin: 0 0 3px;
+      color: var(--primary-dark);
+      font-size: 12px;
     }
 
     .signature-box p {
-      margin: 4px 0 0;
-      font-size: 12px;
+      margin: 0;
+      font-size: 10px;
       color: var(--muted);
     }
 
     .sig-line {
-      border-top: 1px solid #beb5d2;
-      padding-top: 6px;
-      font-size: 11px;
+      border-top: 1px solid #cdc6e0;
+      padding-top: 4px;
+      font-size: 10px;
       color: #4b5563;
-      margin-top: 10px;
+      margin-top: 6px;
+      line-height: 1.7;
     }
 
     .footer-note {
       text-align: center;
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 2px;
+      font-size: 11px;
+      color: #9ca3af;
+      margin-top: -2px;
+      padding-bottom: 2px;
     }
 
-    @media (max-width: 900px) {
-      .header,
-      .grid-4,
-      .grid-3,
-      .grid-2,
-      .signature-grid {
+    @media (max-width: 700px) {
+      .header {
         grid-template-columns: 1fr;
       }
 
-      .title-box { text-align: right; }
-    }
+      .grid-4, .grid-3, .grid-2, .signature-grid {
+        grid-template-columns: 1fr;
+      }
 
       .title-box { text-align: right; }
     }
@@ -314,25 +372,23 @@
     @media print {
       @page {
         size: A4 portrait;
-        margin: 8mm;
+        margin: 10mm;
       }
 
-      html, body {
-        width: 210mm;
-        height: 297mm;
-      }
-
+      html,
       body {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 0;
+        padding: 0;
         background: #fff;
-        zoom: 0.80;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
 
-      .page {
-        max-width: 190mm;
-        margin: 0 auto;
-        padding: 0;
+      body {
+        zoom: 1;
+        font-size: 11px;
       }
 
       .toolbar,
@@ -342,359 +398,426 @@
         display: none !important;
       }
 
+      .page {
+        width: 190mm;
+        max-width: 190mm;
+        margin: 0 auto;
+        padding: 0;
+      }
+
+      .sheet {
+        width: 190mm;
+        max-width: 190mm;
+        margin: 0;
+        border: 1px solid #d9d9d9;
+        border-radius: 0;
+        box-shadow: none;
+        overflow: hidden;
+      }
+
       .header {
-        grid-template-columns: 100px 1fr 100px;
-        gap: 6px;
-        padding: 8px 10px;
+        grid-template-columns: 24mm 1fr 28mm;
+        gap: 4mm;
+        padding: 5mm 5mm 4mm;
+        align-items: center;
       }
 
       .logo-box img {
-        max-width: 80px;
-        max-height: 28px;
-        padding: 2px 4px;
+        max-width: 22mm;
+        max-height: 10mm;
+        padding: 1mm 1.5mm;
+        border-radius: 2mm;
       }
 
       .title-box h2 {
-        font-size: 14px;
+        font-size: 13pt;
+        margin: 0;
       }
 
       .title-box p {
-        font-size: 9px;
+        font-size: 8pt;
+        margin: 1.5mm 0 0;
+        line-height: 1.35;
+      }
+
+      .number-box {
+        padding: 2.5mm 2mm;
+        border-radius: 3mm;
+      }
+
+      .number-box .label {
+        font-size: 7pt;
+        margin-bottom: 1mm;
       }
 
       .number-box .value {
-        font-size: 12px;
+        font-size: 8.5pt;
+        line-height: 1.2;
+        word-break: normal;
       }
 
       .content {
-        padding: 6px;
-        gap: 6px;
+        padding: 4mm;
+        gap: 3mm;
       }
 
       .section {
-        padding: 8px;
+        padding: 3mm;
+        border-radius: 2.5mm;
+        break-inside: avoid;
+        page-break-inside: avoid;
       }
 
       .section-title {
-        font-size: 12px;
+        font-size: 10pt;
+        margin-bottom: 2.5mm;
       }
 
-      .grid-4 { grid-template-columns: repeat(2, 1fr); }
-      .grid-3 { grid-template-columns: repeat(2, 1fr); }
-      .grid-2 { grid-template-columns: repeat(2, 1fr); }
-      .signature-grid { grid-template-columns: repeat(3, 1fr); }
+      .section-title::before {
+        width: 1mm;
+        height: 10px;
+      }
+
+      .grid-4 {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2mm;
+      }
+
+      .grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2mm;
+      }
+
+      .grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2mm;
+      }
+
+      .gap-top {
+        margin-top: 2mm;
+      }
+
+      .field {
+        gap: 1mm;
+      }
 
       .field label {
-        font-size: 9px;
+        font-size: 7.5pt;
       }
 
       .field input,
       .field textarea,
       .field select {
-        font-size: 9px;
-        padding: 5px;
+        font-size: 8pt;
+        padding: 2mm 2.2mm;
+        border-radius: 2mm;
+        background: #fff;
+        box-shadow: none;
       }
 
       .field textarea {
-        min-height: 40px;
+        min-height: 16mm;
+        resize: none;
       }
 
-      th, td {
-        font-size: 9px;
-        padding: 4px;
+      .table-wrap {
+        border-radius: 2mm;
+        overflow: hidden;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      table {
+        width: 100%;
+        table-layout: fixed;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        font-size: 7.5pt;
+        padding: 1.5mm 1.2mm;
+        white-space: normal;
+        word-break: break-word;
+      }
+
+      th {
+        font-size: 7pt;
+      }
+
+      td input,
+      td select {
+        font-size: 7.5pt;
+        padding: 1.4mm 1.6mm;
+        border-radius: 1.5mm;
+        background: #fff;
+      }
+
+      .signature-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2mm;
       }
 
       .signature-box {
-        min-height: 60px;
-        padding: 6px;
+        min-height: 26mm;
+        padding: 2.5mm;
+        border-radius: 2mm;
+        break-inside: avoid;
+        page-break-inside: avoid;
       }
 
       .signature-box h4 {
-        font-size: 10px;
+        font-size: 8pt;
+        margin-bottom: 1mm;
       }
 
-      .sig-line,
+      .signature-box p {
+        font-size: 6.5pt;
+      }
+
+      .sig-line {
+        font-size: 6.5pt;
+        margin-top: 1.5mm;
+        padding-top: 1.2mm;
+        line-height: 1.5;
+      }
+
       .footer-note {
-        font-size: 8px;
+        font-size: 6.5pt;
+        margin-top: 0;
+        padding-bottom: 0;
       }
-
-      .sheet,
-      .section,
-      .table-wrap,
-      .signature-box {
-        break-inside: avoid;
-        page-break-inside: avoid;
-      }
-    }
-
-      body {
-        background: #fff;
-        zoom: 0.78;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-
-      .page {
-        max-width: 100%;
-        margin: 0;
-        padding: 0;
-      }
-
-      .toolbar,
-      .table-tools,
-      .remove-btn {
-        display: none !important;
-      }
-
-      .sheet,
-      .section,
-      .table-wrap,
-      .signature-box {
-        box-shadow: none;
-        break-inside: avoid;
-        page-break-inside: avoid;
-      }
-
-      .header { padding: 12px 14px; }
-      .logo-box img { max-height: 42px; }
-      .title-box h2 { font-size: 18px; }
-      .title-box p { font-size: 11px; }
-      .number-box .value { font-size: 16px; }
-      .content { padding: 10px; gap: 8px; }
-      .section { padding: 10px; }
-      .section-title { font-size: 13px; margin-bottom: 6px; }
-      .field label { font-size: 10px; }
-      .field input, .field textarea, .field select { font-size: 10px; padding: 6px 8px; }
-      .field textarea { min-height: 48px; }
-      th, td { font-size: 9px; padding: 5px; }
-      .signature-box { min-height: 78px; padding: 8px; }
-      .signature-box h4 { font-size: 11px; }
-      .signature-box p, .sig-line, .footer-note { font-size: 9px; }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <div class="toolbar">
-      <div>
-        <h1>نموذج طلب شراء</h1>
-        <p>نسخة داخلية مختصرة ومنظمة ومناسبة للطباعة في صفحة واحدة.</p>
+  <div class="toolbar">
+    <div>
+      <h1>نموذج طلب شراء</h1>
+      <p>نسخة داخلية — قيمة المالية</p>
+    </div>
+    <div class="actions">
+      <button class="btn-light" onclick="addRow()">+ إضافة صنف</button>
+      <button class="btn-light" onclick="resetForm()">🗑 مسح</button>
+      <button class="btn-primary" onclick="window.print()">🖨 طباعة</button>
+    </div>
+  </div>
+
+  <div class="sheet">
+    <div class="header">
+      <div class="logo-box">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAo4AAACxCAYAAABKvTyxAAAACXBIWXMAAAsSAAALEgHS3X78AAAgAElEQVR4nO2de3xV1b3/P6fMJGQyQwIJKQtCQmYQWQ5KQJCVQhFSBSErZSkW8L0bS4vW+vW2ra1r6+7v99rVv3v7Wm3b1rW2a9vW2r7Xtq2trbVt2/budt1rX5o6G8q6B9eM3H7m2bNnJkQmQ2QmYQk5w3z9yT8/5/3+f5vPjvO8z3nPOc85xzzjnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc845JwQ2btr0+X/7z5+9evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1avXb9/DytSpU6fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTv3H2EwGGBmZubp06fPnj17/vz58+fPnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTv3H2EwGGBmZubp06fPnj17/vz58+fPnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTv3H2EwGGBmZubp06fPnj17/vz58+fPnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt3jvpnr127tn379m3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btl3G2dnZ4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eFh5C7W1tYGBgaGhoWtra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tq6q4zMzM9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT19Q6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6v4nMpkM5s2bN2/e/Pnz58+fPn369OnTp0+fPn369OnTp0+fPn369OnTp0+fPn369OnTp0+fPn369OnTp0+fPn369OnTp0+fPn369OnTp08P/6i8vLx79+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7d+3/Q4XAYo6Oj8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fExjUwmk4ODg5GRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGQkH8bQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NzU5WVlbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW3vR8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8h8vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vH4n0mEwGOzs7MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzM7P8A0dHRjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIz8z4MHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDA/8nAwMDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PBL2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2fnP8B8fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX1/4T8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLw38+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKiv4/4mZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZ+U8A8wV9Ykqzv8R7AAAAAElFTkSuQmCC" alt="قيمة المالية" />
       </div>
-      <div class="actions">
-        <button class="btn-light" onclick="addRow()">+ إضافة صف</button>
-        <button class="btn-light" onclick="resetForm()">مسح</button>
-        <button class="btn-primary" onclick="window.print()">طباعة</button>
+
+      <div class="title-box">
+        <h2>نموذج طلب شراء</h2>
+        <p>Purchase Request Form<br>يُرفع هذا الطلب قبل البدء في إجراءات الشراء ويعتمده المسؤول المختص</p>
+      </div>
+
+      <div class="number-box">
+        <div class="label">رقم طلب الشراء</div>
+        <div class="value" id="requestBadge">—</div>
       </div>
     </div>
 
-    <div class="sheet">
-      <div class="header">
-        <div class="logo-box">
-          <!-- Embedded Value Capital Logo -->
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAo4AAACxCAYAAABKvTyxAAAACXBIWXMAAAsSAAALEgHS3X78AAAgAElEQVR4nO2de3xV1b3/P6fMJGQyQwIJKQtCQmYQWQ5KQJCVQhFSBSErZSkW8L0bS4vW+vW2ra1r6+7v99rVv3v7Wm3b1rW2a9vW2r7Xtq2trbVt2/budt1rX5o6G8q6B9eM3H7m2bNnJkQmQ2QmYQk5w3z9yT8/5/3+f5vPjvO8z3nPOc85xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84JgY2bNn3+3/7z5+9evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr16/fQ8rU6dOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTv3H2EwGGBmZubp06fPnj17/vz58+fPnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnaP+2WvXrm3fvn3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btl3G2dnZ4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eFh5C7W1tYGBgaGhoWtra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tq6q4zMzM9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT19Q6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6v4nMpkM5s2bN2/e/Pnz58+fPn369OnTp0+fPn369OnTp0+fPn369OnTp0+fPn369OnTp0+fPn369OnTp0+fPn369OnTp0+fPn369OnTp08P/6i8vLx79+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7d+3/Q4XAYo6Oj8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fExjUwmk4ODg5GRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGQkH8bQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NzU5WVlbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW3vR8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8h8vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vH4n0mEwGOzs7MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzM7P8A0dHRjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIz8z4MHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDA/8nAwMDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PBL2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2fnP8B8fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX1/4T8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLw38+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKiv4/4mZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZ+U8A8wV9Ykqzv8R7AAAAAElFTkSuQmCC" alt="Value Capital Logo" />
+    <div class="content">
+      <div class="section">
+        <h3 class="section-title">بيانات الطلب</h3>
+
+        <div class="grid-4">
+          <div class="field">
+            <label>رقم طلب الشراء</label>
+            <input id="requestNumber" class="readonly" type="text" placeholder="—" readonly />
+          </div>
+          <div class="field">
+            <label>تاريخ الطلب</label>
+            <input id="requestDate" type="date" />
+          </div>
+          <div class="field">
+            <label>القسم / الإدارة</label>
+            <input id="department" type="text" placeholder="اسم القسم أو الإدارة" />
+          </div>
+          <div class="field">
+            <label>اسم مقدم الطلب</label>
+            <input id="requesterName" type="text" placeholder="الاسم الكامل" />
+          </div>
         </div>
 
-        <div class="title-box">
-          <h2>Purchase Request Form</h2>
-          <p>طلب شراء داخلي لرفع الاحتياج واعتماده قبل البدء في إجراءات الشراء.</p>
-        </div>
-
-        <div class="number-box">
-          <div class="label">رقم طلب الشراء</div>
-          <div class="value" id="requestBadge">سيتم إنشاؤه تلقائيًا</div>
+        <div class="grid-4 gap-top">
+          <div class="field">
+            <label>المسمى الوظيفي</label>
+            <input id="jobTitle" type="text" placeholder="المسمى الوظيفي" />
+          </div>
+          <div class="field">
+            <label>تاريخ الاستلام المطلوب</label>
+            <input id="neededDate" type="date" />
+          </div>
+          <div class="field">
+            <label>نوع الطلب</label>
+            <select id="requestType">
+              <option value="">اختر النوع</option>
+              <option>احتياج قسم</option>
+              <option>عهدة فردية</option>
+              <option>عهدة مشتركة</option>
+              <option>خدمة</option>
+              <option>أصل</option>
+              <option>تشغيلي</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>الأولوية</label>
+            <select id="priority">
+              <option value="">اختر الأولوية</option>
+              <option>عالية</option>
+              <option>متوسطة</option>
+              <option>منخفضة</option>
+            </select>
+          </div>
         </div>
       </div>
 
-      <div class="content">
-        <div class="section">
-          <h3 class="section-title">بيانات الطلب</h3>
-          <div class="grid-4">
-            <div class="field">
-              <label for="requestNumber">رقم طلب الشراء</label>
-              <input id="requestNumber" class="readonly" type="text" value="" placeholder="سيتم إنشاؤه تلقائيًا" readonly />
-            </div>
-            <div class="field">
-              <label for="requestDate">تاريخ الطلب</label>
-              <input id="requestDate" type="date" />
-            </div>
-            <div class="field">
-              <label for="department">القسم / الإدارة</label>
-              <input id="department" type="text" placeholder="اسم القسم أو الإدارة" />
-            </div>
-            
-          </div>
+      <div class="section">
+        <h3 class="section-title">تفاصيل الطلب</h3>
 
-          <div class="grid-3" style="margin-top:10px;">
-            <div class="field">
-              <label for="requesterName">اسم مقدم الطلب</label>
-              <input id="requesterName" type="text" placeholder="الاسم الكامل" />
-            </div>
-            <div class="field">
-              <label for="jobTitle">المسمى الوظيفي</label>
-              <input id="jobTitle" type="text" placeholder="المسمى الوظيفي" />
-            </div>
-            <div class="field">
-              <label for="neededDate">تاريخ الاستلام المطلوب</label>
-              <input id="neededDate" type="date" />
-            </div>
+        <div class="grid-3">
+          <div class="field" style="grid-column: span 2;">
+            <label>الغرض من الطلب</label>
+            <textarea id="purpose" placeholder="اذكر الغرض التشغيلي أو الإداري من هذا الطلب"></textarea>
+          </div>
+          <div class="field">
+            <label>المورد المقترح <span style="font-weight:400;color:var(--muted)">(اختياري)</span></label>
+            <input id="vendor" type="text" placeholder="اسم المورد إن وُجد" />
+            <label style="margin-top:8px;">ملاحظات إضافية <span style="font-weight:400;color:var(--muted)">(اختياري)</span></label>
+            <textarea id="notes" style="min-height:44px" placeholder="أي ملاحظات أخرى"></textarea>
           </div>
         </div>
-
-        <div class="section">
-          <h3 class="section-title">تفاصيل الطلب</h3>
-          <div class="grid-3">
-            <div class="field">
-              <label for="requestType">نوع الطلب</label>
-              <select id="requestType">
-                <option value="">اختر</option>
-                <option>احتياج قسم</option>
-                <option>عهدة فردية</option>
-                <option>عهدة مشتركة</option>
-                <option>خدمة</option>
-                <option>أصل</option>
-                <option>تشغيلي</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="priority">الأولوية</label>
-              <select id="priority">
-                <option value="">اختر</option>
-                <option>عالية</option>
-                <option>متوسطة</option>
-                <option>منخفضة</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="vendor">المورد المقترح</label>
-              <input id="vendor" type="text" placeholder="اختياري" />
-            </div>
-          </div>
-
-          <div class="grid-2" style="margin-top:10px;">
-            <div class="field">
-              <label for="purpose">الغرض من الطلب</label>
-              <textarea id="purpose" placeholder="اذكر الغرض التشغيلي أو الإداري للطلب"></textarea>
-            </div>
-            <div class="field">
-              <label for="notes">ملاحظات</label>
-              <textarea id="notes" placeholder="أي ملاحظات إضافية"></textarea>
-            </div>
-          </div>
-        </div>
-
-        <div class="section">
-          <h3 class="section-title">الأصناف المطلوبة</h3>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th style="width: 40px;">م</th>
-                  <th>الصنف / الوصف</th>
-                  <th style="width: 90px;">الكمية</th>
-                  <th style="width: 110px;">الوحدة</th>
-                  <th style="width: 120px;">فئة الطلب</th>
-                  <th style="width: 90px;">حذف</th>
-                </tr>
-              </thead>
-              <tbody id="itemsBody"></tbody>
-            </table>
-          </div>
-          <div class="table-tools">
-            <button class="btn-light" onclick="addRow()">+ إضافة صنف</button>
-          </div>
-        </div>
-
-        <div class="section">
-          <h3 class="section-title">الاعتماد</h3>
-          <div class="signature-grid">
-            <div class="signature-box">
-              <div>
-                <h4>إدارة المشتريات</h4>
-                <p>مراجعة الطلب واكتمال البيانات</p>
-              </div>
-              <div>
-                <div class="sig-line">الاسم:</div>
-                <div class="sig-line">التوقيع:</div>
-              </div>
-            </div>
-            <div class="signature-box">
-              <div>
-                <h4>نائب الرئيس</h4>
-                <p>الاعتماد الإداري والمالي</p>
-              </div>
-              <div>
-                <div class="sig-line">الاسم:</div>
-                <div class="sig-line">التوقيع:</div>
-              </div>
-            </div>
-            <div class="signature-box">
-              <div>
-                <h4>الرئيس التنفيذي</h4>
-                <p>الاعتماد النهائي</p>
-              </div>
-              <div>
-                <div class="sig-line">الاسم:</div>
-                <div class="sig-line">التوقيع:</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="footer-note">هذا النموذج مخصص لطلب الشراء الداخلي قبل إصدار أمر الشراء.</div>
       </div>
+
+      <div class="section">
+        <h3 class="section-title">الأصناف المطلوبة</h3>
+
+        <div class="table-wrap">
+          <table>
+            <colgroup>
+              <col style="width:38px">
+              <col>
+              <col style="width:72px">
+              <col style="width:96px">
+              <col style="width:96px">
+              <col style="width:62px">
+            </colgroup>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>الصنف / الوصف</th>
+                <th>الكمية</th>
+                <th>الوحدة</th>
+                <th>فئة الطلب</th>
+                <th>حذف</th>
+              </tr>
+            </thead>
+            <tbody id="itemsBody"></tbody>
+          </table>
+        </div>
+
+        <div class="table-tools">
+          <button class="btn-light" onclick="addRow()">+ إضافة صنف</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3 class="section-title">الاعتماد</h3>
+        <div class="signature-grid">
+          <div class="signature-box">
+            <div>
+              <h4>إدارة المشتريات</h4>
+              <p>مراجعة الطلب واكتمال البيانات</p>
+            </div>
+            <div>
+              <div class="sig-line">الاسم: _______________</div>
+              <div class="sig-line">التوقيع: _______________</div>
+              <div class="sig-line">التاريخ: _______________</div>
+            </div>
+          </div>
+          <div class="signature-box">
+            <div>
+              <h4>نائب الرئيس</h4>
+              <p>الاعتماد الإداري والمالي</p>
+            </div>
+            <div>
+              <div class="sig-line">الاسم: _______________</div>
+              <div class="sig-line">التوقيع: _______________</div>
+              <div class="sig-line">التاريخ: _______________</div>
+            </div>
+          </div>
+          <div class="signature-box">
+            <div>
+              <h4>الرئيس التنفيذي</h4>
+              <p>الاعتماد النهائي</p>
+            </div>
+            <div>
+              <div class="sig-line">الاسم: _______________</div>
+              <div class="sig-line">التوقيع: _______________</div>
+              <div class="sig-line">التاريخ: _______________</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="footer-note">هذا النموذج مخصص للاستخدام الداخلي — يُعتمد قبل إصدار أمر الشراء الرسمي</p>
     </div>
   </div>
 
   <script>
     const itemsBody = document.getElementById('itemsBody');
-    const COUNTER_KEY = 'valueCapitalPurchaseRequestCounter';
 
-    function getCurrentYear() {
-      return new Date().getFullYear();
-    }
-
-    function getNextRequestNumber() {
-      const year = getCurrentYear();
+    function uniquePRN() {
       const now = new Date();
-      const stamp = `${now.getMonth() + 1}${now.getDate()}${now.getHours()}${now.getMinutes()}${now.getSeconds()}`;
-      const randomPart = Math.floor(100 + Math.random() * 900);
-      return `PR-${year}-${stamp}-${randomPart}`;
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, '0');
+      const d = String(now.getDate()).padStart(2, '0');
+      const h = String(now.getHours()).padStart(2, '0');
+      const min = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      const rnd = Math.floor(100 + Math.random() * 900);
+      return `PR-${y}${m}${d}-${h}${min}${s}-${rnd}`;
     }
 
-    function ensureRequestNumber(forceNew = false) {
-      const input = document.getElementById('requestNumber');
-      if (forceNew || !input.value.trim()) {
-        input.value = getNextRequestNumber();
-      }
-      syncRequestNumber();
+    function ensurePRN() {
+      const el = document.getElementById('requestNumber');
+      el.value = uniquePRN();
+      syncBadge();
     }
 
-    function syncRequestNumber() {
-      const val = document.getElementById('requestNumber').value.trim() || 'سيتم إنشاؤه تلقائيًا';
-      document.getElementById('requestBadge').textContent = val;
+    function syncBadge() {
+      document.getElementById('requestBadge').textContent =
+        document.getElementById('requestNumber').value.trim() || '—';
     }
+
+    const CATEGORIES = ['تقنية معلومات','مكتبي','أثاث','تشغيلي','أخرى'];
 
     function addRow(item = {}) {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td class="row-index"></td>
+      const tr = document.createElement('tr');
+      const catOpts = CATEGORIES.map(c =>
+        `<option ${item.category === c ? 'selected' : ''}>${c}</option>`
+      ).join('');
+
+      tr.innerHTML = `
+        <td class="row-index" style="text-align:center;font-weight:700;color:var(--muted);"></td>
         <td><input type="text" class="desc" placeholder="اسم الصنف أو وصفه" value="${item.desc || ''}"></td>
-        <td><input type="number" class="qty" min="1" step="1" value="${item.qty || 1}"></td>
+        <td><input type="number" class="qty" min="1" step="1" value="${item.qty || 1}" style="text-align:center;"></td>
         <td><input type="text" class="unit" placeholder="حبة / جهاز / خدمة" value="${item.unit || ''}"></td>
         <td>
           <select class="category">
             <option value="">اختر</option>
-            <option ${item.category === 'تقنية معلومات' ? 'selected' : ''}>تقنية معلومات</option>
-            <option ${item.category === 'مكتبي' ? 'selected' : ''}>مكتبي</option>
-            <option ${item.category === 'أثاث' ? 'selected' : ''}>أثاث</option>
-            <option ${item.category === 'تشغيلي' ? 'selected' : ''}>تشغيلي</option>
-            <option ${item.category === 'أخرى' ? 'selected' : ''}>أخرى</option>
+            ${catOpts}
           </select>
         </td>
-        <td><button type="button" class="remove-btn" onclick="removeRow(this)">حذف</button></td>
-      `;
-      itemsBody.appendChild(row);
-      updateIndexes();
+        <td style="text-align:center;">
+          <button type="button" class="remove-btn" onclick="removeRow(this)">حذف</button>
+        </td>`;
+      itemsBody.appendChild(tr);
+      reindex();
     }
 
     function removeRow(btn) {
@@ -707,32 +830,29 @@
       } else {
         btn.closest('tr').remove();
       }
-      updateIndexes();
+      reindex();
     }
 
-    function updateIndexes() {
-      document.querySelectorAll('#itemsBody tr').forEach((row, i) => {
-        row.querySelector('.row-index').textContent = i + 1;
+    function reindex() {
+      itemsBody.querySelectorAll('tr').forEach((r, i) => {
+        r.querySelector('.row-index').textContent = i + 1;
       });
     }
-
-    
 
     function resetForm() {
-      if (!confirm('هل تريدين مسح بيانات النموذج؟')) return;
-      document.querySelectorAll('input, textarea, select').forEach(el => {
-        if (el.id !== 'requestNumber') {
-          el.value = '';
-        }
-      });
+      if (!confirm('هل تريدين مسح بيانات النموذج وبدء نموذج جديد؟')) return;
+      document.querySelectorAll('input:not(#requestNumber), textarea, select').forEach(el => el.value = '');
       itemsBody.innerHTML = '';
       addRow();
-      ensureRequestNumber(true);
+      ensurePRN();
+      if (!document.getElementById('requestDate').value) {
+        document.getElementById('requestDate').value = new Date().toISOString().split('T')[0];
+      }
     }
 
-    if (!itemsBody.querySelector('tr')) addRow();
-    ensureRequestNumber(true);
-    syncRequestNumber();
+    addRow();
+    ensurePRN();
+    document.getElementById('requestDate').value = new Date().toISOString().split('T')[0];
   </script>
 </body>
 </html>
