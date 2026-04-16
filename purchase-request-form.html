@@ -6,9 +6,9 @@
   <title>نموذج طلب شراء</title>
   <style>
     :root {
-      --primary: #442182;
-      --secondary: #9f8fbb;
-      --soft: #f5f3fa;
+      --primary: #675398;
+      --primary-dark: #442182;
+      --soft: #f6f3fb;
       --line: #ddd7ea;
       --text: #1f2937;
       --muted: #6b7280;
@@ -20,14 +20,14 @@
     body {
       margin: 0;
       font-family: "Segoe UI", Tahoma, Arial, sans-serif;
-      background: #f6f4fb;
+      background: #f5f4f8;
       color: var(--text);
     }
 
     .page {
-      max-width: 860px;
-      margin: 24px auto;
-      padding: 0 12px 32px;
+      max-width: 820px;
+      margin: 18px auto;
+      padding: 0 10px 24px;
     }
 
     .toolbar {
@@ -35,20 +35,20 @@
       justify-content: space-between;
       align-items: center;
       gap: 10px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       flex-wrap: wrap;
     }
 
     .toolbar h1 {
       margin: 0;
-      color: var(--primary);
-      font-size: 26px;
+      color: var(--primary-dark);
+      font-size: 22px;
     }
 
     .toolbar p {
       margin: 4px 0 0;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 12px;
     }
 
     .actions {
@@ -59,34 +59,41 @@
 
     button {
       border: 0;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-size: 13px;
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-size: 12px;
       font-weight: 700;
       cursor: pointer;
     }
 
-    .btn-primary { background: var(--primary); color: #fff; }
-    .btn-light { background: #fff; color: var(--primary); border: 1px solid var(--line); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+    }
+
+    .btn-light {
+      background: #fff;
+      color: var(--primary-dark);
+      border: 1px solid var(--line);
+    }
 
     .sheet {
+      max-width: 820px;
+      margin: auto;
       background: #fff;
-      border: 1px solid rgba(68,33,130,.08);
-      border-radius: 18px;
-      box-shadow: 0 10px 30px rgba(68,33,130,.08);
+      border: 1px solid rgba(68, 33, 130, 0.08);
+      border-radius: 14px;
+      box-shadow: 0 8px 22px rgba(68, 33, 130, 0.07);
       overflow: hidden;
     }
 
     .header {
-      background: linear-gradient(135deg, var(--primary) 0%, #5a2ca7 100%);
+      background: linear-gradient(135deg, #675398 0%, #442182 100%);
       color: #fff;
-      padding: 16px 16px;
+      padding: 12px 14px;
       display: grid;
-      grid-template-columns: 110px 1fr 110px;
-      gap: 10px;
-      align-items: center;
-      align-items: center;
-      gap: 16px;
+      grid-template-columns: 90px 1fr 105px;
+      gap: 8px;
       align-items: center;
     }
 
@@ -97,12 +104,13 @@
     }
 
     .logo-box img {
-      max-width: 100px;
-      max-height: 42px;
+      max-width: 74px;
+      max-height: 30px;
       object-fit: contain;
       background: #fff;
-      border-radius: 8px;
-      padding: 4px 6px;
+      border-radius: 6px;
+      padding: 3px 5px;
+      display: block;
     }
 
     .title-box {
@@ -111,57 +119,61 @@
 
     .title-box h2 {
       margin: 0;
-      font-size: 21px;
+      font-size: 17px;
+      line-height: 1.2;
     }
 
     .title-box p {
       margin: 4px 0 0;
-      font-size: 11px;
+      font-size: 10px;
       opacity: .95;
+      line-height: 1.4;
     }
 
     .number-box {
       background: rgba(255,255,255,.12);
       border: 1px solid rgba(255,255,255,.18);
-      border-radius: 12px;
-      padding: 8px 10px;
+      border-radius: 10px;
+      padding: 8px 6px;
       text-align: center;
     }
 
     .number-box .label {
-      font-size: 12px;
-      opacity: .85;
-      margin-bottom: 4px;
+      font-size: 10px;
+      opacity: .9;
+      margin-bottom: 3px;
     }
 
     .number-box .value {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 800;
+      line-height: 1.2;
+      word-break: break-word;
     }
 
     .content {
-      padding: 12px;
+      padding: 10px;
       display: grid;
       gap: 10px;
     }
 
     .section {
       border: 1px solid var(--line);
-      border-radius: 12px;
+      border-radius: 10px;
       padding: 10px;
       background: #fff;
     }
 
     .section-title {
-      margin: 0 0 10px;
-      font-size: 16px;
+      margin: 0 0 8px;
+      font-size: 14px;
       font-weight: 800;
-      color: var(--primary);
+      color: var(--primary-dark);
     }
 
     .grid-4, .grid-3, .grid-2 {
       display: grid;
-      gap: 10px;
+      gap: 8px;
     }
 
     .grid-4 { grid-template-columns: repeat(2, minmax(0,1fr)); }
@@ -171,11 +183,11 @@
     .field {
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 4px;
     }
 
     .field label {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       color: #374151;
     }
@@ -185,15 +197,15 @@
     .field select {
       width: 100%;
       border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 10px 12px;
-      font-size: 13px;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 12px;
       color: var(--text);
       background: #fff;
     }
 
     .field textarea {
-      min-height: 84px;
+      min-height: 64px;
       resize: vertical;
     }
 
@@ -206,49 +218,57 @@
 
     .table-wrap {
       border: 1px solid var(--line);
-      border-radius: 12px;
+      border-radius: 10px;
       overflow-x: auto;
     }
 
     table {
       width: 100%;
-      border-collapse: collapse;
       min-width: 100%;
+      border-collapse: collapse;
       background: #fff;
-      background: #fff;
+      table-layout: fixed;
+    }
+
+    thead {
+      background: var(--soft);
     }
 
     th, td {
       border-bottom: 1px solid #ece8f4;
-      padding: 7px;
+      padding: 6px;
       text-align: right;
       font-size: 12px;
       vertical-align: middle;
     }
 
-    thead { background: var(--soft); }
-    th { color: var(--primary); }
+    th {
+      color: var(--primary-dark);
+      font-weight: 800;
+    }
 
     td input, td select {
       width: 100%;
       border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 8px 10px;
-      font-size: 12px;
+      border-radius: 7px;
+      padding: 6px 8px;
+      font-size: 11px;
+      background: #fff;
     }
 
     .remove-btn {
       background: #fff1f2;
       color: #b91c1c;
       border: 1px solid #fecdd3;
-      padding: 7px 9px;
-      border-radius: 8px;
-      font-size: 12px;
+      padding: 6px 8px;
+      border-radius: 7px;
+      font-size: 11px;
       font-weight: 700;
+      width: 100%;
     }
 
     .table-tools {
-      margin-top: 10px;
+      margin-top: 8px;
       display: flex;
       justify-content: flex-start;
     }
@@ -256,14 +276,14 @@
     .signature-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 10px;
+      gap: 8px;
     }
 
     .signature-box {
       border: 1px dashed #cfc6e2;
-      border-radius: 12px;
-      padding: 12px;
-      min-height: 110px;
+      border-radius: 10px;
+      padding: 10px;
+      min-height: 82px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -271,32 +291,32 @@
 
     .signature-box h4 {
       margin: 0;
-      color: var(--primary);
-      font-size: 14px;
+      color: var(--primary-dark);
+      font-size: 13px;
     }
 
     .signature-box p {
-      margin: 4px 0 0;
-      font-size: 12px;
+      margin: 3px 0 0;
+      font-size: 11px;
       color: var(--muted);
     }
 
     .sig-line {
       border-top: 1px solid #beb5d2;
-      padding-top: 6px;
-      font-size: 11px;
+      padding-top: 5px;
+      font-size: 10px;
       color: #4b5563;
-      margin-top: 10px;
+      margin-top: 8px;
     }
 
     .footer-note {
       text-align: center;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--muted);
       margin-top: 2px;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 700px) {
       .header,
       .grid-4,
       .grid-3,
@@ -305,10 +325,13 @@
         grid-template-columns: 1fr;
       }
 
-      .title-box { text-align: right; }
-    }
+      .title-box {
+        text-align: right;
+      }
 
-      .title-box { text-align: right; }
+      .number-box {
+        max-width: 180px;
+      }
     }
 
     @media print {
@@ -324,7 +347,7 @@
 
       body {
         background: #fff;
-        zoom: 0.80;
+        zoom: 0.84;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
@@ -342,15 +365,21 @@
         display: none !important;
       }
 
+      .sheet {
+        box-shadow: none;
+        border-radius: 0;
+        border: 1px solid #ddd;
+      }
+
       .header {
-        grid-template-columns: 100px 1fr 100px;
-        gap: 6px;
+        grid-template-columns: 80px 1fr 90px;
         padding: 8px 10px;
+        gap: 6px;
       }
 
       .logo-box img {
-        max-width: 80px;
-        max-height: 28px;
+        max-width: 64px;
+        max-height: 24px;
         padding: 2px 4px;
       }
 
@@ -359,11 +388,15 @@
       }
 
       .title-box p {
-        font-size: 9px;
+        font-size: 8px;
+      }
+
+      .number-box .label {
+        font-size: 8px;
       }
 
       .number-box .value {
-        font-size: 12px;
+        font-size: 11px;
       }
 
       .content {
@@ -372,47 +405,49 @@
       }
 
       .section {
-        padding: 8px;
+        padding: 7px;
       }
 
       .section-title {
-        font-size: 12px;
+        font-size: 11px;
+        margin-bottom: 5px;
       }
 
-      .grid-4 { grid-template-columns: repeat(2, 1fr); }
-      .grid-3 { grid-template-columns: repeat(2, 1fr); }
-      .grid-2 { grid-template-columns: repeat(2, 1fr); }
-      .signature-grid { grid-template-columns: repeat(3, 1fr); }
-
       .field label {
-        font-size: 9px;
+        font-size: 8px;
       }
 
       .field input,
       .field textarea,
       .field select {
-        font-size: 9px;
-        padding: 5px;
+        font-size: 8px;
+        padding: 5px 6px;
       }
 
       .field textarea {
-        min-height: 40px;
+        min-height: 34px;
       }
 
       th, td {
-        font-size: 9px;
+        font-size: 8px;
         padding: 4px;
       }
 
+      td input, td select {
+        font-size: 8px;
+        padding: 4px 5px;
+      }
+
       .signature-box {
-        min-height: 60px;
+        min-height: 58px;
         padding: 6px;
       }
 
       .signature-box h4 {
-        font-size: 10px;
+        font-size: 9px;
       }
 
+      .signature-box p,
       .sig-line,
       .footer-note {
         font-size: 8px;
@@ -426,51 +461,6 @@
         page-break-inside: avoid;
       }
     }
-
-      body {
-        background: #fff;
-        zoom: 0.78;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-
-      .page {
-        max-width: 100%;
-        margin: 0;
-        padding: 0;
-      }
-
-      .toolbar,
-      .table-tools,
-      .remove-btn {
-        display: none !important;
-      }
-
-      .sheet,
-      .section,
-      .table-wrap,
-      .signature-box {
-        box-shadow: none;
-        break-inside: avoid;
-        page-break-inside: avoid;
-      }
-
-      .header { padding: 12px 14px; }
-      .logo-box img { max-height: 42px; }
-      .title-box h2 { font-size: 18px; }
-      .title-box p { font-size: 11px; }
-      .number-box .value { font-size: 16px; }
-      .content { padding: 10px; gap: 8px; }
-      .section { padding: 10px; }
-      .section-title { font-size: 13px; margin-bottom: 6px; }
-      .field label { font-size: 10px; }
-      .field input, .field textarea, .field select { font-size: 10px; padding: 6px 8px; }
-      .field textarea { min-height: 48px; }
-      th, td { font-size: 9px; padding: 5px; }
-      .signature-box { min-height: 78px; padding: 8px; }
-      .signature-box h4 { font-size: 11px; }
-      .signature-box p, .sig-line, .footer-note { font-size: 9px; }
-    }
   </style>
 </head>
 <body>
@@ -478,7 +468,7 @@
     <div class="toolbar">
       <div>
         <h1>نموذج طلب شراء</h1>
-        <p>نسخة داخلية مختصرة ومنظمة ومناسبة للطباعة في صفحة واحدة.</p>
+        <p>نسخة داخلية مختصرة ومنظمة ومريحة بصريًا.</p>
       </div>
       <div class="actions">
         <button class="btn-light" onclick="addRow()">+ إضافة صف</button>
@@ -491,13 +481,12 @@
     <div class="sheet">
       <div class="header">
         <div class="logo-box">
-          <!-- Embedded Value Capital Logo -->
-          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAo4AAACxCAYAAABKvTyxAAAACXBIWXMAAAsSAAALEgHS3X78AAAgAElEQVR4nO2de3xV1b3/P6fMJGQyQwIJKQtCQmYQWQ5KQJCVQhFSBSErZSkW8L0bS4vW+vW2ra1r6+7v99rVv3v7Wm3b1rW2a9vW2r7Xtq2trbVt2/budt1rX5o6G8q6B9eM3H7m2bNnJkQmQ2QmYQk5w3z9yT8/5/3+f5vPjvO8z3nPOc85xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84JgY2bNn3+3/7z5+9evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr16/fQ8rU6dOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTv3H2EwGGBmZubp06fPnj17/vz58+fPnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnaP+2WvXrm3fvn3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btl3G2dnZ4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eFh5C7W1tYGBgaGhoWtra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tq6q4zMzM9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT19Q6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6v4nMpkM5s2bN2/e/Pnz58+fPn369OnTp0+fPn369OnTp0+fPn369OnTp0+fPn369OnTp0+fPn369OnTp0+fPn369OnTp0+fPn369OnTp08P/6i8vLx79+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7d+3/Q4XAYo6Oj8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fExjUwmk4ODg5GRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGQkH8bQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NzU5WVlbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW3vR8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8h8vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vH4n0mEwGOzs7MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzM7P8A0dHRjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIz8z4MHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDA/8nAwMDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PBL2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2fnP8B8fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX1/4T8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLw38+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKiv4/4mZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZ+U8A8wV9Ykqzv8R7AAAAAElFTkSuQmCC" alt="Value Capital Logo" />
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAo4AAACxCAYAAABKvTyxAAAACXBIWXMAAAsSAAALEgHS3X78AAAgAElEQVR4nO2de3xV1b3/P6fMJGQyQwIJKQtCQmYQWQ5KQJCVQhFSBSErZSkW8L0bS4vW+vW2ra1r6+7v99rVv3v7Wm3b1rW2a9vW2r7Xtq2trbVt2/budt1rX5o6G8q6B9eM3H7m2bNnJkQmQ2QmYQk5w3z9yT8/5/3+f5vPjvO8z3nPOc85xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84JgY2bNn3+3/7z5+9evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr16/fQ8rU6dOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTv3H2EwGGBmZubp06fPnj17/vz58+fPnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnaP+2WvXrm3fvn3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btl3G2dnZ4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eFh5C7W1tYGBgaGhoWtra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tq6q4zMzM9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT19Q6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6v4nMpkM5s2bN2/e/Pnz58+fPn369OnTp0+fPn369OnTp0+fPn369OnTp0+fPn369OnTp0+fPn369OnTp0+fPn369OnTp0+fPn369OnTp08P/6i8vLx79+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7d+3/Q4XAYo6Oj8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fExjUwmk4ODg5GRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGQkH8bQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NzU5WVlbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW3vR8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8h8vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vH4n0mEwGOzs7MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzM7P8A0dHRjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIz8z4MHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDA/8nAwMDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PBL2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2fnP8B8fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX1/4T8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLw38+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKiv4/4mZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZ+U8A8wV9Ykqzv8R7AAAAAElFTkSuQmCC" alt="Value Capital Logo" />
         </div>
 
         <div class="title-box">
           <h2>Purchase Request Form</h2>
-          <p>طلب شراء داخلي لرفع الاحتياج واعتماده قبل البدء في إجراءات الشراء.</p>
+          <p>طلب شراء داخلي لرفع الاحتياج واعتماده قبل البدء في إجراءات الشراء</p>
         </div>
 
         <div class="number-box">
@@ -522,14 +511,13 @@
               <label for="department">القسم / الإدارة</label>
               <input id="department" type="text" placeholder="اسم القسم أو الإدارة" />
             </div>
-            
-          </div>
-
-          <div class="grid-3" style="margin-top:10px;">
             <div class="field">
               <label for="requesterName">اسم مقدم الطلب</label>
               <input id="requesterName" type="text" placeholder="الاسم الكامل" />
             </div>
+          </div>
+
+          <div class="grid-3" style="margin-top:8px;">
             <div class="field">
               <label for="jobTitle">المسمى الوظيفي</label>
               <input id="jobTitle" type="text" placeholder="المسمى الوظيفي" />
@@ -571,7 +559,7 @@
             </div>
           </div>
 
-          <div class="grid-2" style="margin-top:10px;">
+          <div class="grid-2" style="margin-top:8px;">
             <div class="field">
               <label for="purpose">الغرض من الطلب</label>
               <textarea id="purpose" placeholder="اذكر الغرض التشغيلي أو الإداري للطلب"></textarea>
@@ -589,12 +577,12 @@
             <table>
               <thead>
                 <tr>
-                  <th style="width: 40px;">م</th>
+                  <th style="width: 38px;">م</th>
                   <th>الصنف / الوصف</th>
-                  <th style="width: 90px;">الكمية</th>
-                  <th style="width: 110px;">الوحدة</th>
-                  <th style="width: 120px;">فئة الطلب</th>
-                  <th style="width: 90px;">حذف</th>
+                  <th style="width: 72px;">الكمية</th>
+                  <th style="width: 90px;">الوحدة</th>
+                  <th style="width: 96px;">فئة الطلب</th>
+                  <th style="width: 70px;">حذف</th>
                 </tr>
               </thead>
               <tbody id="itemsBody"></tbody>
@@ -618,6 +606,7 @@
                 <div class="sig-line">التوقيع:</div>
               </div>
             </div>
+
             <div class="signature-box">
               <div>
                 <h4>نائب الرئيس</h4>
@@ -628,6 +617,7 @@
                 <div class="sig-line">التوقيع:</div>
               </div>
             </div>
+
             <div class="signature-box">
               <div>
                 <h4>الرئيس التنفيذي</h4>
@@ -641,7 +631,7 @@
           </div>
         </div>
 
-        <div class="footer-note">هذا النموذج مخصص لطلب الشراء الداخلي قبل إصدار أمر الشراء.</div>
+        <div class="footer-note">هذا النموذج مخصص لطلب الشراء الداخلي قبل إصدار أمر الشراء</div>
       </div>
     </div>
   </div>
@@ -758,6 +748,7 @@
     function loadDraft() {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return false;
+
       try {
         const data = JSON.parse(raw);
         document.getElementById('requestNumber').value = data.requestNumber || '';
@@ -791,11 +782,13 @@
 
     function resetForm() {
       if (!confirm('هل تريدين مسح بيانات النموذج؟')) return;
+
       document.querySelectorAll('input, textarea, select').forEach(el => {
         if (el.id !== 'requestNumber') {
           el.value = '';
         }
       });
+
       itemsBody.innerHTML = '';
       addRow();
       localStorage.removeItem(STORAGE_KEY);
