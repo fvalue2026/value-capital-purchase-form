@@ -482,7 +482,6 @@
       </div>
       <div class="actions">
         <button class="btn-light" onclick="addRow()">+ إضافة صف</button>
-        <button class="btn-light" onclick="saveDraft()">حفظ محلي</button>
         <button class="btn-light" onclick="resetForm()">مسح</button>
         <button class="btn-primary" onclick="window.print()">طباعة</button>
       </div>
@@ -599,7 +598,12 @@
               </thead>
               <tbody id="itemsBody"></tbody>
             </table>
-      
+          </div>
+          <div class="table-tools">
+            <button class="btn-light" onclick="addRow()">+ إضافة صنف</button>
+          </div>
+        </div>
+
         <div class="section">
           <h3 class="section-title">الاعتماد</h3>
           <div class="signature-grid">
@@ -643,7 +647,6 @@
 
   <script>
     const itemsBody = document.getElementById('itemsBody');
-    const STORAGE_KEY = 'valueCapitalPurchaseRequestCompact';
     const COUNTER_KEY = 'valueCapitalPurchaseRequestCounter';
 
     function getCurrentYear() {
@@ -652,20 +655,10 @@
 
     function getNextRequestNumber() {
       const year = getCurrentYear();
-      const raw = localStorage.getItem(COUNTER_KEY);
-      let counters = {};
-
-      try {
-        counters = raw ? JSON.parse(raw) : {};
-      } catch (e) {
-        counters = {};
-      }
-
-      const next = (Number(counters[year]) || 0) + 1;
-      counters[year] = next;
-      localStorage.setItem(COUNTER_KEY, JSON.stringify(counters));
-
-      return `PR-${year}-${String(next).padStart(3, '0')}`;
+      const now = new Date();
+      const stamp = `${now.getMonth() + 1}${now.getDate()}${now.getHours()}${now.getMinutes()}${now.getSeconds()}`;
+      const randomPart = Math.floor(100 + Math.random() * 900);
+      return `PR-${year}-${stamp}-${randomPart}`;
     }
 
     function ensureRequestNumber(forceNew = false) {
@@ -723,66 +716,7 @@
       });
     }
 
-    function saveDraft() {
-      const rows = [...document.querySelectorAll('#itemsBody tr')].map(row => ({
-        desc: row.querySelector('.desc').value,
-        qty: row.querySelector('.qty').value,
-        unit: row.querySelector('.unit').value,
-        category: row.querySelector('.category').value
-      }));
-
-      const data = {
-        requestNumber: document.getElementById('requestNumber').value,
-        requestDate: document.getElementById('requestDate').value,
-        department: document.getElementById('department').value,
-        requesterName: document.getElementById('requesterName').value,
-        jobTitle: document.getElementById('jobTitle').value,
-        neededDate: document.getElementById('neededDate').value,
-        requestType: document.getElementById('requestType').value,
-        priority: document.getElementById('priority').value,
-        vendor: document.getElementById('vendor').value,
-        purpose: document.getElementById('purpose').value,
-        notes: document.getElementById('notes').value,
-        rows
-      };
-
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-      alert('تم حفظ النموذج محليًا.');
-    }
-
-    function loadDraft() {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return false;
-      try {
-        const data = JSON.parse(raw);
-        document.getElementById('requestNumber').value = data.requestNumber || '';
-        document.getElementById('requestDate').value = data.requestDate || '';
-        document.getElementById('department').value = data.department || '';
-        document.getElementById('requesterName').value = data.requesterName || '';
-        document.getElementById('jobTitle').value = data.jobTitle || '';
-        document.getElementById('neededDate').value = data.neededDate || '';
-        document.getElementById('requestType').value = data.requestType || '';
-        document.getElementById('priority').value = data.priority || '';
-        document.getElementById('vendor').value = data.vendor || '';
-        document.getElementById('purpose').value = data.purpose || '';
-        document.getElementById('notes').value = data.notes || '';
-
-        itemsBody.innerHTML = '';
-        if (data.rows && data.rows.length) {
-          data.rows.forEach(row => addRow(row));
-        } else {
-          addRow();
-        }
-
-        ensureRequestNumber(false);
-        return true;
-      } catch (e) {
-        itemsBody.innerHTML = '';
-        addRow();
-        ensureRequestNumber(true);
-        return false;
-      }
-    }
+    
 
     function resetForm() {
       if (!confirm('هل تريدين مسح بيانات النموذج؟')) return;
@@ -793,15 +727,11 @@
       });
       itemsBody.innerHTML = '';
       addRow();
-      localStorage.removeItem(STORAGE_KEY);
       ensureRequestNumber(true);
     }
 
-    const hasDraft = loadDraft();
-    if (!hasDraft) {
-      if (!itemsBody.querySelector('tr')) addRow();
-      ensureRequestNumber(true);
-    }
+    if (!itemsBody.querySelector('tr')) addRow();
+    ensureRequestNumber(true);
     syncRequestNumber();
   </script>
 </body>
