@@ -82,7 +82,9 @@
       color: #fff;
       padding: 18px 20px;
       display: grid;
-      grid-template-columns: 180px 1fr 190px;
+      grid-template-columns: 140px 1fr 140px;
+      gap: 12px;
+      align-items: center;
       gap: 16px;
       align-items: center;
     }
@@ -210,7 +212,8 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 760px;
+      min-width: 100%;
+      background: #fff;
       background: #fff;
     }
 
@@ -307,7 +310,7 @@
     @media print {
       @page {
         size: A4 portrait;
-        margin: 6mm;
+        margin: 8mm;
       }
 
       html, body {
@@ -317,15 +320,14 @@
 
       body {
         background: #fff;
-        zoom: 0.74;
+        zoom: 0.80;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
 
       .page {
-        max-width: 100%;
-        width: 100%;
-        margin: 0;
+        max-width: 190mm;
+        margin: 0 auto;
         padding: 0;
       }
 
@@ -336,23 +338,16 @@
         display: none !important;
       }
 
-      .sheet {
-        width: 100%;
-        border-radius: 0;
-        box-shadow: none;
-        border: 1px solid #ddd;
-      }
-
       .header {
-        grid-template-columns: 120px 1fr 120px;
-        gap: 8px;
+        grid-template-columns: 100px 1fr 100px;
+        gap: 6px;
         padding: 8px 10px;
       }
 
       .logo-box img {
-        max-width: 110px;
-        max-height: 32px;
-        padding: 4px 6px;
+        max-width: 80px;
+        max-height: 28px;
+        padding: 2px 4px;
       }
 
       .title-box h2 {
@@ -360,16 +355,7 @@
       }
 
       .title-box p {
-        font-size: 8px;
-        margin-top: 3px;
-      }
-
-      .number-box {
-        padding: 8px;
-      }
-
-      .number-box .label {
-        font-size: 8px;
+        font-size: 9px;
       }
 
       .number-box .value {
@@ -382,82 +368,50 @@
       }
 
       .section {
-        padding: 7px;
-        border-radius: 8px;
+        padding: 8px;
       }
 
       .section-title {
-        font-size: 11px;
-        margin-bottom: 5px;
+        font-size: 12px;
       }
 
-      .grid-4 { grid-template-columns: repeat(3, minmax(0,1fr)); }
-      .grid-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
-      .grid-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
-      .signature-grid { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; }
-
-      .field {
-        gap: 3px;
-      }
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .grid-3 { grid-template-columns: repeat(2, 1fr); }
+      .grid-2 { grid-template-columns: repeat(2, 1fr); }
+      .signature-grid { grid-template-columns: repeat(3, 1fr); }
 
       .field label {
-        font-size: 8px;
+        font-size: 9px;
       }
 
       .field input,
       .field textarea,
       .field select {
-        font-size: 8px;
-        padding: 4px 6px;
-        border-radius: 6px;
+        font-size: 9px;
+        padding: 5px;
       }
 
       .field textarea {
-        min-height: 30px;
-      }
-
-      .table-wrap {
-        border-radius: 8px;
-      }
-
-      table {
-        min-width: 100%;
+        min-height: 40px;
       }
 
       th, td {
-        font-size: 7px;
-        padding: 3px;
-      }
-
-      td input, td select {
-        font-size: 7px;
-        padding: 3px 4px;
-        border-radius: 5px;
+        font-size: 9px;
+        padding: 4px;
       }
 
       .signature-box {
-        min-height: 62px;
+        min-height: 60px;
         padding: 6px;
-        border-radius: 8px;
       }
 
       .signature-box h4 {
-        font-size: 9px;
+        font-size: 10px;
       }
 
-      .signature-box p {
-        font-size: 7px;
-        margin-top: 2px;
-      }
-
-      .sig-line {
-        font-size: 7px;
-        margin-top: 6px;
-        padding-top: 4px;
-      }
-
+      .sig-line,
       .footer-note {
-        font-size: 7px;
+        font-size: 8px;
       }
 
       .sheet,
@@ -544,7 +498,7 @@
 
         <div class="number-box">
           <div class="label">رقم طلب الشراء</div>
-          <div class="value" id="requestBadge">PR-2026-001</div>
+          <div class="value" id="requestBadge">سيتم إنشاؤه تلقائيًا</div>
         </div>
       </div>
 
@@ -554,7 +508,7 @@
           <div class="grid-4">
             <div class="field">
               <label for="requestNumber">رقم طلب الشراء</label>
-              <input id="requestNumber" class="readonly" type="text" value="PR-2026-001" readonly />
+              <input id="requestNumber" class="readonly" type="text" value="" placeholder="سيتم إنشاؤه تلقائيًا" readonly />
             </div>
             <div class="field">
               <label for="requestDate">تاريخ الطلب</label>
@@ -690,9 +644,41 @@
 
   <script>
     const itemsBody = document.getElementById('itemsBody');
+    const STORAGE_KEY = 'valueCapitalPurchaseRequestCompact';
+    const COUNTER_KEY = 'valueCapitalPurchaseRequestCounter';
+
+    function getCurrentYear() {
+      return new Date().getFullYear();
+    }
+
+    function getNextRequestNumber() {
+      const year = getCurrentYear();
+      const raw = localStorage.getItem(COUNTER_KEY);
+      let counters = {};
+
+      try {
+        counters = raw ? JSON.parse(raw) : {};
+      } catch (e) {
+        counters = {};
+      }
+
+      const next = (Number(counters[year]) || 0) + 1;
+      counters[year] = next;
+      localStorage.setItem(COUNTER_KEY, JSON.stringify(counters));
+
+      return `PR-${year}-${String(next).padStart(3, '0')}`;
+    }
+
+    function ensureRequestNumber(forceNew = false) {
+      const input = document.getElementById('requestNumber');
+      if (forceNew || !input.value.trim()) {
+        input.value = getNextRequestNumber();
+      }
+      syncRequestNumber();
+    }
 
     function syncRequestNumber() {
-      const val = document.getElementById('requestNumber').value.trim() || 'PR-2026-001';
+      const val = document.getElementById('requestNumber').value.trim() || 'سيتم إنشاؤه تلقائيًا';
       document.getElementById('requestBadge').textContent = val;
     }
 
@@ -750,7 +736,6 @@
         requestNumber: document.getElementById('requestNumber').value,
         requestDate: document.getElementById('requestDate').value,
         department: document.getElementById('department').value,
-        
         requesterName: document.getElementById('requesterName').value,
         jobTitle: document.getElementById('jobTitle').value,
         neededDate: document.getElementById('neededDate').value,
@@ -762,19 +747,18 @@
         rows
       };
 
-      localStorage.setItem('valueCapitalPurchaseRequestCompact', JSON.stringify(data));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
       alert('تم حفظ النموذج محليًا.');
     }
 
     function loadDraft() {
-      const raw = localStorage.getItem('valueCapitalPurchaseRequestCompact');
-      if (!raw) return;
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return false;
       try {
         const data = JSON.parse(raw);
-        document.getElementById('requestNumber').value = data.requestNumber || 'PR-2026-001';
+        document.getElementById('requestNumber').value = data.requestNumber || '';
         document.getElementById('requestDate').value = data.requestDate || '';
         document.getElementById('department').value = data.department || '';
-        
         document.getElementById('requesterName').value = data.requesterName || '';
         document.getElementById('jobTitle').value = data.jobTitle || '';
         document.getElementById('neededDate').value = data.neededDate || '';
@@ -791,31 +775,34 @@
           addRow();
         }
 
-        syncRequestNumber();
+        ensureRequestNumber(false);
+        return true;
       } catch (e) {
         itemsBody.innerHTML = '';
         addRow();
-        syncRequestNumber();
+        ensureRequestNumber(true);
+        return false;
       }
     }
 
     function resetForm() {
       if (!confirm('هل تريدين مسح بيانات النموذج؟')) return;
       document.querySelectorAll('input, textarea, select').forEach(el => {
-        if (el.id === 'requestNumber') {
-          el.value = 'PR-2026-001';
-        } else {
+        if (el.id !== 'requestNumber') {
           el.value = '';
         }
       });
       itemsBody.innerHTML = '';
       addRow();
-      syncRequestNumber();
-      localStorage.removeItem('valueCapitalPurchaseRequestCompact');
+      localStorage.removeItem(STORAGE_KEY);
+      ensureRequestNumber(true);
     }
 
-    loadDraft();
-    if (!itemsBody.querySelector('tr')) addRow();
+    const hasDraft = loadDraft();
+    if (!hasDraft) {
+      if (!itemsBody.querySelector('tr')) addRow();
+      ensureRequestNumber(true);
+    }
     syncRequestNumber();
   </script>
 </body>
