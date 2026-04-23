@@ -14,9 +14,7 @@
       --text: #1f2937;
       --muted: #6b7280;
     }
-
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       font-family: "Segoe UI", Tahoma, Arial, sans-serif;
@@ -24,7 +22,6 @@
       color: var(--text);
       font-size: 13px;
     }
-
     .toolbar {
       max-width: 920px;
       margin: 0 auto;
@@ -35,131 +32,45 @@
       gap: 10px;
       flex-wrap: wrap;
     }
-
-    .toolbar h1 {
-      margin: 0;
-      color: var(--primary-dark);
-      font-size: 20px;
-    }
-
-    .toolbar p {
-      margin: 3px 0 0;
-      color: var(--muted);
-      font-size: 11px;
-    }
-
-    .actions {
-      display: flex;
-      gap: 7px;
-      flex-wrap: wrap;
-    }
-
+    .toolbar h1 { margin: 0; color: var(--primary-dark); font-size: 20px; }
+    .actions { display: flex; gap: 7px; flex-wrap: wrap; }
     button {
-      border: 0;
-      border-radius: 8px;
-      padding: 8px 14px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: inherit;
+      border: 0; border-radius: 8px; padding: 8px 14px;
+      font-size: 12px; font-weight: 700; cursor: pointer;
     }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: #fff;
-    }
-
-    .btn-light {
-      background: #fff;
-      color: var(--primary-dark);
-      border: 1px solid var(--line);
-    }
+    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; }
+    .btn-light { background: #fff; color: var(--primary-dark); border: 1px solid var(--line); }
 
     .sheet {
-      max-width: 920px;
-      margin: 0 auto 24px;
-      background: #fff;
-      border: 1px solid rgba(68,33,130,.1);
-      border-radius: 16px;
+      max-width: 920px; margin: 0 auto 24px;
+      background: #fff; border-radius: 16px;
       box-shadow: 0 10px 28px rgba(68,33,130,.08);
       overflow: hidden;
     }
 
     .header {
       background: linear-gradient(135deg, #5a4490 0%, #442182 100%);
-      color: #fff;
-      padding: 14px 18px;
-      display: grid;
-      grid-template-columns: 120px 1fr 140px;
-      gap: 12px;
+      color: #fff; padding: 14px 18px;
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
       align-items: center;
     }
 
-    .logo-box {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-    }
-
-    .logo-box img {
-      max-width: 110px;
-      max-height: 42px;
-      object-fit: contain;
-      background: #fff;
-      border-radius: 6px;
-      padding: 2px 4px;
-      display: block;
-    }
-
-    .title-box {
-      text-align: center;
-    }
-
-    .title-box h2 {
-      margin: 0;
-      font-size: 18px;
-      letter-spacing: .3px;
-    }
-
-    .title-box p {
-      margin: 5px 0 0;
-      font-size: 10px;
-      opacity: .9;
-      line-height: 1.5;
-    }
+    .title-box { text-align: center; }
+    .title-box h2 { margin: 0; font-size: 18px; }
 
     .number-box {
-      background: rgba(255,255,255,.13);
-      border: 1px solid rgba(255,255,255,.22);
-      border-radius: 11px;
-      padding: 10px 8px;
       text-align: center;
+      background: rgba(255,255,255,.13);
+      padding: 8px;
+      border-radius: 10px;
     }
 
-    .number-box .label {
-      font-size: 9px;
-      opacity: .85;
-      margin-bottom: 4px;
-    }
-
-    .number-box .value {
-      font-size: 13px;
-      font-weight: 800;
-      line-height: 1.3;
-      word-break: break-word;
-    }
-
-    .content {
-      padding: 14px;
-      display: grid;
-      gap: 12px;
-    }
+    .content { padding: 14px; display: grid; gap: 12px; }
 
     .section {
       border: 1px solid var(--line);
       border-radius: 12px;
-      padding: 12px 14px;
-      background: #fff;
+      padding: 12px;
     }
 
     .section-title {
@@ -167,544 +78,148 @@
       font-size: 13px;
       font-weight: 800;
       color: var(--primary-dark);
-      display: flex;
-      align-items: center;
-      gap: 7px;
     }
 
-    .section-title::before {
-      content: '';
-      display: inline-block;
-      width: 4px;
-      height: 15px;
-      background: var(--gold);
-      border-radius: 3px;
-      flex-shrink: 0;
-    }
+    .grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; }
 
-    .grid-4,
-    .grid-3,
-    .grid-2 {
-      display: grid;
-      gap: 10px;
-    }
+    .field { display: flex; flex-direction: column; gap: 4px; }
 
-    .grid-4 { grid-template-columns: repeat(4, 1fr); }
-    .grid-3 { grid-template-columns: repeat(3, 1fr); }
-    .grid-2 { grid-template-columns: repeat(2, 1fr); }
-
-    .gap-top { margin-top: 10px; }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .field label {
-      font-size: 11px;
-      font-weight: 700;
-      color: #374151;
-    }
-
-    .field input,
-    .field textarea,
-    .field select {
-      width: 100%;
+    input, textarea, select {
       border: 1px solid #ddd4f0;
       border-radius: 8px;
-      padding: 8px 10px;
+      padding: 8px;
       font-size: 12px;
-      color: var(--text);
       background: #faf9fd;
-      font-family: inherit;
-      outline: none;
     }
 
-    .field textarea {
-      min-height: 72px;
-      resize: vertical;
-      line-height: 1.5;
-    }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 6px; border-bottom: 1px solid #eee; font-size: 12px; }
+    th { background: #f6f3fb; }
 
-    .readonly {
-      background: #f0edf8 !important;
-      color: var(--primary-dark) !important;
-      font-weight: 800;
-      cursor: default;
-    }
-
-    .table-wrap {
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      overflow-x: auto;
-      background: #fff;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-    }
-
-    th, td {
-      border-bottom: 1px solid #ece8f4;
-      padding: 6px;
-      text-align: right;
-      vertical-align: middle;
-      font-size: 12px;
-    }
-
-    th {
-      background: var(--soft);
-      color: var(--primary-dark);
-      font-weight: 800;
-    }
-
-    td input,
-    td textarea,
-    td select {
-      width: 100%;
-      border: 1px solid #ddd4f0;
-      border-radius: 8px;
-      padding: 7px 8px;
-      font-size: 11px;
-      background: #faf9fd;
-      font-family: inherit;
-      outline: none;
-    }
-
-    td textarea {
-      min-height: 36px;
-      resize: vertical;
-    }
-
-    .table-tools {
-      margin-top: 8px;
-      display: flex;
-      justify-content: flex-start;
-    }
-
-    .remove-btn {
-      background: #fff1f2;
-      color: #b91c1c;
-      border: 1px solid #fecdd3;
-      padding: 6px 8px;
-      border-radius: 7px;
-      font-size: 11px;
-      font-weight: 700;
-      width: 100%;
-    }
-
-    .signature-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 8px;
-    }
-
-    .signature-box {
-      border: 1px dashed #c5bad8;
-      border-radius: 10px;
-      padding: 10px;
-      min-height: 82px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      background: #fdfcff;
-    }
-
-    .signature-box h4 {
-      margin: 0 0 3px;
-      color: var(--primary-dark);
-      font-size: 12px;
-    }
-
-    .signature-box p {
-      margin: 0;
-      font-size: 10px;
-      color: var(--muted);
-    }
-
-    .sig-line {
-      border-top: 1px solid #cdc6e0;
-      padding-top: 4px;
-      font-size: 10px;
-      color: #4b5563;
-      margin-top: 6px;
-      line-height: 1.7;
-    }
-
-    .footer-note {
-      text-align: center;
-      font-size: 11px;
-      color: #9ca3af;
-      margin-top: -2px;
-      padding-bottom: 2px;
-    }
-
-    .status-message {
-      font-size: 12px;
-      color: var(--primary-dark);
-      font-weight: 700;
-      margin-top: 6px;
-      white-space: pre-line;
-    }
-
-    @media (max-width: 780px) {
-      .header,
-      .grid-4,
-      .grid-3,
-      .grid-2,
-      .signature-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media print {
-      @page {
-        size: A4 portrait;
-        margin: 10mm;
-      }
-
-      html, body {
-        width: 210mm;
-        min-height: 297mm;
-        margin: 0;
-        padding: 0;
-        background: #fff;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-
-      .toolbar,
-      button,
-      .status-message,
-      .table-tools {
-        display: none !important;
-      }
-
-      .sheet {
-        width: 100%;
-        max-width: 100%;
-        margin: 0;
-        border: 1px solid #d9d9d9;
-        border-radius: 0;
-        box-shadow: none;
-      }
-
-      .section,
-      .table-wrap,
-      .signature-box {
-        break-inside: avoid;
-        page-break-inside: avoid;
-      }
-    }
+    .status-message { margin-top: 10px; font-weight: bold; color: var(--primary-dark); }
   </style>
 </head>
 <body>
-  <div class="toolbar">
-    <div>
-      <h1>نموذج طلب شراء داخلي</h1>
-      <p>مرتبط بـ Google Sheet</p>
-    </div>
-    <div class="actions">
-      <button class="btn-light" type="button" onclick="addItemRow()">+ إضافة صنف</button>
-      <button class="btn-light" type="button" onclick="resetForm()">🗑 مسح</button>
-      <button class="btn-primary" type="button" onclick="submitRequest()">✅ إرسال</button>
-      <button class="btn-primary" type="button" onclick="window.print()">🖨 طباعة</button>
-    </div>
+
+<div class="toolbar">
+  <h1>طلب شراء</h1>
+  <div class="actions">
+    <button class="btn-light" onclick="addItemRow()">+ صنف</button>
+    <button class="btn-primary" onclick="submitRequest()">إرسال</button>
+    <button class="btn-primary" onclick="window.print()">طباعة</button>
+  </div>
+</div>
+
+<div class="sheet">
+  <div class="header">
+    <div></div>
+    <div class="title-box"><h2>طلب شراء داخلي</h2></div>
+    <div class="number-box" id="requestBadge">--</div>
   </div>
 
-  <div class="sheet">
-    <div class="header">
-      <div class="logo-box">
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA+gAAAGQCAYAAABp2nYcAAAACXBIWXMAAAsSAAALEgHS3X78AAAgAElEQVR4nO3de5BU9Z3/8fcQkQkJgkQ2Y0QmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQk" alt="قيمة المالية" />
-      </div>
+  <div class="content">
 
-      <div class="title-box">
-        <h2>نموذج طلب شراء داخلي</h2>
-        <p>Internal Purchase Request Form</p>
-      </div>
-
-      <div class="number-box">
-        <div class="label">رقم الطلب</div>
-        <div class="value" id="requestBadge">سيظهر بعد الإرسال</div>
+    <div class="section">
+      <h3 class="section-title">بيانات الطلب</h3>
+      <div class="grid-2">
+        <input id="requestDate" type="date">
+        <input id="requesterName" placeholder="الاسم">
+        <input id="department" placeholder="القسم">
+        <input id="email" placeholder="البريد">
+        <input id="phone" placeholder="الجوال">
+        <input id="neededDate" type="date">
       </div>
     </div>
 
-    <div class="content">
-      <div class="section">
-        <h3 class="section-title">بيانات الطلب</h3>
+    <div class="section">
+      <h3 class="section-title">تفاصيل</h3>
+      <textarea id="purpose" placeholder="الغرض"></textarea>
+      <input id="vendor" placeholder="المورد المقترح">
 
-        <div class="grid-4">
-          <div class="field">
-            <label>رقم الطلب</label>
-            <input id="requestNumber" class="readonly" type="text" placeholder="سيظهر بعد الإرسال" readonly />
-          </div>
-          <div class="field">
-            <label>تاريخ الطلب</label>
-            <input id="requestDate" type="date" />
-          </div>
-          <div class="field">
-            <label>الاسم</label>
-            <input id="requesterName" type="text" placeholder="الاسم الكامل" />
-          </div>
-          <div class="field">
-            <label>القسم</label>
-            <input id="department" type="text" placeholder="اسم القسم أو الإدارة" />
-          </div>
-        </div>
-
-        <div class="grid-4 gap-top">
-          <div class="field">
-            <label>البريد الإلكتروني</label>
-            <input id="email" type="email" placeholder="name@company.com" />
-          </div>
-          <div class="field">
-            <label>رقم الهاتف</label>
-            <input id="phone" type="text" placeholder="05XXXXXXXX" />
-          </div>
-          <div class="field">
-            <label>تاريخ الاستلام</label>
-            <input id="neededDate" type="date" />
-          </div>
-          <div class="field">
-            <label>نوع الطلب</label>
-            <select id="requestType">
-              <option value="">اختر</option>
-              <option>تشغيلي</option>
-              <option>استخدام فردي</option>
-              <option>عهدة على القسم</option>
-              <option>تواصل داخلي</option>
-              <option>خدمة</option>
-              <option>أخرى</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <h3 class="section-title">تفاصيل الاحتياج</h3>
-
-        <div class="grid-2">
-          <div class="field">
-            <label>الغرض</label>
-            <textarea id="purpose" placeholder="اذكر الغرض من الطلب"></textarea>
-          </div>
-          <div class="field">
-            <label>المورد المقترح</label>
-            <input id="vendor" type="text" placeholder="اسم المورد" />
-          </div>
-        </div>
-
-        <div class="table-wrap gap-top">
-          <table>
-            <colgroup>
-              <col style="width: 30%">
-              <col style="width: 10%">
-              <col style="width: 12%">
-              <col style="width: 24%">
-              <col style="width: 18%">
-              <col style="width: 6%">
-            </colgroup>
-            <thead>
-              <tr>
-                <th>اسم المنتج</th>
-                <th>الكمية</th>
-                <th>الوحدة</th>
-                <th>المبررات</th>
-                <th>ملاحظات</th>
-                <th>حذف</th>
-              </tr>
-            </thead>
-            <tbody id="itemsTableBody"></tbody>
-          </table>
-        </div>
-
-        <div class="table-tools">
-          <button type="button" class="btn-light" onclick="addItemRow()">+ إضافة صنف</button>
-        </div>
-
-        <div class="grid-2 gap-top">
-          <div class="field">
-            <label>ملاحظات</label>
-            <textarea id="notes" placeholder="ملاحظات الطلب"></textarea>
-          </div>
-          <div class="field">
-            <label>ملاحظات إضافية</label>
-            <textarea id="extraNotes" placeholder="أي ملاحظات إضافية أخرى"></textarea>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <h3 class="section-title">الاعتماد</h3>
-
-        <div class="signature-grid">
-          <div class="signature-box">
-            <div>
-              <h4>إدارة المشتريات</h4>
-              <p>مراجعة الطلب واكتمال البيانات</p>
-            </div>
-            <div>
-              <div class="sig-line">الاسم: _______________</div>
-              <div class="sig-line">التوقيع: _______________</div>
-            </div>
-          </div>
-
-          <div class="signature-box">
-            <div>
-              <h4>نائب الرئيس</h4>
-              <p>الاعتماد الإداري والمالي</p>
-            </div>
-            <div>
-              <div class="sig-line">الاسم: _______________</div>
-              <div class="sig-line">التوقيع: _______________</div>
-            </div>
-          </div>
-
-          <div class="signature-box">
-            <div>
-              <h4>الرئيس التنفيذي</h4>
-              <p>الاعتماد النهائي</p>
-            </div>
-            <div>
-              <div class="sig-line">الاسم: _______________</div>
-              <div class="sig-line">التوقيع: _______________</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <p class="footer-note">طلب شراء داخلي — Value Capital</p>
-      <div id="statusMessage" class="status-message"></div>
+      <table>
+        <thead>
+          <tr>
+            <th>الصنف</th><th>الكمية</th><th>الوحدة</th>
+          </tr>
+        </thead>
+        <tbody id="itemsTableBody"></tbody>
+      </table>
     </div>
+
+    <div class="section">
+      <textarea id="notes" placeholder="ملاحظات"></textarea>
+      <textarea id="extraNotes" placeholder="ملاحظات إضافية"></textarea>
+    </div>
+
+    <div id="statusMessage" class="status-message"></div>
+
   </div>
+</div>
 
-  <script>
-    const WEB_APP_URL = 'الصقي-هنا-رابط-الويب-آب';
+<script>
 
-    function addItemRow(item = {}) {
-      const tbody = document.getElementById('itemsTableBody');
-      const row = document.createElement('tr');
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwM3_3fjYyy7wqFM6LvCr8A3G1b_BAotZ1LT_vMuVJq/dev";
 
-      row.innerHTML = `
-        <td><input type="text" class="item-name" placeholder="اسم المنتج" value="${item.name || ''}"></td>
-        <td><input type="number" class="item-qty" placeholder="الكمية" min="1" value="${item.qty || 1}"></td>
-        <td>
-          <select class="item-unit">
-            <option value="">اختر</option>
-            <option ${item.unit === 'حبة' ? 'selected' : ''}>حبة</option>
-            <option ${item.unit === 'جهاز' ? 'selected' : ''}>جهاز</option>
-            <option ${item.unit === 'علبة' ? 'selected' : ''}>علبة</option>
-            <option ${item.unit === 'وحدة' ? 'selected' : ''}>وحدة</option>
-            <option ${item.unit === 'خدمة' ? 'selected' : ''}>خدمة</option>
-          </select>
-        </td>
-        <td><textarea class="item-justification" placeholder="المبررات">${item.justification || ''}</textarea></td>
-        <td><textarea class="item-note" placeholder="ملاحظات">${item.note || ''}</textarea></td>
-        <td><button type="button" class="remove-btn" onclick="removeItemRow(this)">حذف</button></td>
-      `;
+function addItemRow(){
+  const tbody = document.getElementById('itemsTableBody');
+  const row = document.createElement('tr');
+  row.innerHTML = `
+    <td><input class="item-name"></td>
+    <td><input class="item-qty"></td>
+    <td><input class="item-unit"></td>
+  `;
+  tbody.appendChild(row);
+}
 
-      tbody.appendChild(row);
-    }
+function collectItems(){
+  let items = [];
+  document.querySelectorAll('#itemsTableBody tr').forEach(r=>{
+    const name = r.querySelector('.item-name').value;
+    const qty = r.querySelector('.item-qty').value;
+    const unit = r.querySelector('.item-unit').value;
+    if(name) items.push(name + " - " + qty + " " + unit);
+  });
+  return items.join("\n");
+}
 
-    function removeItemRow(button) {
-      const tbody = document.getElementById('itemsTableBody');
-      const rows = tbody.querySelectorAll('tr');
+async function submitRequest(){
+  const status = document.getElementById('statusMessage');
+  status.textContent = "جاري الإرسال...";
 
-      if (rows.length === 1) {
-        rows[0].querySelector('.item-name').value = '';
-        rows[0].querySelector('.item-qty').value = 1;
-        rows[0].querySelector('.item-unit').value = '';
-        rows[0].querySelector('.item-justification').value = '';
-        rows[0].querySelector('.item-note').value = '';
-        return;
-      }
+  const data = {
+    requestDate: requestDate.value,
+    requesterName: requesterName.value,
+    department: department.value,
+    email: email.value,
+    phone: phone.value,
+    purpose: purpose.value,
+    neededDate: neededDate.value,
+    vendor: vendor.value,
+    notes: notes.value,
+    items: collectItems(),
+    extraNotes: extraNotes.value
+  };
 
-      button.closest('tr').remove();
-    }
+  try{
+    const res = await fetch(WEB_APP_URL,{
+      method:'POST',
+      headers:{'Content-Type':'text/plain'},
+      body: JSON.stringify(data)
+    });
 
-    function collectItemsAsText() {
-      const rows = document.querySelectorAll('#itemsTableBody tr');
-      const items = [];
+    const result = await res.json();
 
-      rows.forEach((row, index) => {
-        const name = row.querySelector('.item-name').value.trim();
-        const qty = row.querySelector('.item-qty').value.trim();
-        const unit = row.querySelector('.item-unit').value.trim();
-        const justification = row.querySelector('.item-justification').value.trim();
-        const note = row.querySelector('.item-note').value.trim();
+    document.getElementById('requestBadge').textContent = result.requestNumber;
+    status.textContent = "تم الحفظ بنجاح";
 
-        if (name || qty || unit || justification || note) {
-          items.push(
-            `الصنف ${index + 1}: ${name} | الكمية: ${qty} | الوحدة: ${unit} | المبررات: ${justification} | ملاحظات: ${note}`
-          );
-        }
-      });
+  }catch(e){
+    status.textContent = "فشل الإرسال";
+  }
+}
 
-      return items.join('\\n');
-    }
+addItemRow();
 
-    async function submitRequest() {
-      const status = document.getElementById('statusMessage');
-      status.textContent = 'جاري الإرسال...';
+</script>
 
-      const formData = {
-        requestDate: document.getElementById('requestDate').value,
-        requesterName: document.getElementById('requesterName').value,
-        department: document.getElementById('department').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        purpose: document.getElementById('purpose').value,
-        requestType: document.getElementById('requestType').value,
-        neededDate: document.getElementById('neededDate').value,
-        vendor: document.getElementById('vendor').value,
-        notes: document.getElementById('notes').value,
-        items: collectItemsAsText(),
-        extraNotes: document.getElementById('extraNotes').value
-      };
-
-      try {
-        const response = await fetch(WEB_APP_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'text/plain;charset=utf-8'
-          },
-          body: JSON.stringify(formData)
-        });
-
-        const result = await response.json();
-
-        if (result && result.success) {
-          document.getElementById('requestNumber').value = result.requestNumber;
-          document.getElementById('requestBadge').textContent = result.requestNumber;
-          status.textContent = 'تم حفظ الطلب في Google Sheet بنجاح';
-        } else {
-          status.textContent = 'تعذر حفظ الطلب';
-        }
-      } catch (error) {
-        status.textContent = 'خطأ في الإرسال. تأكدي من رابط Web App وإعادة النشر.';
-        console.error(error);
-      }
-    }
-
-    function resetForm() {
-      document.querySelectorAll('input:not(#requestNumber), textarea, select').forEach(function(el) {
-        el.value = '';
-      });
-
-      document.getElementById('itemsTableBody').innerHTML = '';
-      addItemRow();
-
-      document.getElementById('requestNumber').value = '';
-      document.getElementById('requestBadge').textContent = 'سيظهر بعد الإرسال';
-      document.getElementById('statusMessage').textContent = '';
-      document.getElementById('requestDate').value = new Date().toISOString().split('T')[0];
-    }
-
-    document.getElementById('requestDate').value = new Date().toISOString().split('T')[0];
-    addItemRow();
-  </script>
 </body>
 </html>
