@@ -13,52 +13,52 @@
       --line: #ddd7ea;
       --text: #1f2937;
       --muted: #6b7280;
+      --danger-bg: #fff1f2;
+      --danger-border: #fecdd3;
+      --danger-text: #b91c1c;
     }
 
-    html, body {
-      margin: 0 !important;
-      padding: 0 !important;
-      width: 100% !important;
-      min-height: 100% !important;
-      overflow-x: hidden;
-    }
-
-    body * {
+    * {
       box-sizing: border-box;
     }
 
-    body {
-      font-family: "Segoe UI", Tahoma, Arial, sans-serif !important;
-      background: #ede9f5 !important;
-      color: var(--text) !important;
-      font-size: 13px !important;
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
     }
 
-    main, .container, .wrapper, #app, #root {
-      width: auto !important;
-      max-width: none !important;
-      margin: 0 !important;
-      padding: 0 !important;
+    body {
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      background: #ede9f5;
+      color: var(--text);
+      font-size: 13px;
+      direction: rtl;
+    }
+
+    .page {
+      width: min(960px, calc(100% - 24px));
+      margin: 14px auto 24px;
     }
 
     .toolbar {
-      width: min(920px, calc(100% - 24px));
-      margin: 0 auto;
-      padding: 14px 12px 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 10px;
       flex-wrap: wrap;
+      margin-bottom: 10px;
     }
 
-    .toolbar h1 {
+    .toolbar-title h1 {
       margin: 0;
       color: var(--primary-dark);
       font-size: 20px;
     }
 
-    .toolbar p {
+    .toolbar-title p {
       margin: 3px 0 0;
       color: var(--muted);
       font-size: 11px;
@@ -66,7 +66,7 @@
 
     .actions {
       display: flex;
-      gap: 7px;
+      gap: 8px;
       flex-wrap: wrap;
     }
 
@@ -92,12 +92,10 @@
     }
 
     .sheet {
-      width: min(920px, calc(100% - 24px));
-      margin: 0 auto 24px;
       background: #fff;
-      border: 1px solid rgba(68,33,130,.1);
+      border: 1px solid rgba(68, 33, 130, 0.1);
       border-radius: 16px;
-      box-shadow: 0 10px 28px rgba(68,33,130,.08);
+      box-shadow: 0 10px 28px rgba(68, 33, 130, 0.08);
       overflow: hidden;
     }
 
@@ -106,7 +104,7 @@
       color: #fff;
       padding: 14px 18px;
       display: grid;
-      grid-template-columns: 120px 1fr 140px;
+      grid-template-columns: 120px 1fr 160px;
       gap: 12px;
       align-items: center;
     }
@@ -134,12 +132,13 @@
     .title-box h2 {
       margin: 0;
       font-size: 18px;
+      letter-spacing: 0.2px;
     }
 
     .title-box p {
       margin: 5px 0 0;
       font-size: 10px;
-      opacity: .9;
+      opacity: 0.9;
       line-height: 1.5;
     }
 
@@ -197,15 +196,23 @@
       flex-shrink: 0;
     }
 
-    .grid-4, .grid-2 {
+    .grid-4,
+    .grid-2 {
       display: grid;
       gap: 10px;
     }
 
-    .grid-4 { grid-template-columns: repeat(4, 1fr); }
-    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
 
-    .gap-top { margin-top: 10px; }
+    .grid-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .gap-top {
+      margin-top: 10px;
+    }
 
     .field {
       display: flex;
@@ -237,6 +244,13 @@
       min-height: 72px;
       resize: vertical;
       line-height: 1.5;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(103,83,152,.12);
     }
 
     .readonly {
@@ -287,7 +301,7 @@
     }
 
     td textarea {
-      min-height: 36px;
+      min-height: 38px;
       resize: vertical;
     }
 
@@ -298,9 +312,9 @@
     }
 
     .remove-btn {
-      background: #fff1f2;
-      color: #b91c1c;
-      border: 1px solid #fecdd3;
+      background: var(--danger-bg);
+      color: var(--danger-text);
+      border: 1px solid var(--danger-border);
       padding: 6px 8px;
       border-radius: 7px;
       font-size: 11px;
@@ -394,6 +408,11 @@
         display: none !important;
       }
 
+      .page {
+        width: 100%;
+        margin: 0;
+      }
+
       .sheet {
         width: 100%;
         max-width: 100%;
@@ -413,187 +432,191 @@
   </style>
 </head>
 <body>
-  <div class="toolbar">
-    <div>
-      <h1>نموذج طلب شراء داخلي</h1>
-      <p>مرتبط بـ Google Sheet</p>
-    </div>
-    <div class="actions">
-      <button class="btn-light" type="button" onclick="addItemRow()">+ إضافة صنف</button>
-      <button class="btn-light" type="button" onclick="resetForm()">🗑 مسح</button>
-      <button class="btn-primary" type="button" onclick="submitRequest()">✅ إرسال</button>
-      <button class="btn-primary" type="button" onclick="window.print()">🖨 طباعة</button>
-    </div>
-  </div>
-
-  <div class="sheet">
-    <div class="header">
-      <div class="logo-box">
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA+gAAAGQCAYAAABp2nYcAAAACXBIWXMAAAsSAAALEgHS3X78AAAgAElEQVR4nO3de5BU9Z3/8fcQkQkJgkQ2Y0QmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQk" alt="قيمة المالية" />
+  <div class="page">
+    <div class="toolbar">
+      <div class="toolbar-title">
+        <h1>نموذج طلب شراء داخلي</h1>
+        <p>مرتبط بـ Google Sheet</p>
       </div>
 
-      <div class="title-box">
-        <h2>نموذج طلب شراء داخلي</h2>
-        <p>Internal Purchase Request Form</p>
-      </div>
-
-      <div class="number-box">
-        <div class="label">رقم الطلب</div>
-        <div class="value" id="requestBadge">سيظهر بعد الإرسال</div>
+      <div class="actions">
+        <button class="btn-light" type="button" onclick="addItemRow()">+ إضافة صنف</button>
+        <button class="btn-light" type="button" onclick="resetForm()">🗑 مسح</button>
+        <button class="btn-primary" type="button" onclick="submitRequest()">✅ إرسال</button>
+        <button class="btn-primary" type="button" onclick="window.print()">🖨 طباعة</button>
       </div>
     </div>
 
-    <div class="content">
-      <div class="section">
-        <h3 class="section-title">بيانات الطلب</h3>
-
-        <div class="grid-4">
-          <div class="field">
-            <label>رقم الطلب</label>
-            <input id="requestNumber" class="readonly" type="text" placeholder="سيظهر بعد الإرسال" readonly />
-          </div>
-          <div class="field">
-            <label>تاريخ الطلب</label>
-            <input id="requestDate" type="date" />
-          </div>
-          <div class="field">
-            <label>الاسم</label>
-            <input id="requesterName" type="text" placeholder="الاسم الكامل" />
-          </div>
-          <div class="field">
-            <label>القسم</label>
-            <input id="department" type="text" placeholder="اسم القسم أو الإدارة" />
-          </div>
+    <div class="sheet">
+      <div class="header">
+        <div class="logo-box">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA+gAAAGQCAYAAABp2nYcAAAACXBIWXMAAAsSAAALEgHS3X78AAAgAElEQVR4nO3de5BU9Z3/8fcQkQkJgkQ2Y0QmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQk" alt="قيمة المالية" />
         </div>
 
-        <div class="grid-4 gap-top">
-          <div class="field">
-            <label>البريد الإلكتروني</label>
-            <input id="email" type="email" placeholder="name@company.com" />
-          </div>
-          <div class="field">
-            <label>رقم الهاتف</label>
-            <input id="phone" type="text" placeholder="05XXXXXXXX" />
-          </div>
-          <div class="field">
-            <label>تاريخ الاستلام</label>
-            <input id="neededDate" type="date" />
-          </div>
-          <div class="field">
-            <label>نوع الطلب</label>
-            <select id="requestType">
-              <option value="">اختر</option>
-              <option>تشغيلي</option>
-              <option>استخدام فردي</option>
-              <option>عهدة على القسم</option>
-              <option>تواصل داخلي</option>
-              <option>خدمة</option>
-              <option>أخرى</option>
-            </select>
-          </div>
+        <div class="title-box">
+          <h2>نموذج طلب شراء داخلي</h2>
+          <p>Internal Purchase Request Form</p>
+        </div>
+
+        <div class="number-box">
+          <div class="label">رقم الطلب</div>
+          <div class="value" id="requestBadge">سيظهر بعد الإرسال</div>
         </div>
       </div>
 
-      <div class="section">
-        <h3 class="section-title">تفاصيل الاحتياج</h3>
+      <div class="content">
+        <div class="section">
+          <h3 class="section-title">بيانات الطلب</h3>
 
-        <div class="grid-2">
-          <div class="field">
-            <label>الغرض</label>
-            <textarea id="purpose" placeholder="اذكر الغرض من الطلب"></textarea>
+          <div class="grid-4">
+            <div class="field">
+              <label>رقم الطلب</label>
+              <input id="requestNumber" class="readonly" type="text" placeholder="سيظهر بعد الإرسال" readonly />
+            </div>
+            <div class="field">
+              <label>تاريخ الطلب</label>
+              <input id="requestDate" type="date" />
+            </div>
+            <div class="field">
+              <label>الاسم</label>
+              <input id="requesterName" type="text" placeholder="الاسم الكامل" />
+            </div>
+            <div class="field">
+              <label>القسم</label>
+              <input id="department" type="text" placeholder="اسم القسم أو الإدارة" />
+            </div>
           </div>
-          <div class="field">
-            <label>المورد المقترح</label>
-            <input id="vendor" type="text" placeholder="اسم المورد" />
+
+          <div class="grid-4 gap-top">
+            <div class="field">
+              <label>البريد الإلكتروني</label>
+              <input id="email" type="email" placeholder="name@company.com" />
+            </div>
+            <div class="field">
+              <label>رقم الهاتف</label>
+              <input id="phone" type="text" placeholder="05XXXXXXXX" />
+            </div>
+            <div class="field">
+              <label>تاريخ الاستلام</label>
+              <input id="neededDate" type="date" />
+            </div>
+            <div class="field">
+              <label>نوع الطلب</label>
+              <select id="requestType">
+                <option value="">اختر</option>
+                <option>تشغيلي</option>
+                <option>استخدام فردي</option>
+                <option>عهدة على القسم</option>
+                <option>تواصل داخلي</option>
+                <option>خدمة</option>
+                <option>أخرى</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3 class="section-title">تفاصيل الاحتياج</h3>
+
+          <div class="grid-2">
+            <div class="field">
+              <label>الغرض</label>
+              <textarea id="purpose" placeholder="اذكر الغرض من الطلب"></textarea>
+            </div>
+            <div class="field">
+              <label>المورد المقترح</label>
+              <input id="vendor" type="text" placeholder="اسم المورد" />
+            </div>
+          </div>
+
+          <div class="table-wrap gap-top">
+            <table>
+              <colgroup>
+                <col style="width: 30%">
+                <col style="width: 10%">
+                <col style="width: 12%">
+                <col style="width: 24%">
+                <col style="width: 18%">
+                <col style="width: 6%">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>اسم المنتج</th>
+                  <th>الكمية</th>
+                  <th>الوحدة</th>
+                  <th>المبررات</th>
+                  <th>ملاحظات</th>
+                  <th>حذف</th>
+                </tr>
+              </thead>
+              <tbody id="itemsTableBody"></tbody>
+            </table>
+          </div>
+
+          <div class="table-tools">
+            <button type="button" class="btn-light" onclick="addItemRow()">+ إضافة صنف</button>
+          </div>
+
+          <div class="grid-2 gap-top">
+            <div class="field">
+              <label>ملاحظات</label>
+              <textarea id="notes" placeholder="ملاحظات الطلب"></textarea>
+            </div>
+            <div class="field">
+              <label>ملاحظات إضافية</label>
+              <textarea id="extraNotes" placeholder="أي ملاحظات إضافية أخرى"></textarea>
+            </div>
           </div>
         </div>
 
-        <div class="table-wrap gap-top">
-          <table>
-            <colgroup>
-              <col style="width: 30%">
-              <col style="width: 10%">
-              <col style="width: 12%">
-              <col style="width: 24%">
-              <col style="width: 18%">
-              <col style="width: 6%">
-            </colgroup>
-            <thead>
-              <tr>
-                <th>اسم المنتج</th>
-                <th>الكمية</th>
-                <th>الوحدة</th>
-                <th>المبررات</th>
-                <th>ملاحظات</th>
-                <th>حذف</th>
-              </tr>
-            </thead>
-            <tbody id="itemsTableBody"></tbody>
-          </table>
+        <div class="section">
+          <h3 class="section-title">الاعتماد</h3>
+
+          <div class="signature-grid">
+            <div class="signature-box">
+              <div>
+                <h4>إدارة المشتريات</h4>
+                <p>مراجعة الطلب واكتمال البيانات</p>
+              </div>
+              <div>
+                <div class="sig-line">الاسم: _______________</div>
+                <div class="sig-line">التوقيع: _______________</div>
+              </div>
+            </div>
+
+            <div class="signature-box">
+              <div>
+                <h4>نائب الرئيس</h4>
+                <p>الاعتماد الإداري والمالي</p>
+              </div>
+              <div>
+                <div class="sig-line">الاسم: _______________</div>
+                <div class="sig-line">التوقيع: _______________</div>
+              </div>
+            </div>
+
+            <div class="signature-box">
+              <div>
+                <h4>الرئيس التنفيذي</h4>
+                <p>الاعتماد النهائي</p>
+              </div>
+              <div>
+                <div class="sig-line">الاسم: _______________</div>
+                <div class="sig-line">التوقيع: _______________</div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="table-tools">
-          <button type="button" class="btn-light" onclick="addItemRow()">+ إضافة صنف</button>
-        </div>
-
-        <div class="grid-2 gap-top">
-          <div class="field">
-            <label>ملاحظات</label>
-            <textarea id="notes" placeholder="ملاحظات الطلب"></textarea>
-          </div>
-          <div class="field">
-            <label>ملاحظات إضافية</label>
-            <textarea id="extraNotes" placeholder="أي ملاحظات إضافية أخرى"></textarea>
-          </div>
-        </div>
+        <p class="footer-note">طلب شراء داخلي — Value Capital</p>
+        <div id="statusMessage" class="status-message"></div>
       </div>
-
-      <div class="section">
-        <h3 class="section-title">الاعتماد</h3>
-
-        <div class="signature-grid">
-          <div class="signature-box">
-            <div>
-              <h4>إدارة المشتريات</h4>
-              <p>مراجعة الطلب واكتمال البيانات</p>
-            </div>
-            <div>
-              <div class="sig-line">الاسم: _______________</div>
-              <div class="sig-line">التوقيع: _______________</div>
-            </div>
-          </div>
-
-          <div class="signature-box">
-            <div>
-              <h4>نائب الرئيس</h4>
-              <p>الاعتماد الإداري والمالي</p>
-            </div>
-            <div>
-              <div class="sig-line">الاسم: _______________</div>
-              <div class="sig-line">التوقيع: _______________</div>
-            </div>
-          </div>
-
-          <div class="signature-box">
-            <div>
-              <h4>الرئيس التنفيذي</h4>
-              <p>الاعتماد النهائي</p>
-            </div>
-            <div>
-              <div class="sig-line">الاسم: _______________</div>
-              <div class="sig-line">التوقيع: _______________</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <p class="footer-note">طلب شراء داخلي — Value Capital</p>
-      <div id="statusMessage" class="status-message"></div>
     </div>
   </div>
 
   <script>
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyL46lGwIUJY0XiaVRKdiBXhJjz9DP-pPbTYzu3Gh2SqikIOAWIp4HoRpiEgOOlsDQFbQ/exec';
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyL46lGwIUJY0XiaVRKdiBXhJjz9DP-pPbTYzu3Gh2SqikIOAWIp4HoRpiEgOOlsDQFbQ/exec';
+
     function addItemRow(item = {}) {
       const tbody = document.getElementById('itemsTableBody');
       const row = document.createElement('tr');
@@ -657,52 +680,56 @@ const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyL46lGwIUJY0XiaVRK
     }
 
     async function submitRequest() {
-async function submitRequest() {
-  const status = document.getElementById('statusMessage');
-  status.textContent = 'جاري الإرسال...';
+      const status = document.getElementById('statusMessage');
+      status.textContent = 'جاري الإرسال...';
 
-  const formData = {
-    requestDate: document.getElementById('requestDate').value,
-    requesterName: document.getElementById('requesterName').value,
-    department: document.getElementById('department').value,
-    email: document.getElementById('email').value,
-    phone: document.getElementById('phone').value,
-    purpose: document.getElementById('purpose').value,
-    requestType: document.getElementById('requestType').value,
-    neededDate: document.getElementById('neededDate').value,
-    vendor: document.getElementById('vendor').value,
-    notes: document.getElementById('notes').value,
-    items: collectItemsAsText(),
-    extraNotes: document.getElementById('extraNotes').value
-  };
+      const formData = {
+        requestDate: document.getElementById('requestDate').value,
+        requesterName: document.getElementById('requesterName').value,
+        department: document.getElementById('department').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        purpose: document.getElementById('purpose').value,
+        requestType: document.getElementById('requestType').value,
+        neededDate: document.getElementById('neededDate').value,
+        vendor: document.getElementById('vendor').value,
+        notes: document.getElementById('notes').value,
+        items: collectItemsAsText(),
+        extraNotes: document.getElementById('extraNotes').value
+      };
 
-  try {
-    const response = await fetch(WEB_APP_URL, {
-      method: 'POST',
-      body: JSON.stringify(formData),
-      headers: {
-        'Content-Type': 'text/plain;charset=utf-8'
+      try {
+        const response = await fetch(WEB_APP_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8'
+          },
+          body: JSON.stringify(formData)
+        });
+
+        const text = await response.text();
+        let result = {};
+
+        try {
+          result = JSON.parse(text);
+        } catch (e) {
+          status.textContent = 'الرد من السيرفر غير صحيح';
+          console.error(text);
+          return;
+        }
+
+        if (result.success) {
+          document.getElementById('requestNumber').value = result.requestNumber;
+          document.getElementById('requestBadge').textContent = result.requestNumber;
+          status.textContent = 'تم حفظ الطلب في Google Sheet بنجاح';
+        } else {
+          status.textContent = result.message || 'تعذر حفظ الطلب';
+        }
+      } catch (error) {
+        console.error(error);
+        status.textContent = 'فشل الإرسال. تأكدي من صلاحيات Web App وإعادة النشر.';
       }
-    });
-
-    const text = await response.text();
-    console.log(text);
-
-    const result = JSON.parse(text);
-
-    if (result.success) {
-      document.getElementById('requestNumber').value = result.requestNumber;
-      document.getElementById('requestBadge').textContent = result.requestNumber;
-      status.textContent = 'تم الحفظ في الشيت ✔️';
-    } else {
-      status.textContent = 'فشل الحفظ';
     }
-
-  } catch (err) {
-    console.error(err);
-    status.textContent = 'خطأ في الإرسال ❌';
-  }
-}
 
     function resetForm() {
       document.querySelectorAll('input:not(#requestNumber), textarea, select').forEach(function(el) {
