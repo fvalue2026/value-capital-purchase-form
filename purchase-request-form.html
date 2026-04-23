@@ -374,6 +374,7 @@
       font-weight: 700;
       margin-top: 6px;
       white-space: pre-line;
+      text-align: center;
     }
 
     @media (max-width: 780px) {
@@ -459,8 +460,8 @@
         </div>
 
         <div class="number-box">
-          <div class="label">رقم الطلب</div>
-          <div class="value" id="requestBadge">سيظهر بعد الإرسال</div>
+          <div class="label">حالة الطلب</div>
+          <div class="value" id="requestBadge">بانتظار الإرسال</div>
         </div>
       </div>
 
@@ -469,10 +470,6 @@
           <h3 class="section-title">بيانات الطلب</h3>
 
           <div class="grid-4">
-            <div class="field">
-              <label>رقم الطلب</label>
-              <input id="requestNumber" class="readonly" type="text" placeholder="سيظهر بعد الإرسال" readonly />
-            </div>
             <div class="field">
               <label>تاريخ الطلب</label>
               <input id="requestDate" type="date" />
@@ -485,19 +482,19 @@
               <label>القسم</label>
               <input id="department" type="text" placeholder="اسم القسم أو الإدارة" />
             </div>
-          </div>
-
-          <div class="grid-4 gap-top">
             <div class="field">
               <label>البريد الإلكتروني</label>
               <input id="email" type="email" placeholder="name@company.com" />
             </div>
+          </div>
+
+          <div class="grid-4 gap-top">
             <div class="field">
               <label>رقم الهاتف</label>
               <input id="phone" type="text" placeholder="05XXXXXXXX" />
             </div>
             <div class="field">
-              <label>تاريخ الاستلام</label>
+              <label>تاريخ الاستلام المطلوب</label>
               <input id="neededDate" type="date" />
             </div>
             <div class="field">
@@ -615,6 +612,7 @@
   </div>
 
   <script>
+    // ضعي رابط الـ Google App Script الجديد هنا بعد عمل New Deployment
     const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyL46lGwIUJY0XiaVRKdiBXhJjz9DP-pPbTYzu3Gh2SqikIOAWIp4HoRpiEgOOlsDQFbQ/exec';
 
     function addItemRow(item = {}) {
@@ -676,75 +674,61 @@
         }
       });
 
-      return items.join('\n');
+      return items.join('\\n');
     }
 
     async function submitRequest() {
       const status = document.getElementById('statusMessage');
       status.textContent = 'جاري الإرسال...';
 
-      const formData = {
-        requestDate: document.getElementById('requestDate').value,
-        requesterName: document.getElementById('requesterName').value,
-        department: document.getElementById('department').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        purpose: document.getElementById('purpose').value,
-        requestType: document.getElementById('requestType').value,
-        neededDate: document.getElementById('neededDate').value,
-        vendor: document.getElementById('vendor').value,
-        notes: document.getElementById('notes').value,
-        items: collectItemsAsText(),
-        extraNotes: document.getElementById('extraNotes').value
-      };
+      // تجهيز البيانات بصيغة URLSearchParams لتجاوز قيود الـ CORS من GitHub
+      const formData = new URLSearchParams();
+      formData.append('requestDate', document.getElementById('requestDate').value);
+      formData.append('requesterName', document.getElementById('requesterName').value);
+      formData.append('department', document.getElementById('department').value);
+      formData.append('email', document.getElementById('email').value);
+      formData.append('phone', document.getElementById('phone').value);
+      formData.append('purpose', document.getElementById('purpose').value);
+      formData.append('requestType', document.getElementById('requestType').value);
+      formData.append('neededDate', document.getElementById('neededDate').value);
+      formData.append('vendor', document.getElementById('vendor').value);
+      formData.append('notes', document.getElementById('notes').value);
+      formData.append('items', collectItemsAsText());
+      formData.append('extraNotes', document.getElementById('extraNotes').value);
 
       try {
-        const response = await fetch(WEB_APP_URL, {
+        await fetch(WEB_APP_URL, {
           method: 'POST',
+          mode: 'no-cors', // أساسي للعمل من GitHub
           headers: {
-            'Content-Type': 'text/plain;charset=utf-8'
+            'Content-Type': 'application/x-www-form-urlencoded'
           },
-          body: JSON.stringify(formData)
+          body: formData.toString()
         });
 
-        const text = await response.text();
-        let result = {};
-
-        try {
-          result = JSON.parse(text);
-        } catch (e) {
-          status.textContent = 'الرد من السيرفر غير صحيح';
-          console.error(text);
-          return;
-        }
-
-        if (result.success) {
-          document.getElementById('requestNumber').value = result.requestNumber;
-          document.getElementById('requestBadge').textContent = result.requestNumber;
-          status.textContent = 'تم حفظ الطلب في Google Sheet بنجاح';
-        } else {
-          status.textContent = result.message || 'تعذر حفظ الطلب';
-        }
+        status.textContent = 'تم إرسال الطلب بنجاح! راجعي ملف الشيت لتأكيد وصول البيانات.';
+        document.getElementById('requestBadge').textContent = "تم الإرسال بنجاح";
+        
       } catch (error) {
         console.error(error);
-        status.textContent = 'فشل الإرسال. تأكدي من صلاحيات Web App وإعادة النشر.';
+        status.textContent = 'فشل الإرسال. يرجى المحاولة لاحقاً.';
       }
     }
 
     function resetForm() {
-      document.querySelectorAll('input:not(#requestNumber), textarea, select').forEach(function(el) {
+      document.querySelectorAll('input, textarea, select').forEach(function(el) {
         el.value = '';
       });
 
       document.getElementById('itemsTableBody').innerHTML = '';
       addItemRow();
 
-      document.getElementById('requestNumber').value = '';
-      document.getElementById('requestBadge').textContent = 'سيظهر بعد الإرسال';
+      document.getElementById('requestBadge').textContent = 'بانتظار الإرسال';
       document.getElementById('statusMessage').textContent = '';
       document.getElementById('requestDate').value = new Date().toISOString().split('T')[0];
     }
 
+    // إعداد التهيئة عند فتح الصفحة
     document.getElementById('requestDate').value = new Date().toISOString().split('T')[0];
     addItemRow();
   </script>
