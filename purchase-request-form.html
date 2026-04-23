@@ -1,324 +1,340 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>نموذج طلب شراء داخلي — قيمة المالية</title>
-<style>
-  :root {
-    --primary: #675398;
-    --primary-dark: #442182;
-    --gold: #C4981A;
-    --soft: #f6f3fb;
-    --line: #ddd7ea;
-    --text: #1f2937;
-    --muted: #6b7280;
-  }
-
-  * { box-sizing: border-box; }
-
-  body {
-    margin: 0;
-    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
-    background: #ede9f5;
-    color: var(--text);
-    font-size: 13px;
-  }
-
-  .toolbar {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 14px 12px 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .toolbar h1 {
-    margin: 0;
-    color: var(--primary-dark);
-    font-size: 20px;
-  }
-
-  .toolbar p {
-    margin: 3px 0 0;
-    color: var(--muted);
-    font-size: 11px;
-  }
-
-  .actions {
-    display: flex;
-    gap: 7px;
-    flex-wrap: wrap;
-  }
-
-  button {
-    border: 0;
-    border-radius: 8px;
-    padding: 8px 14px;
-    font-size: 12px;
-    font-weight: 700;
-    cursor: pointer;
-    font-family: inherit;
-  }
-
-  .btn-primary {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: #fff;
-  }
-
-  .btn-light {
-    background: #fff;
-    color: var(--primary-dark);
-    border: 1px solid var(--line);
-  }
-
-  .sheet {
-    max-width: 760px;
-    margin: 0 auto 24px;
-    background: #fff;
-    border: 1px solid rgba(68,33,130,.1);
-    border-radius: 16px;
-    box-shadow: 0 10px 28px rgba(68,33,130,.08);
-    overflow: hidden;
-  }
-
-  .header {
-    background: linear-gradient(135deg, #5a4490 0%, #442182 100%);
-    color: #fff;
-    padding: 12px 14px;
-    display: grid;
-    grid-template-columns: 68px 1fr 110px;
-    gap: 8px;
-    align-items: center;
-  }
-
-  .logo-box img {
-    max-width: 56px;
-    max-height: 24px;
-    object-fit: contain;
-    background: #fff;
-    border-radius: 6px;
-    padding: 3px 4px;
-    display: block;
-  }
-
-  .title-box { text-align: center; }
-
-  .title-box h2 {
-    margin: 0;
-    font-size: 15px;
-  }
-
-  .title-box p {
-    margin: 4px 0 0;
-    font-size: 9px;
-    opacity: .9;
-    line-height: 1.4;
-  }
-
-  .number-box {
-    background: rgba(255,255,255,.13);
-    border: 1px solid rgba(255,255,255,.22);
-    border-radius: 10px;
-    padding: 7px 6px;
-    text-align: center;
-  }
-
-  .number-box .label {
-    font-size: 8px;
-    opacity: .9;
-    margin-bottom: 3px;
-  }
-
-  .number-box .value {
-    font-size: 11px;
-    font-weight: 800;
-    line-height: 1.25;
-    word-break: break-word;
-  }
-
-  .content {
-    padding: 10px;
-    display: grid;
-    gap: 8px;
-  }
-
-  .section {
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 9px 10px;
-    background: #fff;
-  }
-
-  .section-title {
-    margin: 0 0 8px;
-    font-size: 13px;
-    font-weight: 800;
-    color: var(--primary-dark);
-    display: flex;
-    align-items: center;
-    gap: 7px;
-  }
-
-  .section-title::before {
-    content: '';
-    display: inline-block;
-    width: 4px;
-    height: 14px;
-    background: var(--gold);
-    border-radius: 3px;
-    flex-shrink: 0;
-  }
-
-  .grid-4 {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-  }
-
-  .grid-3 {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-  }
-
-  .grid-2 {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-
-  .gap-top { margin-top: 8px; }
-
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .field label {
-    font-size: 11px;
-    font-weight: 700;
-    color: #374151;
-  }
-
-  .field input,
-  .field textarea,
-  .field select {
-    width: 100%;
-    border: 1px solid #ddd4f0;
-    border-radius: 8px;
-    padding: 8px 10px;
-    font-size: 12px;
-    color: var(--text);
-    background: #faf9fd;
-    font-family: inherit;
-    outline: none;
-  }
-
-  .field textarea {
-    min-height: 64px;
-    resize: vertical;
-    line-height: 1.5;
-  }
-
-  .readonly {
-    background: #f0edf8 !important;
-    color: var(--primary-dark) !important;
-    font-weight: 800;
-    cursor: default;
-  }
-
-  .signature-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-
-  .signature-box {
-    border: 1px dashed #c5bad8;
-    border-radius: 10px;
-    padding: 10px;
-    min-height: 82px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background: #fdfcff;
-  }
-
-  .signature-box h4 {
-    margin: 0 0 3px;
-    color: var(--primary-dark);
-    font-size: 12px;
-  }
-
-  .signature-box p {
-    margin: 0;
-    font-size: 10px;
-    color: var(--muted);
-  }
-
-  .sig-line {
-    border-top: 1px solid #cdc6e0;
-    padding-top: 4px;
-    font-size: 10px;
-    color: #4b5563;
-    margin-top: 6px;
-    line-height: 1.7;
-  }
-
-  .footer-note {
-    text-align: center;
-    font-size: 11px;
-    color: #9ca3af;
-    margin-top: -2px;
-    padding-bottom: 2px;
-  }
-
-  @media (max-width: 700px) {
-    .header,
-    .grid-4,
-    .grid-3,
-    .grid-2,
-    .signature-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  @media print {
-    @page {
-      size: A4 portrait;
-      margin: 10mm;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>نموذج طلب شراء داخلي — قيمة المالية</title>
+  <style>
+    :root {
+      --primary: #675398;
+      --primary-dark: #442182;
+      --gold: #C4981A;
+      --soft: #f6f3fb;
+      --line: #ddd7ea;
+      --text: #1f2937;
+      --muted: #6b7280;
     }
 
-    html, body {
-      width: 210mm;
-      min-height: 297mm;
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
       margin: 0;
-      padding: 0;
-      background: #fff;
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      background: #ede9f5;
+      color: var(--text);
+      font-size: 13px;
     }
 
-    .toolbar,
+    .toolbar {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 14px 12px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar h1 {
+      margin: 0;
+      color: var(--primary-dark);
+      font-size: 20px;
+    }
+
+    .toolbar p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
     button {
-      display: none !important;
+      border: 0;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+    }
+
+    .btn-light {
+      background: #fff;
+      color: var(--primary-dark);
+      border: 1px solid var(--line);
     }
 
     .sheet {
-      width: 100%;
-      max-width: 100%;
-      margin: 0;
-      border: 1px solid #d9d9d9;
-      border-radius: 0;
-      box-shadow: none;
+      max-width: 760px;
+      margin: 0 auto 24px;
+      background: #fff;
+      border: 1px solid rgba(68, 33, 130, 0.1);
+      border-radius: 16px;
+      box-shadow: 0 10px 28px rgba(68, 33, 130, 0.08);
+      overflow: hidden;
     }
-  }
-</style>
+
+    .header {
+      background: linear-gradient(135deg, #5a4490 0%, #442182 100%);
+      color: #fff;
+      padding: 12px 14px;
+      display: grid;
+      grid-template-columns: 68px 1fr 110px;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .logo-box img {
+      max-width: 56px;
+      max-height: 24px;
+      object-fit: contain;
+      background: #fff;
+      border-radius: 6px;
+      padding: 3px 4px;
+      display: block;
+    }
+
+    .title-box {
+      text-align: center;
+    }
+
+    .title-box h2 {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    .title-box p {
+      margin: 4px 0 0;
+      font-size: 9px;
+      opacity: 0.9;
+      line-height: 1.4;
+    }
+
+    .number-box {
+      background: rgba(255, 255, 255, 0.13);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 10px;
+      padding: 7px 6px;
+      text-align: center;
+    }
+
+    .number-box .label {
+      font-size: 8px;
+      opacity: 0.9;
+      margin-bottom: 3px;
+    }
+
+    .number-box .value {
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.25;
+      word-break: break-word;
+    }
+
+    .content {
+      padding: 10px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .section {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 9px 10px;
+      background: #fff;
+    }
+
+    .section-title {
+      margin: 0 0 8px;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .section-title::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 14px;
+      background: var(--gold);
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .grid-4,
+    .grid-3,
+    .grid-2 {
+      display: grid;
+      gap: 8px;
+    }
+
+    .grid-4 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-2 {
+      grid-template-columns: 1fr;
+    }
+
+    .gap-top {
+      margin-top: 8px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .field label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #374151;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      border: 1px solid #ddd4f0;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 12px;
+      color: var(--text);
+      background: #faf9fd;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .field textarea {
+      min-height: 64px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .readonly {
+      background: #f0edf8 !important;
+      color: var(--primary-dark) !important;
+      font-weight: 800;
+      cursor: default;
+    }
+
+    .signature-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .signature-box {
+      border: 1px dashed #c5bad8;
+      border-radius: 10px;
+      padding: 10px;
+      min-height: 82px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: #fdfcff;
+    }
+
+    .signature-box h4 {
+      margin: 0 0 3px;
+      color: var(--primary-dark);
+      font-size: 12px;
+    }
+
+    .signature-box p {
+      margin: 0;
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .sig-line {
+      border-top: 1px solid #cdc6e0;
+      padding-top: 4px;
+      font-size: 10px;
+      color: #4b5563;
+      margin-top: 6px;
+      line-height: 1.7;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 11px;
+      color: #9ca3af;
+      margin-top: -2px;
+      padding-bottom: 2px;
+    }
+
+    .status-message {
+      font-size: 12px;
+      color: var(--primary-dark);
+      font-weight: 700;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 700px) {
+      .header,
+      .grid-4,
+      .grid-3,
+      .grid-2,
+      .signature-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 10mm;
+      }
+
+      html,
+      body {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 0;
+        padding: 0;
+        background: #fff;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .toolbar,
+      button,
+      .status-message {
+        display: none !important;
+      }
+
+      .sheet {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        border: 1px solid #d9d9d9;
+        border-radius: 0;
+        box-shadow: none;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="toolbar">
@@ -336,7 +352,7 @@
   <div class="sheet">
     <div class="header">
       <div class="logo-box">
-        <img src="/mnt/data/لوقو شفاف(3).png" alt="قيمة المالية" />
+        <img src="PASTE_YOUR_LOGO_BASE64_OR_URL_HERE" alt="قيمة المالية" />
       </div>
 
       <div class="title-box">
@@ -396,6 +412,7 @@
 
       <div class="section">
         <h3 class="section-title">تفاصيل الاحتياج</h3>
+
         <div class="grid-2">
           <div class="field">
             <label>الغرض</label>
@@ -421,6 +438,7 @@
 
       <div class="section">
         <h3 class="section-title">الاعتماد</h3>
+
         <div class="signature-grid">
           <div class="signature-box">
             <div>
@@ -457,16 +475,21 @@
         </div>
       </div>
 
-      <p class=\"footer-note\">طلب شراء داخلي — Value Capital</p>
+      <p class="footer-note">طلب شراء داخلي — Value Capital</p>
+      <div id="statusMessage" class="status-message"></div>
     </div>
   </div>
 
   <script>
     function submitRequest() {
+      const status = document.getElementById('statusMessage');
+      status.textContent = 'جاري الإرسال...';
+
       const formData = {
         requestDate: document.getElementById('requestDate').value,
         requesterName: document.getElementById('requesterName').value,
         department: document.getElementById('department').value,
+        jobTitle: document.getElementById('jobTitle').value,
         purpose: document.getElementById('purpose').value,
         priority: document.getElementById('priority').value,
         neededDate: document.getElementById('neededDate').value,
@@ -480,24 +503,29 @@
           if (response && response.success) {
             document.getElementById('requestNumber').value = response.requestNumber;
             document.getElementById('requestBadge').textContent = response.requestNumber;
-            alert('تم حفظ الطلب في Google Sheet بنجاح');
+            status.textContent = 'تم حفظ الطلب في Google Sheet بنجاح';
           } else {
-            alert('تعذر حفظ الطلب');
+            status.textContent = 'تعذر حفظ الطلب';
           }
         })
         .withFailureHandler(function(error) {
-          alert('خطأ: ' + error.message);
+          status.textContent = 'خطأ: ' + error.message;
         })
         .submitPurchaseRequest(formData);
     }
 
     function resetForm() {
-      document.querySelectorAll('input:not(#requestNumber), textarea, select').forEach(el => el.value = '');
+      document.querySelectorAll('input:not(#requestNumber), textarea, select').forEach(function(el) {
+        el.value = '';
+      });
+
       document.getElementById('requestNumber').value = '';
       document.getElementById('requestBadge').textContent = 'سيظهر بعد الإرسال';
+      document.getElementById('statusMessage').textContent = '';
       document.getElementById('requestDate').value = new Date().toISOString().split('T')[0];
     }
 
     document.getElementById('requestDate').value = new Date().toISOString().split('T')[0];
   </script>
 </body>
+</html>
