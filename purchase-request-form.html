@@ -78,6 +78,11 @@
       font-weight: 700;
       cursor: pointer;
       font-family: inherit;
+      transition: opacity 0.2s;
+    }
+    
+    button:hover {
+      opacity: 0.9;
     }
 
     .btn-primary {
@@ -226,6 +231,11 @@
       color: #374151;
     }
 
+    .req-star {
+      color: var(--danger-text);
+      font-weight: bold;
+    }
+
     .field input,
     .field textarea,
     .field select {
@@ -238,6 +248,7 @@
       background: #faf9fd;
       font-family: inherit;
       outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     .field textarea {
@@ -251,6 +262,12 @@
     .field select:focus {
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(103,83,152,.12);
+    }
+
+    /* تأثير الحقل الخاطئ (عند عدم التعبئة) */
+    .error-field {
+      border-color: var(--danger-text) !important;
+      background: var(--danger-bg) !important;
     }
 
     .readonly {
@@ -375,6 +392,8 @@
       margin-top: 6px;
       white-space: pre-line;
       text-align: center;
+      padding: 8px;
+      border-radius: 6px;
     }
 
     @media (max-width: 780px) {
@@ -475,11 +494,11 @@
               <input id="requestDate" type="date" />
             </div>
             <div class="field">
-              <label>الاسم</label>
+              <label>الاسم <span class="req-star">*</span></label>
               <input id="requesterName" type="text" placeholder="الاسم الكامل" />
             </div>
             <div class="field">
-              <label>القسم</label>
+              <label>القسم <span class="req-star">*</span></label>
               <input id="department" type="text" placeholder="اسم القسم أو الإدارة" />
             </div>
             <div class="field">
@@ -498,9 +517,9 @@
               <input id="neededDate" type="date" />
             </div>
             <div class="field">
-              <label>نوع الطلب</label>
+              <label>نوع الطلب <span class="req-star">*</span></label>
               <select id="requestType">
-                <option value="">اختر</option>
+                <option value="">اختر...</option>
                 <option>تشغيلي</option>
                 <option>استخدام فردي</option>
                 <option>عهدة على القسم</option>
@@ -517,12 +536,12 @@
 
           <div class="grid-2">
             <div class="field">
-              <label>الغرض</label>
+              <label>الغرض <span class="req-star">*</span></label>
               <textarea id="purpose" placeholder="اذكر الغرض من الطلب"></textarea>
             </div>
             <div class="field">
               <label>المورد المقترح</label>
-              <input id="vendor" type="text" placeholder="اسم المورد" />
+              <input id="vendor" type="text" placeholder="اسم المورد إن وجد" />
             </div>
           </div>
 
@@ -538,7 +557,7 @@
               </colgroup>
               <thead>
                 <tr>
-                  <th>اسم المنتج</th>
+                  <th>اسم المنتج <span class="req-star">*</span></th>
                   <th>الكمية</th>
                   <th>الوحدة</th>
                   <th>المبررات</th>
@@ -612,15 +631,15 @@
   </div>
 
   <script>
-    // ضعي رابط الـ Google App Script الجديد هنا بعد عمل New Deployment
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyjCWa92a6KxYVW-qZ08dK2kVg3EgduzMxJyz7FNKWqPuQPWZJ60exhpsQnPB9n9piXFA/exec';
+    // تذكري وضع الرابط الخاص بك هنا دائماً
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwHdLGl76-LnM4CDijYreIye9m4GYSZE1cLe5PoGcTKOL6IQl-WuQpaeN8_xfZf4oBqcA/exec';
 
     function addItemRow(item = {}) {
       const tbody = document.getElementById('itemsTableBody');
       const row = document.createElement('tr');
 
       row.innerHTML = `
-        <td><input type="text" class="item-name" placeholder="اسم المنتج" value="${item.name || ''}"></td>
+        <td><input type="text" class="item-name" placeholder="اسم المنتج" value="${item.name || ''}" oninput="this.classList.remove('error-field')"></td>
         <td><input type="number" class="item-qty" placeholder="الكمية" min="1" value="${item.qty || 1}"></td>
         <td>
           <select class="item-unit">
@@ -677,19 +696,77 @@
       return items.join('\\n');
     }
 
+    // دالة لتنظيف علامات الخطأ الحمراء عند الكتابة
+    function clearErrors() {
+      document.querySelectorAll('.error-field').forEach(el => el.classList.remove('error-field'));
+    }
+
+    // إضافة مراقب (Event Listener) للحقول الإلزامية لتنظيف الخطأ فور الكتابة
+    document.addEventListener('DOMContentLoaded', () => {
+      const requiredInputs = ['requesterName', 'department', 'requestType', 'purpose'];
+      requiredInputs.forEach(id => {
+        document.getElementById(id).addEventListener('input', clearErrors);
+        document.getElementById(id).addEventListener('change', clearErrors);
+      });
+    });
+
     async function submitRequest() {
       const status = document.getElementById('statusMessage');
-      status.textContent = 'جاري الإرسال...';
+      
+      // مسح رسائل التنبيه السابقة
+      clearErrors();
+      status.style.backgroundColor = 'transparent';
+      status.style.color = 'var(--primary-dark)';
+      status.textContent = '';
 
-      // تجهيز البيانات بصيغة URLSearchParams لتجاوز قيود الـ CORS من GitHub
+      // جلب الحقول الإلزامية
+      const nameEl = document.getElementById('requesterName');
+      const deptEl = document.getElementById('department');
+      const typeEl = document.getElementById('requestType');
+      const purposeEl = document.getElementById('purpose');
+      
+      let isValid = true;
+
+      // فحص الحقول الأساسية
+      if (!nameEl.value.trim()) { nameEl.classList.add('error-field'); isValid = false; }
+      if (!deptEl.value.trim()) { deptEl.classList.add('error-field'); isValid = false; }
+      if (!typeEl.value.trim()) { typeEl.classList.add('error-field'); isValid = false; }
+      if (!purposeEl.value.trim()) { purposeEl.classList.add('error-field'); isValid = false; }
+
+      // فحص الجدول (يجب أن يحتوي على منتج واحد على الأقل)
+      let hasItems = false;
+      const firstItemNameEl = document.querySelector('.item-name');
+      const rows = document.querySelectorAll('#itemsTableBody tr');
+      rows.forEach(row => {
+        if(row.querySelector('.item-name').value.trim() !== '') {
+           hasItems = true;
+        }
+      });
+
+      if (!hasItems) {
+        firstItemNameEl.classList.add('error-field');
+        isValid = false;
+      }
+
+      // إذا كان هناك خطأ، أوقف العملية واعرض تنبيه
+      if (!isValid) {
+        status.style.backgroundColor = 'var(--danger-bg)';
+        status.style.color = 'var(--danger-text)';
+        status.textContent = '❌ يرجى تعبئة جميع الحقول الإلزامية المظللة باللون الأحمر.';
+        return;
+      }
+
+      // إذا كانت البيانات مكتملة، نبدأ الإرسال
+      status.textContent = '⏳ جاري إرسال الطلب...';
+
       const formData = new URLSearchParams();
       formData.append('requestDate', document.getElementById('requestDate').value);
-      formData.append('requesterName', document.getElementById('requesterName').value);
-      formData.append('department', document.getElementById('department').value);
+      formData.append('requesterName', nameEl.value.trim());
+      formData.append('department', deptEl.value.trim());
       formData.append('email', document.getElementById('email').value);
       formData.append('phone', document.getElementById('phone').value);
-      formData.append('purpose', document.getElementById('purpose').value);
-      formData.append('requestType', document.getElementById('requestType').value);
+      formData.append('purpose', purposeEl.value.trim());
+      formData.append('requestType', typeEl.value.trim());
       formData.append('neededDate', document.getElementById('neededDate').value);
       formData.append('vendor', document.getElementById('vendor').value);
       formData.append('notes', document.getElementById('notes').value);
@@ -699,23 +776,33 @@
       try {
         await fetch(WEB_APP_URL, {
           method: 'POST',
-          mode: 'no-cors', // أساسي للعمل من GitHub
+          mode: 'no-cors',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           },
           body: formData.toString()
         });
 
-        status.textContent = 'تم إرسال الطلب بنجاح! راجعي ملف الشيت لتأكيد وصول البيانات.';
-        document.getElementById('requestBadge').textContent = "تم الإرسال بنجاح";
+        status.style.backgroundColor = '#ecfdf5'; // لون أخضر فاتح للنجاح
+        status.style.color = '#059669'; // لون أخضر داكن للنص
+        status.textContent = '✅ تم إرسال الطلب بنجاح!';
+        document.getElementById('requestBadge').textContent = "تم الإرسال";
+        
+        // مسح النموذج تلقائياً بعد 3 ثوانٍ من الإرسال (اختياري)
+        setTimeout(() => {
+          resetForm();
+        }, 3000);
         
       } catch (error) {
         console.error(error);
-        status.textContent = 'فشل الإرسال. يرجى المحاولة لاحقاً.';
+        status.style.backgroundColor = 'var(--danger-bg)';
+        status.style.color = 'var(--danger-text)';
+        status.textContent = '❌ فشل الإرسال. يرجى التحقق من اتصال الإنترنت أو المحاولة لاحقاً.';
       }
     }
 
     function resetForm() {
+      clearErrors();
       document.querySelectorAll('input, textarea, select').forEach(function(el) {
         el.value = '';
       });
@@ -724,11 +811,14 @@
       addItemRow();
 
       document.getElementById('requestBadge').textContent = 'بانتظار الإرسال';
-      document.getElementById('statusMessage').textContent = '';
+      
+      const status = document.getElementById('statusMessage');
+      status.textContent = '';
+      status.style.backgroundColor = 'transparent';
+      
       document.getElementById('requestDate').value = new Date().toISOString().split('T')[0];
     }
 
-    // إعداد التهيئة عند فتح الصفحة
     document.getElementById('requestDate').value = new Date().toISOString().split('T')[0];
     addItemRow();
   </script>
