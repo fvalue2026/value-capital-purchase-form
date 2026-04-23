@@ -1,604 +1,334 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>نموذج طلب شراء — قيمة المالية</title>
-  <style>
-    :root {
-      --primary: #675398;
-      --primary-dark: #442182;
-      --gold: #C4981A;
-      --soft: #f6f3fb;
-      --line: #ddd7ea;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --white: #ffffff;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>نموذج طلب شراء داخلي — قيمة المالية</title>
+<style>
+  :root {
+    --primary: #675398;
+    --primary-dark: #442182;
+    --gold: #C4981A;
+    --soft: #f6f3fb;
+    --line: #ddd7ea;
+    --text: #1f2937;
+    --muted: #6b7280;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    background: #ede9f5;
+    color: var(--text);
+    font-size: 13px;
+  }
+
+  .toolbar {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 14px 12px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .toolbar h1 {
+    margin: 0;
+    color: var(--primary-dark);
+    font-size: 20px;
+  }
+
+  .toolbar p {
+    margin: 3px 0 0;
+    color: var(--muted);
+    font-size: 11px;
+  }
+
+  .actions {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+  }
+
+  button {
+    border: 0;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+  }
+
+  .btn-light {
+    background: #fff;
+    color: var(--primary-dark);
+    border: 1px solid var(--line);
+  }
+
+  .sheet {
+    max-width: 760px;
+    margin: 0 auto 24px;
+    background: #fff;
+    border: 1px solid rgba(68,33,130,.1);
+    border-radius: 16px;
+    box-shadow: 0 10px 28px rgba(68,33,130,.08);
+    overflow: hidden;
+  }
+
+  .header {
+    background: linear-gradient(135deg, #5a4490 0%, #442182 100%);
+    color: #fff;
+    padding: 12px 14px;
+    display: grid;
+    grid-template-columns: 68px 1fr 110px;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .logo-box img {
+    max-width: 56px;
+    max-height: 24px;
+    object-fit: contain;
+    background: #fff;
+    border-radius: 6px;
+    padding: 3px 4px;
+    display: block;
+  }
+
+  .title-box { text-align: center; }
+
+  .title-box h2 {
+    margin: 0;
+    font-size: 15px;
+  }
+
+  .title-box p {
+    margin: 4px 0 0;
+    font-size: 9px;
+    opacity: .9;
+    line-height: 1.4;
+  }
+
+  .number-box {
+    background: rgba(255,255,255,.13);
+    border: 1px solid rgba(255,255,255,.22);
+    border-radius: 10px;
+    padding: 7px 6px;
+    text-align: center;
+  }
+
+  .number-box .label {
+    font-size: 8px;
+    opacity: .9;
+    margin-bottom: 3px;
+  }
+
+  .number-box .value {
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1.25;
+    word-break: break-word;
+  }
+
+  .content {
+    padding: 10px;
+    display: grid;
+    gap: 8px;
+  }
+
+  .section {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 9px 10px;
+    background: #fff;
+  }
+
+  .section-title {
+    margin: 0 0 8px;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .section-title::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 14px;
+    background: var(--gold);
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .grid-4 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .gap-top { margin-top: 8px; }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .field label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #374151;
+  }
+
+  .field input,
+  .field textarea,
+  .field select {
+    width: 100%;
+    border: 1px solid #ddd4f0;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: var(--text);
+    background: #faf9fd;
+    font-family: inherit;
+    outline: none;
+  }
+
+  .field textarea {
+    min-height: 64px;
+    resize: vertical;
+    line-height: 1.5;
+  }
+
+  .readonly {
+    background: #f0edf8 !important;
+    color: var(--primary-dark) !important;
+    font-weight: 800;
+    cursor: default;
+  }
+
+  .signature-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .signature-box {
+    border: 1px dashed #c5bad8;
+    border-radius: 10px;
+    padding: 10px;
+    min-height: 82px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #fdfcff;
+  }
+
+  .signature-box h4 {
+    margin: 0 0 3px;
+    color: var(--primary-dark);
+    font-size: 12px;
+  }
+
+  .signature-box p {
+    margin: 0;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .sig-line {
+    border-top: 1px solid #cdc6e0;
+    padding-top: 4px;
+    font-size: 10px;
+    color: #4b5563;
+    margin-top: 6px;
+    line-height: 1.7;
+  }
+
+  .footer-note {
+    text-align: center;
+    font-size: 11px;
+    color: #9ca3af;
+    margin-top: -2px;
+    padding-bottom: 2px;
+  }
+
+  @media (max-width: 700px) {
+    .header,
+    .grid-4,
+    .grid-3,
+    .grid-2,
+    .signature-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media print {
+    @page {
+      size: A4 portrait;
+      margin: 10mm;
     }
 
-    * { box-sizing: border-box; }
-
-    body {
+    html, body {
+      width: 210mm;
+      min-height: 297mm;
       margin: 0;
-      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
-      background: #ede9f5;
-      color: var(--text);
-      font-size: 13px;
-    }
-
-    .toolbar {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 14px 12px 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .toolbar h1 {
-      margin: 0;
-      color: var(--primary-dark);
-      font-size: 20px;
-    }
-
-    .toolbar p {
-      margin: 3px 0 0;
-      color: var(--muted);
-      font-size: 11px;
-    }
-
-    .actions {
-      display: flex;
-      gap: 7px;
-      flex-wrap: wrap;
-    }
-
-    button {
-      border: 0;
-      border-radius: 8px;
-      padding: 8px 14px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: inherit;
-      transition: opacity .15s;
-    }
-
-    button:hover { opacity: .85; }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: #fff;
-    }
-
-    .btn-light {
+      padding: 0;
       background: #fff;
-      color: var(--primary-dark);
-      border: 1px solid var(--line);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .toolbar,
+    button {
+      display: none !important;
     }
 
     .sheet {
-      max-width: 760px;
-      margin: 0 auto 24px;
-      background: #fff;
-      border: 1px solid rgba(68,33,130,.1);
-      border-radius: 16px;
-      box-shadow: 0 10px 28px rgba(68,33,130,.08);
-      overflow: hidden;
-    }
-
-    .header {
-      background: linear-gradient(135deg, #5a4490 0%, #442182 100%);
-      color: #fff;
-      padding: 12px 14px;
-      display: grid;
-      grid-template-columns: 68px 1fr 92px;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .logo-box img {
-      max-width: 56px;
-      max-height: 24px;
-      object-fit: contain;
-      background: #fff;
-      border-radius: 6px;
-      padding: 3px 4px;
-      display: block;
-    }
-
-    .title-box { text-align: center; }
-
-    .title-box h2 {
+      width: 100%;
+      max-width: 100%;
       margin: 0;
-      font-size: 15px;
-      letter-spacing: .2px;
+      border: 1px solid #d9d9d9;
+      border-radius: 0;
+      box-shadow: none;
     }
-
-    .title-box p {
-      margin: 4px 0 0;
-      font-size: 9px;
-      opacity: .9;
-      line-height: 1.4;
-    }
-
-    .number-box {
-      background: rgba(255,255,255,.13);
-      border: 1px solid rgba(255,255,255,.22);
-      border-radius: 10px;
-      padding: 7px 6px;
-      text-align: center;
-    }
-
-    .number-box .label {
-      font-size: 8px;
-      opacity: .9;
-      margin-bottom: 3px;
-    }
-
-    .number-box .value {
-      font-size: 11px;
-      font-weight: 800;
-      line-height: 1.25;
-      word-break: break-word;
-    }
-
-    .content {
-      padding: 10px;
-      display: grid;
-      gap: 8px;
-    }
-
-    .section {
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 9px 10px;
-      background: #fff;
-    }
-
-    .section-title {
-      margin: 0 0 8px;
-      font-size: 13px;
-      font-weight: 800;
-      color: var(--primary-dark);
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .section-title::before {
-      content: '';
-      display: inline-block;
-      width: 4px;
-      height: 14px;
-      background: var(--gold);
-      border-radius: 3px;
-      flex-shrink: 0;
-    }
-
-    .grid-4 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 8px;
-    }
-
-    .gap-top { margin-top: 8px; }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .field label {
-      font-size: 11px;
-      font-weight: 700;
-      color: #374151;
-    }
-
-    .field input,
-    .field textarea,
-    .field select {
-      width: 100%;
-      border: 1px solid #ddd4f0;
-      border-radius: 8px;
-      padding: 8px 10px;
-      font-size: 12px;
-      color: var(--text);
-      background: #faf9fd;
-      font-family: inherit;
-      transition: border-color .15s, box-shadow .15s;
-      outline: none;
-    }
-
-    .field input:focus,
-    .field textarea:focus,
-    .field select:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(103,83,152,.12);
-    }
-
-    .field textarea {
-      min-height: 64px;
-      resize: vertical;
-      line-height: 1.5;
-    }
-
-    .readonly {
-      background: #f0edf8 !important;
-      color: var(--primary-dark) !important;
-      font-weight: 800;
-      cursor: default;
-    }
-
-    .table-wrap {
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      overflow: hidden;
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #fff;
-      table-layout: fixed;
-    }
-
-    thead { background: var(--soft); }
-
-    th, td {
-      border-bottom: 1px solid #ece8f4;
-      padding: 6px;
-      text-align: right;
-      font-size: 11px;
-      vertical-align: middle;
-      white-space: normal;
-      word-break: break-word;
-    }
-
-    tbody tr:last-child td { border-bottom: 0; }
-
-    th {
-      color: var(--primary-dark);
-      font-weight: 800;
-      font-size: 10px;
-    }
-
-    td input, td select {
-      width: 100%;
-      border: 1px solid #ddd4f0;
-      border-radius: 7px;
-      padding: 6px 7px;
-      font-size: 10px;
-      background: #faf9fd;
-      font-family: inherit;
-      outline: none;
-    }
-
-    td input:focus, td select:focus {
-      border-color: var(--primary);
-    }
-
-    .remove-btn {
-      background: #fff1f2;
-      color: #b91c1c;
-      border: 1px solid #fecdd3;
-      padding: 5px 8px;
-      border-radius: 7px;
-      font-size: 10px;
-      font-weight: 700;
-      width: 100%;
-    }
-
-    .table-tools {
-      margin-top: 8px;
-      display: flex;
-      justify-content: flex-start;
-    }
-
-    .signature-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 8px;
-    }
-
-    .signature-box {
-      border: 1px dashed #c5bad8;
-      border-radius: 10px;
-      padding: 10px;
-      min-height: 82px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      background: #fdfcff;
-    }
-
-    .signature-box h4 {
-      margin: 0 0 3px;
-      color: var(--primary-dark);
-      font-size: 12px;
-    }
-
-    .signature-box p {
-      margin: 0;
-      font-size: 10px;
-      color: var(--muted);
-    }
-
-    .sig-line {
-      border-top: 1px solid #cdc6e0;
-      padding-top: 4px;
-      font-size: 10px;
-      color: #4b5563;
-      margin-top: 6px;
-      line-height: 1.7;
-    }
-
-    .footer-note {
-      text-align: center;
-      font-size: 11px;
-      color: #9ca3af;
-      margin-top: -2px;
-      padding-bottom: 2px;
-    }
-
-    @media (max-width: 700px) {
-      .header {
-        grid-template-columns: 1fr;
-      }
-
-      .grid-4, .grid-3, .grid-2, .signature-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .title-box { text-align: right; }
-    }
-
-    @media print {
-      @page {
-        size: A4 portrait;
-        margin: 10mm;
-      }
-
-      html,
-      body {
-        width: 210mm;
-        min-height: 297mm;
-        margin: 0;
-        padding: 0;
-        background: #fff;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-
-      body {
-        zoom: 1;
-        font-size: 11px;
-      }
-
-      .toolbar,
-      .table-tools,
-      .remove-btn,
-      button {
-        display: none !important;
-      }
-
-      .page {
-        width: 190mm;
-        max-width: 190mm;
-        margin: 0 auto;
-        padding: 0;
-      }
-
-      .sheet {
-        width: 190mm;
-        max-width: 190mm;
-        margin: 0;
-        border: 1px solid #d9d9d9;
-        border-radius: 0;
-        box-shadow: none;
-        overflow: hidden;
-      }
-
-      .header {
-        grid-template-columns: 24mm 1fr 28mm;
-        gap: 4mm;
-        padding: 5mm 5mm 4mm;
-        align-items: center;
-      }
-
-      .logo-box img {
-        max-width: 22mm;
-        max-height: 10mm;
-        padding: 1mm 1.5mm;
-        border-radius: 2mm;
-      }
-
-      .title-box h2 {
-        font-size: 13pt;
-        margin: 0;
-      }
-
-      .title-box p {
-        font-size: 8pt;
-        margin: 1.5mm 0 0;
-        line-height: 1.35;
-      }
-
-      .number-box {
-        padding: 2.5mm 2mm;
-        border-radius: 3mm;
-      }
-
-      .number-box .label {
-        font-size: 7pt;
-        margin-bottom: 1mm;
-      }
-
-      .number-box .value {
-        font-size: 8.5pt;
-        line-height: 1.2;
-        word-break: normal;
-      }
-
-      .content {
-        padding: 4mm;
-        gap: 3mm;
-      }
-
-      .section {
-        padding: 3mm;
-        border-radius: 2.5mm;
-        break-inside: avoid;
-        page-break-inside: avoid;
-      }
-
-      .section-title {
-        font-size: 10pt;
-        margin-bottom: 2.5mm;
-      }
-
-      .section-title::before {
-        width: 1mm;
-        height: 10px;
-      }
-
-      .grid-4 {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 2mm;
-      }
-
-      .grid-3 {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 2mm;
-      }
-
-      .grid-2 {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 2mm;
-      }
-
-      .gap-top {
-        margin-top: 2mm;
-      }
-
-      .field {
-        gap: 1mm;
-      }
-
-      .field label {
-        font-size: 7.5pt;
-      }
-
-      .field input,
-      .field textarea,
-      .field select {
-        font-size: 8pt;
-        padding: 2mm 2.2mm;
-        border-radius: 2mm;
-        background: #fff;
-        box-shadow: none;
-      }
-
-      .field textarea {
-        min-height: 16mm;
-        resize: none;
-      }
-
-      .table-wrap {
-        border-radius: 2mm;
-        overflow: hidden;
-        break-inside: avoid;
-        page-break-inside: avoid;
-      }
-
-      table {
-        width: 100%;
-        table-layout: fixed;
-        border-collapse: collapse;
-      }
-
-      th,
-      td {
-        font-size: 7.5pt;
-        padding: 1.5mm 1.2mm;
-        white-space: normal;
-        word-break: break-word;
-      }
-
-      th {
-        font-size: 7pt;
-      }
-
-      td input,
-      td select {
-        font-size: 7.5pt;
-        padding: 1.4mm 1.6mm;
-        border-radius: 1.5mm;
-        background: #fff;
-      }
-
-      .signature-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 2mm;
-      }
-
-      .signature-box {
-        min-height: 26mm;
-        padding: 2.5mm;
-        border-radius: 2mm;
-        break-inside: avoid;
-        page-break-inside: avoid;
-      }
-
-      .signature-box h4 {
-        font-size: 8pt;
-        margin-bottom: 1mm;
-      }
-
-      .signature-box p {
-        font-size: 6.5pt;
-      }
-
-      .sig-line {
-        font-size: 6.5pt;
-        margin-top: 1.5mm;
-        padding-top: 1.2mm;
-        line-height: 1.5;
-      }
-
-      .footer-note {
-        font-size: 6.5pt;
-        margin-top: 0;
-        padding-bottom: 0;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
   <div class="toolbar">
     <div>
-      <h1>نموذج طلب شراء</h1>
-      <p>نسخة داخلية — قيمة المالية</p>
+      <h1>نموذج طلب شراء داخلي</h1>
+      <p>مرتبط بـ Google Sheet</p>
     </div>
     <div class="actions">
-      <button class="btn-light" onclick="addRow()">+ إضافة صنف</button>
       <button class="btn-light" onclick="resetForm()">🗑 مسح</button>
+      <button class="btn-primary" onclick="submitRequest()">✅ إرسال</button>
       <button class="btn-primary" onclick="window.print()">🖨 طباعة</button>
     </div>
   </div>
@@ -606,16 +336,17 @@
   <div class="sheet">
     <div class="header">
       <div class="logo-box">
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAo4AAACxCAYAAABKvTyxAAAACXBIWXMAAAsSAAALEgHS3X78AAAgAElEQVR4nO2de3xV1b3/P6fMJGQyQwIJKQtCQmYQWQ5KQJCVQhFSBSErZSkW8L0bS4vW+vW2ra1r6+7v99rVv3v7Wm3b1rW2a9vW2r7Xtq2trbVt2/budt1rX5o6G8q6B9eM3H7m2bNnJkQmQ2QmYQk5w3z9yT8/5/3+f5vPjvO8z3nPOc85xzzjnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc84555xzzjnnnHPOOeecc845JwQ2btr0+X/7z5+9evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1atXr169evXq1avXb9/DytSpU6fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTv3H2EwGGBmZubp06fPnj17/vz58+fPnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTv3H2EwGGBmZubp06fPnj17/vz58+fPnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTv3H2EwGGBmZubp06fPnj17/vz58+fPnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt37ty5c+fOnTt3jvpnr127tn379m3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btl3G2dnZ4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eFh5C7W1tYGBgaGhoWtra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2tq6q4zMzM9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT19Q6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6v4nMpkM5s2bN2/e/Pnz58+fPn369OnTp0+fPn369OnTp0+fPn369OnTp0+fPn369OnTp0+fPn369OnTp0+fPn369OnTp0+fPn369OnTp08P/6i8vLx79+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7du3fv3r179+7d+3/Q4XAYo6Oj8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fExjUwmk4ODg5GRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGQkH8bQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NzU5WVlbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW3vR8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8h8vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vF4vH4n0mEwGOzs7MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzM7P8A0dHRjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIz8z4MHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDgwYMHDx48ePDA/8nAwMDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PBL2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2fnP8B8fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX1/4T8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLw38+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKiv4/4mZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZ+U8A8wV9Ykqzv8R7AAAAAElFTkSuQmCC" alt="قيمة المالية" />
+        <img src="/mnt/data/لوقو شفاف(3).png" alt="قيمة المالية" />
       </div>
 
       <div class="title-box">
-        <h2>نموذج طلب شراء</h2>
+        <h2>نموذج طلب شراء داخلي</h2>
+        <p>Internal Purchase Request Form</p>
       </div>
 
       <div class="number-box">
-        <div class="label">رقم طلب الشراء</div>
-        <div class="value" id="requestBadge">—</div>
+        <div class="label">رقم الطلب</div>
+        <div class="value" id="requestBadge">سيظهر بعد الإرسال</div>
       </div>
     </div>
 
@@ -625,8 +356,8 @@
 
         <div class="grid-4">
           <div class="field">
-            <label>رقم طلب الشراء</label>
-            <input id="requestNumber" class="readonly" type="text" placeholder="—" readonly />
+            <label>رقم الطلب</label>
+            <input id="requestNumber" class="readonly" type="text" placeholder="سيظهر بعد الإرسال" readonly />
           </div>
           <div class="field">
             <label>تاريخ الطلب</label>
@@ -642,7 +373,7 @@
           </div>
         </div>
 
-        <div class="grid-4 gap-top">
+        <div class="grid-3 gap-top">
           <div class="field">
             <label>المسمى الوظيفي</label>
             <input id="jobTitle" type="text" placeholder="المسمى الوظيفي" />
@@ -652,21 +383,9 @@
             <input id="neededDate" type="date" />
           </div>
           <div class="field">
-            <label>نوع الطلب</label>
-            <select id="requestType">
-              <option value="">اختر النوع</option>
-              <option>احتياج قسم</option>
-              <option>عهدة فردية</option>
-              <option>عهدة مشتركة</option>
-              <option>خدمة</option>
-              <option>أصل</option>
-              <option>تشغيلي</option>
-            </select>
-          </div>
-          <div class="field">
             <label>الأولوية</label>
             <select id="priority">
-              <option value="">اختر الأولوية</option>
+              <option value="">اختر</option>
               <option>عالية</option>
               <option>متوسطة</option>
               <option>منخفضة</option>
@@ -676,51 +395,27 @@
       </div>
 
       <div class="section">
-        <h3 class="section-title">تفاصيل الطلب</h3>
-
-        <div class="grid-3">
-          <div class="field" style="grid-column: span 2;">
-            <label>الغرض من الطلب</label>
-            <textarea id="purpose" placeholder="اذكر الغرض التشغيلي أو الإداري من هذا الطلب"></textarea>
+        <h3 class="section-title">تفاصيل الاحتياج</h3>
+        <div class="grid-2">
+          <div class="field">
+            <label>الغرض</label>
+            <textarea id="purpose" placeholder="اذكر الغرض من الطلب"></textarea>
           </div>
           <div class="field">
-            <label>المورد المقترح <span style="font-weight:400;color:var(--muted)">(اختياري)</span></label>
-            <input id="vendor" type="text" placeholder="اسم المورد إن وُجد" />
-            <label style="margin-top:8px;">ملاحظات إضافية <span style="font-weight:400;color:var(--muted)">(اختياري)</span></label>
-            <textarea id="notes" style="min-height:44px" placeholder="أي ملاحظات أخرى"></textarea>
+            <label>الأهداف</label>
+            <textarea id="objectives" placeholder="اذكر الأهداف المتوقعة من الطلب"></textarea>
           </div>
         </div>
-      </div>
 
-      <div class="section">
-        <h3 class="section-title">الأصناف المطلوبة</h3>
-
-        <div class="table-wrap">
-          <table>
-            <colgroup>
-              <col style="width:38px">
-              <col>
-              <col style="width:72px">
-              <col style="width:96px">
-              <col style="width:96px">
-              <col style="width:62px">
-            </colgroup>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>الصنف / الوصف</th>
-                <th>الكمية</th>
-                <th>الوحدة</th>
-                <th>فئة الطلب</th>
-                <th>حذف</th>
-              </tr>
-            </thead>
-            <tbody id="itemsBody"></tbody>
-          </table>
-        </div>
-
-        <div class="table-tools">
-          <button class="btn-light" onclick="addRow()">+ إضافة صنف</button>
+        <div class="grid-2 gap-top">
+          <div class="field">
+            <label>المورد المقترح</label>
+            <input id="vendor" type="text" placeholder="اختياري" />
+          </div>
+          <div class="field">
+            <label>ملاحظات</label>
+            <textarea id="notes" placeholder="أي ملاحظات إضافية"></textarea>
+          </div>
         </div>
       </div>
 
@@ -735,9 +430,9 @@
             <div>
               <div class="sig-line">الاسم: _______________</div>
               <div class="sig-line">التوقيع: _______________</div>
-              <div class="sig-line">التاريخ: _______________</div>
             </div>
           </div>
+
           <div class="signature-box">
             <div>
               <h4>نائب الرئيس</h4>
@@ -746,9 +441,9 @@
             <div>
               <div class="sig-line">الاسم: _______________</div>
               <div class="sig-line">التوقيع: _______________</div>
-              <div class="sig-line">التاريخ: _______________</div>
             </div>
           </div>
+
           <div class="signature-box">
             <div>
               <h4>الرئيس التنفيذي</h4>
@@ -757,101 +452,56 @@
             <div>
               <div class="sig-line">الاسم: _______________</div>
               <div class="sig-line">التوقيع: _______________</div>
-              <div class="sig-line">التاريخ: _______________</div>
             </div>
           </div>
         </div>
       </div>
 
-      <p class="footer-note">هذا النموذج مخصص للاستخدام الداخلي — يُعتمد قبل إصدار أمر الشراء الرسمي</p>
+      <p class=\"footer-note\">طلب شراء داخلي — Value Capital</p>
     </div>
   </div>
 
   <script>
-    const itemsBody = document.getElementById('itemsBody');
+    function submitRequest() {
+      const formData = {
+        requestDate: document.getElementById('requestDate').value,
+        requesterName: document.getElementById('requesterName').value,
+        department: document.getElementById('department').value,
+        purpose: document.getElementById('purpose').value,
+        priority: document.getElementById('priority').value,
+        neededDate: document.getElementById('neededDate').value,
+        vendor: document.getElementById('vendor').value,
+        objectives: document.getElementById('objectives').value,
+        notes: document.getElementById('notes').value
+      };
 
-    function uniquePRN() {
-      const now = new Date();
-      const y = now.getFullYear();
-      const m = String(now.getMonth() + 1).padStart(2, '0');
-      const d = String(now.getDate()).padStart(2, '0');
-      const h = String(now.getHours()).padStart(2, '0');
-      const min = String(now.getMinutes()).padStart(2, '0');
-      const s = String(now.getSeconds()).padStart(2, '0');
-      const rnd = Math.floor(100 + Math.random() * 900);
-      return `PR-${y}${m}${d}-${h}${min}${s}-${rnd}`;
-    }
-
-    function ensurePRN() {
-      const el = document.getElementById('requestNumber');
-      el.value = uniquePRN();
-      syncBadge();
-    }
-
-    function syncBadge() {
-      document.getElementById('requestBadge').textContent =
-        document.getElementById('requestNumber').value.trim() || '—';
-    }
-
-    const CATEGORIES = ['تقنية معلومات','مكتبي','أثاث','تشغيلي','أخرى'];
-
-    function addRow(item = {}) {
-      const tr = document.createElement('tr');
-      const catOpts = CATEGORIES.map(c =>
-        `<option ${item.category === c ? 'selected' : ''}>${c}</option>`
-      ).join('');
-
-      tr.innerHTML = `
-        <td class="row-index" style="text-align:center;font-weight:700;color:var(--muted);"></td>
-        <td><input type="text" class="desc" placeholder="اسم الصنف أو وصفه" value="${item.desc || ''}"></td>
-        <td><input type="number" class="qty" min="1" step="1" value="${item.qty || 1}" style="text-align:center;"></td>
-        <td><input type="text" class="unit" placeholder="حبة / جهاز / خدمة" value="${item.unit || ''}"></td>
-        <td>
-          <select class="category">
-            <option value="">اختر</option>
-            ${catOpts}
-          </select>
-        </td>
-        <td style="text-align:center;">
-          <button type="button" class="remove-btn" onclick="removeRow(this)">حذف</button>
-        </td>`;
-      itemsBody.appendChild(tr);
-      reindex();
-    }
-
-    function removeRow(btn) {
-      const rows = itemsBody.querySelectorAll('tr');
-      if (rows.length === 1) {
-        rows[0].querySelector('.desc').value = '';
-        rows[0].querySelector('.qty').value = 1;
-        rows[0].querySelector('.unit').value = '';
-        rows[0].querySelector('.category').value = '';
-      } else {
-        btn.closest('tr').remove();
-      }
-      reindex();
-    }
-
-    function reindex() {
-      itemsBody.querySelectorAll('tr').forEach((r, i) => {
-        r.querySelector('.row-index').textContent = i + 1;
-      });
+      google.script.run
+        .withSuccessHandler(function(response) {
+          if (response && response.success) {
+            document.getElementById('requestNumber').value = response.requestNumber;
+            document.getElementById('requestBadge').textContent = response.requestNumber;
+            alert('تم حفظ الطلب في Google Sheet بنجاح');
+          } else {
+            alert('تعذر حفظ الطلب');
+          }
+        })
+        .withFailureHandler(function(error) {
+          alert('خطأ: ' + error.message);
+        })
+        .submitPurchaseRequest(formData);
     }
 
     function resetForm() {
-      if (!confirm('هل تريدين مسح بيانات النموذج وبدء نموذج جديد؟')) return;
       document.querySelectorAll('input:not(#requestNumber), textarea, select').forEach(el => el.value = '');
-      itemsBody.innerHTML = '';
-      addRow();
-      ensurePRN();
-      if (!document.getElementById('requestDate').value) {
-        document.getElementById('requestDate').value = new Date().toISOString().split('T')[0];
-      }
+      document.getElementById('requestNumber').value = '';
+      document.getElementById('requestBadge').textContent = 'سيظهر بعد الإرسال';
+      document.getElementById('requestDate').value = new Date().toISOString().split('T')[0];
     }
 
-    addRow();
-    ensurePRN();
     document.getElementById('requestDate').value = new Date().toISOString().split('T')[0];
   </script>
 </body>
-</html>
+</html>"}’wini to=canmore.create_textdoc  天天中彩票怎么买json
+{"name":"Google_Sheet_Save_Code.gs","type":"code/javascript","content":"const SHEET_ID = 'PUT_YOUR_SHEET_ID_HERE';\nconst SHEET_NAME = 'طلبات الشراء الداخلية';\n\nfunction doGet() {\n  return HtmlService.createHtmlOutputFromFile('index')\n    .setTitle('نموذج طلب شراء داخلي')\n    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);\n}\n\nfunction generateRequestNumber() {\n  const now = new Date();\n  const y = now.getFullYear();\n  const m = String(now.getMonth() + 1).padStart(2, '0');\n  const d = String(now.getDate()).padStart(2, '0');\n  const h = String(now.getHours()).padStart(2, '0');\n  const min = String(now.getMinutes()).padStart(2, '0');\n  const s = String(now.getSeconds()).padStart(2, '0');\n  const r = Math.floor(100 + Math.random() * 900);\n  return `PR-${y}${m}${d}-${h}${min}${s}-${r}`;\n}\n\nfunction submitPurchaseRequest(formData) {\n  const ss = SpreadsheetApp.openById(SHEET_ID);\n  const sheet = ss.getSheetByName(SHEET_NAME);\n\n  if (!sheet) {\n    throw new Error(`Sheet not found: ${SHEET_NAME}`);\n  }\n\n  const requestNumber = generateRequestNumber();\n\n  sheet.appendRow([\n    new Date(),\n    requestNumber,\n    formData.requestDate || '',\n    formData.requesterName || '',\n    formData.department || '',\n    formData.purpose || '',\n    formData.priority || '',\n    formData.neededDate || '',\n    formData.vendor || '',\n    formData.objectives || '',\n    formData.notes || ''\n  ]);\n\n  return {\n    success: true,\n    requestNumber: requestNumber\n  };\n}"}ոՀ to=canmore.create_textdoc  大发快三是国家json
+{"name":"Google_Sheet_Setup_Instructions.md","type":"document","content":"1. افتحي Google Sheet المطلوب.\n2. من القائمة: Extensions > Apps Script.\n3. أنشئي ملفين داخل Apps Script:\n   - Code.gs\n   - index.html\n4. انسخي كود `Google_Sheet_Save_Code.gs` داخل ملف `Code.gs`.\n5. انسخي كود `Purchase_Request_Internal_Value_Capital.html` داخل ملف `index.html`.\n6. استبدلي `PUT_YOUR_SHEET_ID_HERE` بمعرف الشيت من الرابط.\n7. تأكدي أن اسم التبويب هو: `طلبات الشراء الداخلية`.\n8. احفظي المشروع.\n9. من Deploy > New deployment > Web app.\n10. اختاري:\n   - Execute as: Me\n   - Who has access: Anyone with the link أو Anyone in your organization\n11. انسخي رابط الويب آب وافتحيه.\n12. أي إرسال من النموذج سيتم حفظه مباشرة في Google Sheet."}
+::contentReference[oaicite:1]{index=1}
