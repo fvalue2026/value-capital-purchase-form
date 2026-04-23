@@ -657,47 +657,52 @@ const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyL46lGwIUJY0XiaVRK
     }
 
     async function submitRequest() {
-      const status = document.getElementById('statusMessage');
-      status.textContent = 'جاري الإرسال...';
+async function submitRequest() {
+  const status = document.getElementById('statusMessage');
+  status.textContent = 'جاري الإرسال...';
 
-      const formData = {
-        requestDate: document.getElementById('requestDate').value,
-        requesterName: document.getElementById('requesterName').value,
-        department: document.getElementById('department').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        purpose: document.getElementById('purpose').value,
-        requestType: document.getElementById('requestType').value,
-        neededDate: document.getElementById('neededDate').value,
-        vendor: document.getElementById('vendor').value,
-        notes: document.getElementById('notes').value,
-        items: collectItemsAsText(),
-        extraNotes: document.getElementById('extraNotes').value
-      };
+  const formData = {
+    requestDate: document.getElementById('requestDate').value,
+    requesterName: document.getElementById('requesterName').value,
+    department: document.getElementById('department').value,
+    email: document.getElementById('email').value,
+    phone: document.getElementById('phone').value,
+    purpose: document.getElementById('purpose').value,
+    requestType: document.getElementById('requestType').value,
+    neededDate: document.getElementById('neededDate').value,
+    vendor: document.getElementById('vendor').value,
+    notes: document.getElementById('notes').value,
+    items: collectItemsAsText(),
+    extraNotes: document.getElementById('extraNotes').value
+  };
 
-      try {
-        const response = await fetch(WEB_APP_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'text/plain;charset=utf-8'
-          },
-          body: JSON.stringify(formData)
-        });
-
-        const result = await response.json();
-
-        if (result && result.success) {
-          document.getElementById('requestNumber').value = result.requestNumber;
-          document.getElementById('requestBadge').textContent = result.requestNumber;
-          status.textContent = 'تم حفظ الطلب في Google Sheet بنجاح';
-        } else {
-          status.textContent = 'تعذر حفظ الطلب';
-        }
-      } catch (error) {
-        status.textContent = 'خطأ في الإرسال. تأكدي من رابط Web App وإعادة النشر.';
-        console.error(error);
+  try {
+    const response = await fetch(WEB_APP_URL, {
+      method: 'POST',
+      body: JSON.stringify(formData),
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8'
       }
+    });
+
+    const text = await response.text();
+    console.log(text);
+
+    const result = JSON.parse(text);
+
+    if (result.success) {
+      document.getElementById('requestNumber').value = result.requestNumber;
+      document.getElementById('requestBadge').textContent = result.requestNumber;
+      status.textContent = 'تم الحفظ في الشيت ✔️';
+    } else {
+      status.textContent = 'فشل الحفظ';
     }
+
+  } catch (err) {
+    console.error(err);
+    status.textContent = 'خطأ في الإرسال ❌';
+  }
+}
 
     function resetForm() {
       document.querySelectorAll('input:not(#requestNumber), textarea, select').forEach(function(el) {
