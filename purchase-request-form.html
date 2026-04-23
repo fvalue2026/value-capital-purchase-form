@@ -26,7 +26,7 @@
     }
 
     .toolbar {
-      max-width: 820px;
+      max-width: 920px;
       margin: 0 auto;
       padding: 14px 12px 10px;
       display: flex;
@@ -76,7 +76,7 @@
     }
 
     .sheet {
-      max-width: 820px;
+      max-width: 920px;
       margin: 0 auto 24px;
       background: #fff;
       border: 1px solid rgba(68,33,130,.1);
@@ -88,20 +88,26 @@
     .header {
       background: linear-gradient(135deg, #5a4490 0%, #442182 100%);
       color: #fff;
-      padding: 12px 14px;
+      padding: 14px 18px;
       display: grid;
-      grid-template-columns: 70px 1fr 120px;
-      gap: 10px;
+      grid-template-columns: 120px 1fr 140px;
+      gap: 12px;
       align-items: center;
     }
 
+    .logo-box {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
     .logo-box img {
-      max-width: 60px;
-      max-height: 26px;
+      max-width: 110px;
+      max-height: 42px;
       object-fit: contain;
       background: #fff;
       border-radius: 6px;
-      padding: 3px 4px;
+      padding: 2px 4px;
       display: block;
     }
 
@@ -111,52 +117,53 @@
 
     .title-box h2 {
       margin: 0;
-      font-size: 16px;
+      font-size: 18px;
+      letter-spacing: .3px;
     }
 
     .title-box p {
-      margin: 4px 0 0;
-      font-size: 9px;
+      margin: 5px 0 0;
+      font-size: 10px;
       opacity: .9;
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
     .number-box {
       background: rgba(255,255,255,.13);
       border: 1px solid rgba(255,255,255,.22);
-      border-radius: 10px;
-      padding: 7px 6px;
+      border-radius: 11px;
+      padding: 10px 8px;
       text-align: center;
     }
 
     .number-box .label {
-      font-size: 8px;
-      opacity: .9;
-      margin-bottom: 3px;
+      font-size: 9px;
+      opacity: .85;
+      margin-bottom: 4px;
     }
 
     .number-box .value {
-      font-size: 11px;
+      font-size: 13px;
       font-weight: 800;
-      line-height: 1.25;
+      line-height: 1.3;
       word-break: break-word;
     }
 
     .content {
-      padding: 10px;
+      padding: 14px;
       display: grid;
-      gap: 8px;
+      gap: 12px;
     }
 
     .section {
       border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 10px;
+      border-radius: 12px;
+      padding: 12px 14px;
       background: #fff;
     }
 
     .section-title {
-      margin: 0 0 8px;
+      margin: 0 0 10px;
       font-size: 13px;
       font-weight: 800;
       color: var(--primary-dark);
@@ -166,10 +173,10 @@
     }
 
     .section-title::before {
-      content: "";
+      content: '';
       display: inline-block;
       width: 4px;
-      height: 14px;
+      height: 15px;
       background: var(--gold);
       border-radius: 3px;
       flex-shrink: 0;
@@ -179,14 +186,14 @@
     .grid-3,
     .grid-2 {
       display: grid;
-      gap: 8px;
+      gap: 10px;
     }
 
-    .grid-4 { grid-template-columns: repeat(2, 1fr); }
-    .grid-3 { grid-template-columns: repeat(2, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
     .grid-2 { grid-template-columns: repeat(2, 1fr); }
 
-    .gap-top { margin-top: 8px; }
+    .gap-top { margin-top: 10px; }
 
     .field {
       display: flex;
@@ -215,7 +222,7 @@
     }
 
     .field textarea {
-      min-height: 64px;
+      min-height: 72px;
       resize: vertical;
       line-height: 1.5;
     }
@@ -225,6 +232,68 @@
       color: var(--primary-dark) !important;
       font-weight: 800;
       cursor: default;
+    }
+
+    .table-wrap {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow-x: auto;
+      background: #fff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    th, td {
+      border-bottom: 1px solid #ece8f4;
+      padding: 6px;
+      text-align: right;
+      vertical-align: middle;
+      font-size: 12px;
+    }
+
+    th {
+      background: var(--soft);
+      color: var(--primary-dark);
+      font-weight: 800;
+    }
+
+    td input,
+    td textarea,
+    td select {
+      width: 100%;
+      border: 1px solid #ddd4f0;
+      border-radius: 8px;
+      padding: 7px 8px;
+      font-size: 11px;
+      background: #faf9fd;
+      font-family: inherit;
+      outline: none;
+    }
+
+    td textarea {
+      min-height: 36px;
+      resize: vertical;
+    }
+
+    .table-tools {
+      margin-top: 8px;
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .remove-btn {
+      background: #fff1f2;
+      color: #b91c1c;
+      border: 1px solid #fecdd3;
+      padding: 6px 8px;
+      border-radius: 7px;
+      font-size: 11px;
+      font-weight: 700;
+      width: 100%;
     }
 
     .signature-grid {
@@ -280,7 +349,7 @@
       margin-top: 6px;
     }
 
-    @media (max-width: 700px) {
+    @media (max-width: 780px) {
       .header,
       .grid-4,
       .grid-3,
@@ -308,7 +377,8 @@
 
       .toolbar,
       button,
-      .status-message {
+      .status-message,
+      .table-tools {
         display: none !important;
       }
 
@@ -320,6 +390,13 @@
         border-radius: 0;
         box-shadow: none;
       }
+
+      .section,
+      .table-wrap,
+      .signature-box {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
     }
   </style>
 </head>
@@ -330,16 +407,17 @@
       <p>مرتبط بـ Google Sheet</p>
     </div>
     <div class="actions">
-      <button class="btn-light" onclick="resetForm()">🗑 مسح</button>
-      <button class="btn-primary" onclick="submitRequest()">✅ إرسال</button>
-      <button class="btn-primary" onclick="window.print()">🖨 طباعة</button>
+      <button class="btn-light" type="button" onclick="addItemRow()">+ إضافة صنف</button>
+      <button class="btn-light" type="button" onclick="resetForm()">🗑 مسح</button>
+      <button class="btn-primary" type="button" onclick="submitRequest()">✅ إرسال</button>
+      <button class="btn-primary" type="button" onclick="window.print()">🖨 طباعة</button>
     </div>
   </div>
 
   <div class="sheet">
     <div class="header">
       <div class="logo-box">
-        <img src="PASTE_YOUR_LOGO_BASE64_OR_URL_HERE" alt="قيمة المالية" />
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA+gAAAGQCAYAAABp2nYcAAAACXBIWXMAAAsSAAALEgHS3X78AAAgAElEQVR4nO3de5BU9Z3/8fcQkQkJgkQ2Y0QmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQkQmQ2QmYQk" alt="قيمة المالية" />
       </div>
 
       <div class="title-box">
@@ -367,12 +445,12 @@
             <input id="requestDate" type="date" />
           </div>
           <div class="field">
-            <label>القسم / الإدارة</label>
-            <input id="department" type="text" placeholder="اسم القسم أو الإدارة" />
-          </div>
-          <div class="field">
             <label>الاسم</label>
             <input id="requesterName" type="text" placeholder="الاسم الكامل" />
+          </div>
+          <div class="field">
+            <label>القسم</label>
+            <input id="department" type="text" placeholder="اسم القسم أو الإدارة" />
           </div>
         </div>
 
@@ -397,6 +475,8 @@
               <option>استخدام فردي</option>
               <option>عهدة على القسم</option>
               <option>تواصل داخلي</option>
+              <option>خدمة</option>
+              <option>أخرى</option>
             </select>
           </div>
         </div>
@@ -411,24 +491,47 @@
             <textarea id="purpose" placeholder="اذكر الغرض من الطلب"></textarea>
           </div>
           <div class="field">
-            <label>الأصناف</label>
-            <textarea id="items" placeholder="اكتب الأصناف المطلوبة، كل صنف في سطر"></textarea>
+            <label>المورد المقترح</label>
+            <input id="vendor" type="text" placeholder="اسم المورد" />
           </div>
+        </div>
+
+        <div class="table-wrap gap-top">
+          <table>
+            <colgroup>
+              <col style="width: 30%">
+              <col style="width: 10%">
+              <col style="width: 12%">
+              <col style="width: 24%">
+              <col style="width: 18%">
+              <col style="width: 6%">
+            </colgroup>
+            <thead>
+              <tr>
+                <th>اسم المنتج</th>
+                <th>الكمية</th>
+                <th>الوحدة</th>
+                <th>المبررات</th>
+                <th>ملاحظات</th>
+                <th>حذف</th>
+              </tr>
+            </thead>
+            <tbody id="itemsTableBody"></tbody>
+          </table>
+        </div>
+
+        <div class="table-tools">
+          <button type="button" class="btn-light" onclick="addItemRow()">+ إضافة صنف</button>
         </div>
 
         <div class="grid-2 gap-top">
           <div class="field">
-            <label>المورد المقترح</label>
-            <input id="vendor" type="text" placeholder="اسم المورد" />
-          </div>
-          <div class="field">
             <label>ملاحظات</label>
             <textarea id="notes" placeholder="ملاحظات الطلب"></textarea>
           </div>
-        </div>
           <div class="field">
-            <label>&nbsp;</label>
-            <div style="height:100%;"></div>
+            <label>ملاحظات إضافية</label>
+            <textarea id="extraNotes" placeholder="أي ملاحظات إضافية أخرى"></textarea>
           </div>
         </div>
       </div>
@@ -478,45 +581,96 @@
   </div>
 
   <script>
-    function submitRequest() {
-      function submitRequest() {
-  const status = document.getElementById('statusMessage');
-  status.textContent = 'جاري الإرسال...';
+    function addItemRow(item = {}) {
+      const tbody = document.getElementById('itemsTableBody');
+      const row = document.createElement('tr');
 
-  const vendorValue = document.getElementById('vendor').value;
+      row.innerHTML = `
+        <td>
+          <input type="text" class="item-name" placeholder="اسم المنتج" value="${item.name || ''}">
+        </td>
+        <td>
+          <input type="number" class="item-qty" placeholder="الكمية" min="1" value="${item.qty || 1}">
+        </td>
+        <td>
+          <select class="item-unit">
+            <option value="">اختر</option>
+            <option ${item.unit === 'حبة' ? 'selected' : ''}>حبة</option>
+            <option ${item.unit === 'جهاز' ? 'selected' : ''}>جهاز</option>
+            <option ${item.unit === 'علبة' ? 'selected' : ''}>علبة</option>
+            <option ${item.unit === 'وحدة' ? 'selected' : ''}>وحدة</option>
+            <option ${item.unit === 'خدمة' ? 'selected' : ''}>خدمة</option>
+          </select>
+        </td>
+        <td>
+          <textarea class="item-justification" placeholder="المبررات">${item.justification || ''}</textarea>
+        </td>
+        <td>
+          <textarea class="item-note" placeholder="ملاحظات">${item.note || ''}</textarea>
+        </td>
+        <td>
+          <button type="button" class="remove-btn" onclick="removeItemRow(this)">حذف</button>
+        </td>
+      `;
 
-  const formData = {
-    requestDate: document.getElementById('requestDate').value,
-    requesterName: document.getElementById('requesterName').value,
-    department: document.getElementById('department').value,
-    email: document.getElementById('email').value,
-    phone: document.getElementById('phone').value,
-    purpose: document.getElementById('purpose').value,
-    requestType: document.getElementById('requestType').value,
-    neededDate: document.getElementById('neededDate').value,
-    vendor: vendorValue,
-    vendorEmail: vendorValue,
-    vendorPhone: vendorValue,
-    notes: document.getElementById('notes').value,
-    items: document.getElementById('items').value,
-    extraNotes: document.getElementById('extraNotes').value
-  };
+      tbody.appendChild(row);
+    }
 
-  google.script.run
-    .withSuccessHandler(function(response) {
-      if (response && response.success) {
-        document.getElementById('requestNumber').value = response.requestNumber;
-        document.getElementById('requestBadge').textContent = response.requestNumber;
-        status.textContent = 'تم حفظ الطلب في Google Sheet بنجاح';
-      } else {
-        status.textContent = 'تعذر حفظ الطلب';
+    function removeItemRow(button) {
+      const tbody = document.getElementById('itemsTableBody');
+      const rows = tbody.querySelectorAll('tr');
+
+      if (rows.length === 1) {
+        rows[0].querySelector('.item-name').value = '';
+        rows[0].querySelector('.item-qty').value = 1;
+        rows[0].querySelector('.item-unit').value = '';
+        rows[0].querySelector('.item-justification').value = '';
+        rows[0].querySelector('.item-note').value = '';
+        return;
       }
-    })
-    .withFailureHandler(function(error) {
-      status.textContent = 'خطأ: ' + error.message;
-    })
-    .submitPurchaseRequest(formData);
-}
+
+      button.closest('tr').remove();
+    }
+
+    function collectItemsAsText() {
+      const rows = document.querySelectorAll('#itemsTableBody tr');
+      const items = [];
+
+      rows.forEach((row, index) => {
+        const name = row.querySelector('.item-name').value.trim();
+        const qty = row.querySelector('.item-qty').value.trim();
+        const unit = row.querySelector('.item-unit').value.trim();
+        const justification = row.querySelector('.item-justification').value.trim();
+        const note = row.querySelector('.item-note').value.trim();
+
+        if (name || qty || unit || justification || note) {
+          items.push(
+            `الصنف ${index + 1}: ${name} | الكمية: ${qty} | الوحدة: ${unit} | المبررات: ${justification} | ملاحظات: ${note}`
+          );
+        }
+      });
+
+      return items.join('\n');
+    }
+
+    function submitRequest() {
+      const status = document.getElementById('statusMessage');
+      status.textContent = 'جاري الإرسال...';
+
+      const formData = {
+        requestDate: document.getElementById('requestDate').value,
+        requesterName: document.getElementById('requesterName').value,
+        department: document.getElementById('department').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        purpose: document.getElementById('purpose').value,
+        requestType: document.getElementById('requestType').value,
+        neededDate: document.getElementById('neededDate').value,
+        vendor: document.getElementById('vendor').value,
+        notes: document.getElementById('notes').value,
+        items: collectItemsAsText(),
+        extraNotes: document.getElementById('extraNotes').value
+      };
 
       google.script.run
         .withSuccessHandler(function(response) {
@@ -539,6 +693,9 @@
         el.value = '';
       });
 
+      document.getElementById('itemsTableBody').innerHTML = '';
+      addItemRow();
+
       document.getElementById('requestNumber').value = '';
       document.getElementById('requestBadge').textContent = 'سيظهر بعد الإرسال';
       document.getElementById('statusMessage').textContent = '';
@@ -546,6 +703,7 @@
     }
 
     document.getElementById('requestDate').value = new Date().toISOString().split('T')[0];
+    addItemRow();
   </script>
 </body>
 </html>
