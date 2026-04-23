@@ -479,25 +479,44 @@
 
   <script>
     function submitRequest() {
-      const status = document.getElementById('statusMessage');
-      status.textContent = 'جاري الإرسال...';
+      function submitRequest() {
+  const status = document.getElementById('statusMessage');
+  status.textContent = 'جاري الإرسال...';
 
-      const formData = {
-        requestDate: document.getElementById('requestDate').value,
-        requesterName: document.getElementById('requesterName').value,
-        department: document.getElementById('department').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        purpose: document.getElementById('purpose').value,
-        requestType: document.getElementById('requestType').value,
-        neededDate: document.getElementById('neededDate').value,
-        vendor: document.getElementById('vendor').value,
-        vendorEmail: document.getElementById('vendorEmail').value,
-        vendorPhone: document.getElementById('vendorPhone').value,
-        notes: document.getElementById('notes').value,
-        items: document.getElementById('items').value,
-        extraNotes: document.getElementById('extraNotes').value
-      };
+  const vendorValue = document.getElementById('vendor').value;
+
+  const formData = {
+    requestDate: document.getElementById('requestDate').value,
+    requesterName: document.getElementById('requesterName').value,
+    department: document.getElementById('department').value,
+    email: document.getElementById('email').value,
+    phone: document.getElementById('phone').value,
+    purpose: document.getElementById('purpose').value,
+    requestType: document.getElementById('requestType').value,
+    neededDate: document.getElementById('neededDate').value,
+    vendor: vendorValue,
+    vendorEmail: vendorValue,
+    vendorPhone: vendorValue,
+    notes: document.getElementById('notes').value,
+    items: document.getElementById('items').value,
+    extraNotes: document.getElementById('extraNotes').value
+  };
+
+  google.script.run
+    .withSuccessHandler(function(response) {
+      if (response && response.success) {
+        document.getElementById('requestNumber').value = response.requestNumber;
+        document.getElementById('requestBadge').textContent = response.requestNumber;
+        status.textContent = 'تم حفظ الطلب في Google Sheet بنجاح';
+      } else {
+        status.textContent = 'تعذر حفظ الطلب';
+      }
+    })
+    .withFailureHandler(function(error) {
+      status.textContent = 'خطأ: ' + error.message;
+    })
+    .submitPurchaseRequest(formData);
+}
 
       google.script.run
         .withSuccessHandler(function(response) {
