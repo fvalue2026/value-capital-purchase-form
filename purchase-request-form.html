@@ -349,63 +349,66 @@ td textarea { min-height: 34px; resize: vertical; }
 
 .tbl-add { margin-top: 8px; }
 
-/* SIGNATURES */
-.sig-row {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 8px;
-}
 
+/* INTERACTIVE SIGNATURES */
 .sig-box {
-  border: 1px solid var(--silver-pale);
-  border-radius: 10px;
+  border: 1px solid var(--silver-pale); border-radius: 10px;
   padding: 10px 12px;
   background: linear-gradient(135deg, #fdfcff, #f8f6fc);
-  position: relative;
-  overflow: hidden;
+  position: relative; overflow: hidden;
 }
-
 .sig-box::before {
-  content: '';
-  position: absolute;
-  top: 0; right: 0; left: 0;
-  height: 2px;
+  content: ""; position: absolute;
+  top: 0; right: 0; left: 0; height: 2px;
   background: linear-gradient(90deg, var(--silver-light), var(--silver));
 }
+.sig-box h3 { font-size: 11px; font-weight: 800; color: var(--purple); margin-bottom: 2px; margin-top: 4px; }
+.sig-box p  { font-size: 9px; color: var(--muted); margin-bottom: 6px; }
 
-.sig-box h3 {
-  font-size: 11px;
-  font-weight: 800;
-  color: var(--purple);
-  margin-bottom: 2px;
-  margin-top: 4px;
+.sig-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 6px; }
+.sig-fields input {
+  border: 1px solid var(--border); border-radius: 6px;
+  padding: 5px 8px; font-size: 10px;
+  font-family: "Tajawal", sans-serif; color: var(--text);
+  background: #faf9fd; outline: none; width: 100%;
+}
+.sig-fields input:focus { border-color: var(--purple-light); background: #fff; }
+
+.sig-canvas-wrap {
+  position: relative;
+  border: 1px dashed #c0b4dc; border-radius: 8px;
+  background: #fdfcff; overflow: hidden;
+}
+.sig-canvas {
+  display: block; width: 100%; height: 60px;
+  cursor: crosshair; touch-action: none;
+}
+.sig-clear {
+  position: absolute; top: 4px; left: 4px;
+  background: rgba(255,255,255,0.85);
+  border: 1px solid #ddd; border-radius: 5px;
+  padding: 2px 7px; font-size: 9px; font-weight: 700;
+  color: var(--danger); cursor: pointer;
+  font-family: "Tajawal", sans-serif;
+  transition: background 0.2s;
+}
+.sig-clear:hover { background: var(--danger-bg); }
+.sig-hint {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  font-size: 9px; color: #bbb; pointer-events: none;
+  font-family: "Tajawal", sans-serif;
+  white-space: nowrap;
 }
 
-.sig-box p {
-  font-size: 9px;
-  color: var(--muted);
-  margin-bottom: 8px;
-}
-
-.sig-line {
-  border-top: 1px solid #d8d0ea;
-  padding-top: 4px;
-  font-size: 9.5px;
-  color: #5a4a7a;
-  margin-top: 4px;
-  line-height: 2;
+@media print {
+  .sig-canvas-wrap { border: 1px solid #ddd !important; }
+  .sig-clear { display: none !important; }
+  .sig-hint { display: none !important; }
+  .sig-fields input { border-color: #ccc !important; font-size: 9px !important; padding: 3px 6px !important; }
+  .sig-canvas { height: 50px !important; }
 }
 
 /* FOOTER */
-.sheet-footer {
-  background: linear-gradient(90deg, var(--purple-pale), #f6f3fc);
-  border-top: 1px solid var(--border);
-  padding: 8px 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 .footer-text { font-size: 10px; color: var(--muted); font-weight: 500; }
 .footer-silver { color: var(--silver); font-size: 10px; font-weight: 700; }
 
@@ -609,29 +612,52 @@ td textarea { min-height: 34px; resize: vertical; }
       </div>
       <div class="section-body">
         <div class="sig-row">
-          <div class="sig-box">
-            <h3>إدارة المشتريات</h3>
-            <p>مراجعة الطلب واكتمال البيانات</p>
-            <div class="sig-line">الاسم: ________________</div>
-            <div class="sig-line">التوقيع: ________________</div>
-            <div class="sig-line">التاريخ: ________________</div>
-          </div>
-          <div class="sig-box">
-            <h3>نائب الرئيس</h3>
-            <p>الاعتماد الإداري والمالي</p>
-            <div class="sig-line">الاسم: ________________</div>
-            <div class="sig-line">التوقيع: ________________</div>
-            <div class="sig-line">التاريخ: ________________</div>
-          </div>
-          <div class="sig-box">
-            <h3>الرئيس التنفيذي</h3>
-            <p>الاعتماد النهائي</p>
-            <div class="sig-line">الاسم: ________________</div>
-            <div class="sig-line">التوقيع: ________________</div>
-            <div class="sig-line">التاريخ: ________________</div>
-          </div>
+
+<div class="sig-box">
+  <h3>إدارة المشتريات</h3>
+  <p>مراجعة الطلب واكتمال البيانات</p>
+  <div class="sig-fields">
+    <input type="text" placeholder="الاسم"/>
+    <input type="date"/>
+  </div>
+  <div class="sig-canvas-wrap">
+    <canvas class="sig-canvas"></canvas>
+    <span class="sig-hint">✍️ وقّع هنا</span>
+    <button type="button" class="sig-clear" onclick="clearSig(this)">مسح</button>
+  </div>
+</div>
+
+<div class="sig-box">
+  <h3>نائب الرئيس</h3>
+  <p>الاعتماد الإداري والمالي</p>
+  <div class="sig-fields">
+    <input type="text" placeholder="الاسم"/>
+    <input type="date"/>
+  </div>
+  <div class="sig-canvas-wrap">
+    <canvas class="sig-canvas"></canvas>
+    <span class="sig-hint">✍️ وقّع هنا</span>
+    <button type="button" class="sig-clear" onclick="clearSig(this)">مسح</button>
+  </div>
+</div>
+
+<div class="sig-box">
+  <h3>الرئيس التنفيذي</h3>
+  <p>الاعتماد النهائي</p>
+  <div class="sig-fields">
+    <input type="text" placeholder="الاسم"/>
+    <input type="date"/>
+  </div>
+  <div class="sig-canvas-wrap">
+    <canvas class="sig-canvas"></canvas>
+    <span class="sig-hint">✍️ وقّع هنا</span>
+    <button type="button" class="sig-clear" onclick="clearSig(this)">مسح</button>
+  </div>
+</div>
+</div>
         </div>
       </div>
+    </div>
     </div>
 
     <div id="statusMsg"></div>
@@ -734,6 +760,88 @@ function resetForm(){
 
 document.getElementById('requestDate').value=new Date().toISOString().split('T')[0];
 addRow();
+
+// ===== SIGNATURE CANVAS =====
+function initSigCanvases() {
+  document.querySelectorAll(".sig-canvas").forEach(canvas => {
+    if (canvas._init) return;
+    canvas._init = true;
+    const hint = canvas.parentElement.querySelector(".sig-hint");
+    let drawing = false;
+    let lastX = 0, lastY = 0;
+
+    function getPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      const src = e.touches ? e.touches[0] : e;
+      return [(src.clientX - rect.left) * scaleX, (src.clientY - rect.top) * scaleY];
+    }
+
+    function resizeCanvas() {
+      const img = canvas.toDataURL();
+      canvas.width = canvas.offsetWidth * window.devicePixelRatio || canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight * window.devicePixelRatio || canvas.offsetHeight;
+      const i = new Image();
+      i.onload = () => { const c = canvas.getContext("2d"); c.drawImage(i,0,0); };
+      i.src = img;
+    }
+
+    resizeCanvas();
+
+    const ctx = () => {
+      const c = canvas.getContext("2d");
+      c.strokeStyle = "#2a1158";
+      c.lineWidth = 1.8 * (window.devicePixelRatio || 1);
+      c.lineCap = "round";
+      c.lineJoin = "round";
+      return c;
+    };
+
+    canvas.addEventListener("mousedown", e => { drawing=true; [lastX,lastY]=getPos(e); });
+    canvas.addEventListener("touchstart", e => { e.preventDefault(); drawing=true; [lastX,lastY]=getPos(e); }, {passive:false});
+
+    canvas.addEventListener("mousemove", e => {
+      if (!drawing) return;
+      const [x,y] = getPos(e);
+      const c = ctx();
+      c.beginPath(); c.moveTo(lastX,lastY); c.lineTo(x,y); c.stroke();
+      [lastX,lastY] = [x,y];
+      if (hint) hint.style.display = "none";
+    });
+    canvas.addEventListener("touchmove", e => {
+      e.preventDefault();
+      if (!drawing) return;
+      const [x,y] = getPos(e);
+      const c = ctx();
+      c.beginPath(); c.moveTo(lastX,lastY); c.lineTo(x,y); c.stroke();
+      [lastX,lastY] = [x,y];
+      if (hint) hint.style.display = "none";
+    }, {passive:false});
+
+    canvas.addEventListener("mouseup", () => drawing=false);
+    canvas.addEventListener("mouseleave", () => drawing=false);
+    canvas.addEventListener("touchend", () => drawing=false);
+  });
+}
+
+function clearSig(btn) {
+  const wrap = btn.closest(".sig-canvas-wrap");
+  const canvas = wrap.querySelector(".sig-canvas");
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const hint = wrap.querySelector(".sig-hint");
+  if (hint) hint.style.display = "";
+}
+
+document.addEventListener("DOMContentLoaded", initSigCanvases);
+window.addEventListener("resize", () => {
+  document.querySelectorAll(".sig-canvas").forEach(c => {
+    c._init = false;
+  });
+  initSigCanvases();
+});
+
 </script>
 </body>
 </html>
