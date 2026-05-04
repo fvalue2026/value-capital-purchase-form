@@ -414,8 +414,22 @@ td input[type=number] { text-align:left; direction:ltr; }
         <div class="totals-wrap">
           <div class="totals-box">
             <div class="totals-row">
-              <span class="t-label">المجموع قبل الضريبة</span>
+              <span class="t-label">المجموع قبل الخصم</span>
               <span class="t-val" id="subtotal">0.00 ر.س</span>
+            </div>
+            <div class="totals-row">
+              <span class="t-label" style="display:flex;align-items:center;gap:6px;">
+                الخصم
+                <input type="number" id="discountPct" min="0" max="100" step="0.1" value="0"
+                  style="width:52px;border:1px solid var(--border);border-radius:6px;padding:3px 6px;font-size:11px;font-family:Tajawal,sans-serif;text-align:center;background:#faf9fd;outline:none;"
+                  oninput="calcTotals()">
+                <span style="font-size:10px;color:var(--muted)">%</span>
+              </span>
+              <span class="t-val" id="discountAmount" style="color:var(--danger);">-0.00 ر.س</span>
+            </div>
+            <div class="totals-row">
+              <span class="t-label">المجموع بعد الخصم</span>
+              <span class="t-val" id="afterDiscount">0.00 ر.س</span>
             </div>
             <div class="totals-row">
               <span class="t-label">ضريبة القيمة المضافة (15%)</span>
@@ -565,10 +579,15 @@ function calcTotals() {
     const price = parseFloat(row.querySelector(".price").value) || 0;
     sub += qty * price;
   });
-  const vat = sub * VAT_RATE;
-  const grand = sub + vat;
+  const discPct = parseFloat(document.getElementById("discountPct").value) || 0;
+  const discAmt = sub * (discPct / 100);
+  const afterDisc = sub - discAmt;
+  const vat = afterDisc * VAT_RATE;
+  const grand = afterDisc + vat;
   const fmt = n => n.toLocaleString("ar-SA", {minimumFractionDigits:2, maximumFractionDigits:2}) + " ر.س";
   document.getElementById("subtotal").textContent = fmt(sub);
+  document.getElementById("discountAmount").textContent = "-" + fmt(discAmt);
+  document.getElementById("afterDiscount").textContent = fmt(afterDisc);
   document.getElementById("vatAmount").textContent = fmt(vat);
   document.getElementById("grandTotal").textContent = fmt(grand);
 }
@@ -722,6 +741,9 @@ async function submitPO() {
     items:          items,
     specialNotes:   document.getElementById("specialNotes").value,
     subtotal:       document.getElementById("subtotal").textContent,
+    discountPct:    (document.getElementById("discountPct").value || "0") + "%",
+    discountAmount: document.getElementById("discountAmount").textContent,
+    afterDiscount:  document.getElementById("afterDiscount").textContent,
     vatAmount:      document.getElementById("vatAmount").textContent,
     grandTotal:     document.getElementById("grandTotal").textContent,
   });
