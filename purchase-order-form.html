@@ -330,11 +330,25 @@ td input[type=number] { text-align:left; direction:ltr; }
             <div class="field"><label>رقم أمر الشراء</label><input id="poNum" class="readonly" readonly placeholder="—"/></div>
             <div class="field"><label>تاريخ الإصدار</label><input id="poDate" type="date"/></div>
             <div class="field"><label>اسم الشركة</label><input id="companyName" value="شركة قيمة المالية" readonly class="readonly"/></div>
-            <div class="field"><label>الرقم الضريبي</label><input id="companyVAT" placeholder="300XXXXXXXXX"/></div>
             <div class="field"><label>اسم مسؤول المشتريات</label><input id="buyerName" placeholder="الاسم الكامل"/></div>
             <div class="field"><label>تاريخ الاستلام المطلوب</label><input id="deliveryDate" type="date"/></div>
           </div>
           <div class="g2 mt8">
+            <div class="field"><label>القسم / الإدارة الطالبة</label>
+              <select id="department">
+                <option value="">اختر...</option>
+                <option>الإدارة التنفيذية</option>
+                <option>رأس المال البشري</option>
+                <option>المالية</option>
+                <option>المشتريات</option>
+                <option>تقنية المعلومات</option>
+                <option>العمليات</option>
+                <option>الالتزام والمخاطر</option>
+                <option>التسويق</option>
+                <option>خدمة العملاء</option>
+                <option>الشؤون القانونية</option>
+              </select>
+            </div>
             <div class="field"><label>شروط الدفع</label>
               <select id="paymentTerms">
                 <option value="">اختر...</option>
@@ -726,11 +740,12 @@ async function submitPO() {
   const fd = new URLSearchParams({
     poNum:          document.getElementById("poNum").value,
     poDate:         document.getElementById("poDate").value,
+    department:     document.getElementById("department").value,
+    status:         "قيد الانتظار",
     buyerName:      document.getElementById("buyerName").value,
     deliveryDate:   document.getElementById("deliveryDate").value,
     paymentTerms:   document.getElementById("paymentTerms").value,
     deliveryMethod: document.getElementById("deliveryMethod").value,
-    companyVAT:     document.getElementById("companyVAT").value,
     vendorName:     vendorName,
     vendorVAT:      document.getElementById("vendorVAT").value,
     vendorContact:  document.getElementById("vendorContact").value,
@@ -744,6 +759,7 @@ async function submitPO() {
     discountPct:    (document.getElementById("discountPct").value || "0") + "%",
     discountAmount: document.getElementById("discountAmount").textContent,
     afterDiscount:  document.getElementById("afterDiscount").textContent,
+    vatPercent:     "15%",
     vatAmount:      document.getElementById("vatAmount").textContent,
     grandTotal:     document.getElementById("grandTotal").textContent,
   });
