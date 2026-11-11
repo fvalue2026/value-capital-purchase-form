@@ -310,6 +310,43 @@ nav button.on .badge{background:#fff;color:#442182}
 .sumcard .sl{font-size:13px;opacity:.85}
 @media (max-width:900px){.desk{grid-template-columns:1fr}}
 @media (max-width:720px){header{padding:12px 12px 0}}
+
+/* ===== النماذج بأسلوب الورقة (مكتب المشتريات) ===== */
+.sheet{border-radius:8px;box-shadow:0 5px 0 #d9cdf1,0 24px 44px rgba(68,33,130,.16);position:relative;overflow:visible}
+.sheet::before{content:"";position:absolute;top:-11px;left:50%;margin-left:-34px;width:68px;height:22px;background:#c9b3f5;border-radius:3px;opacity:.95;z-index:2}
+.sheet-header{background:#fff;border-bottom:2px dashed #d9cdf1;border-radius:8px 8px 0 0;padding:26px 24px 18px}
+.sheet-header::before{display:none}
+.logo-wrap{background:#fff;border-radius:8px;padding:6px 10px;box-shadow:0 3px 0 #e6dcf6,0 0 0 1px #eee6f9}
+.logo-wrap img,.sheet.pr .logo-wrap img{max-height:42px;max-width:150px}
+.header-center h1{color:#442182;font-size:22px;font-weight:700}
+.header-center p{color:#5c5373;letter-spacing:.5px;text-transform:none;font-size:12px}
+.header-meta{background:transparent;border:2px solid #442182;border-radius:8px;padding:8px 12px;transform:rotate(-3deg)}
+.meta-label{color:#5c5373;letter-spacing:0;text-transform:none;font-size:11px}
+.meta-value{color:#442182;font-size:15px;font-weight:700}
+.meta-date{color:#5c5373}
+.sheet-body{background:#faf8fe;padding:18px}
+.section{background:#fff;border:0;border-radius:8px;box-shadow:0 3px 0 #e6dcf6,0 8px 16px rgba(68,33,130,.07)}
+.section-head{background:#f3eefc;border-bottom:1px dashed #d9cdf1}
+.section-head h2{font-size:13px;font-weight:700}
+.section-head-bar{background:#442182}
+.step-num{background:linear-gradient(180deg,#6a3fc4,#512a9f);box-shadow:0 2px 0 #2a1255}
+.field input,.field select,.field textarea,.val{background:#fff;border:1px solid #d9cdf1;box-shadow:0 2px 0 #eee6f9}
+.tbl-wrap{border:1px solid #e6dcf6;background:#fff}
+.sheet thead tr{background:#f3eefc}
+.del-btn{border-radius:8px;box-shadow:0 3px 0 #efc4c0;position:relative;top:0}
+.del-btn:active{top:3px;box-shadow:none}
+.totals-box{background:#fff;border:0;box-shadow:0 3px 0 #e6dcf6,0 8px 16px rgba(68,33,130,.07)}
+.totals-row.grand{background:linear-gradient(180deg,#5b2fbf,#442182)}
+.totals-row.grand .t-label,.totals-row.grand .t-val{color:#fff}
+.help-note,.terms-box{background:#f3eefc;border:1px dashed #d9cdf1}
+.sig-box{background:#fff;border:1px solid #e6dcf6;box-shadow:0 3px 0 #e6dcf6}
+.sig-box::before{background:#442182}
+.sheet-footer{background:#fff;border-top:2px dashed #d9cdf1;border-radius:0 0 8px 8px}
+.stool{margin-bottom:22px}
+.toolbar-brand::before{background:#442182}
+.tbl-add{border-radius:8px}
+@media (max-width:720px){.sheet-header,.sheet.pr .sheet-header{padding:22px 14px 14px}.header-meta{transform:none}}
+@media print{.sheet::before{display:none}.header-meta{transform:none}.sheet-header{border-bottom:1px solid #ccc}.sheet-body{background:#fff}.section{box-shadow:none;border:1px solid #ddd}}
 </style>
 </head>
 <body>
@@ -530,7 +567,7 @@ function vNew(){
   <div class="stool w760"><div class="toolbar-brand">نموذج طلب شراء داخلي — قيمة المالية</div>
    <div class="toolbar-actions"><button class="sbtn sbtn-outline" id="pr-reset">↺ مسح الكل</button><button class="sbtn sbtn-outline" onclick="window.print()">🖨 طباعة / حفظ PDF</button><button class="sbtn sbtn-purple" id="pr-send" ${S.db?'':'disabled'}>✓ إرسال الطلب</button></div></div>
   <div class="sheet pr">
-   <div class="sheet-header"><div class="logo-wrap"><img src="logo.png" alt="قيمة المالية"></div>
+   <div class="sheet-header"><div class="logo-wrap"><img src="logo-po.png" alt="قيمة المالية"></div>
     <div class="header-center"><h1>نموذج طلب شراء داخلي</h1><p>Internal Purchase Request · Value Capital</p></div>
     <div class="header-meta"><div class="meta-label">حالة الطلب</div><div class="meta-value">${S.prSent?'تم الإرسال ✓':'بانتظار الإرسال'}</div></div></div>
    <div class="sheet-body">
@@ -603,7 +640,7 @@ async function submitPR(){
 const fv = (l,v) => `<div class="field"><label>${l}</label><div class="val">${esc(v||'—')}</div></div>`;
 function prSheetRO(p){
   return `<div class="sheet pr">
-   <div class="sheet-header"><div class="logo-wrap"><img src="logo.png" alt=""></div>
+   <div class="sheet-header"><div class="logo-wrap"><img src="logo-po.png" alt=""></div>
     <div class="header-center"><h1>نموذج طلب شراء داخلي</h1><p>Internal Purchase Request · Value Capital</p></div>
     <div class="header-meta"><div class="meta-label">${esc(p.no)}</div><div class="meta-value">${esc(PR_ST[p.status]||p.status)}</div></div></div>
    <div class="sheet-body">
