@@ -204,6 +204,71 @@ tr.click:hover td{background:#faf7ff}
   .g2,.g3{grid-template-columns:repeat(2,1fr)}
   .sig-row{grid-template-columns:1fr}
 }
+
+/* ===== الطبقة البصرية: أزرار مجسّمة (مفاتيح) ومسار الطلب ===== */
+:root{--edge-purple:#2a1255;--edge-light:#cfc3ea;--lift:0 1px 0 rgba(255,255,255,.35) inset}
+header{background:radial-gradient(900px 260px at 85% -40%,rgba(140,99,224,.55),transparent 70%),linear-gradient(120deg,#1f0d42,#2a1255 45%,#442182);padding:16px 24px 0;position:relative;overflow:hidden}
+header::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.035) 0 2px,transparent 2px 22px);pointer-events:none}
+header>*{position:relative;z-index:1}
+.brand-logo{border-radius:10px;padding:7px 14px;box-shadow:0 4px 0 #cfc3ea,0 10px 18px rgba(10,3,30,.45)}
+.top h1{font-size:20px;letter-spacing:0}
+/* زر مجسّم أساسي */
+.sbtn,.who,.chip,nav button{transition:transform .08s ease,box-shadow .08s ease,background .15s ease}
+.sbtn{border-radius:10px;padding:10px 18px;font-size:13px;position:relative;top:0;border:0}
+.sbtn-purple{background:linear-gradient(180deg,#6a3fc4,#512a9f);color:#fff;box-shadow:0 5px 0 var(--edge-purple),0 9px 14px rgba(42,18,85,.35),var(--lift)}
+.sbtn-purple:hover{transform:none;background:linear-gradient(180deg,#7648d6,#5a2fb0)}
+.sbtn-outline{background:linear-gradient(180deg,#fff,#f6f2fd);color:var(--purple);border:1px solid #e2daf3;box-shadow:0 5px 0 var(--edge-light),0 9px 14px rgba(68,33,130,.12)}
+.sbtn-outline:hover{background:linear-gradient(180deg,#fff,#efe8fb)}
+.sbtn-ok{background:linear-gradient(180deg,#27a066,#1a7a4a);box-shadow:0 5px 0 #0f4f2f,0 9px 14px rgba(15,79,47,.3),var(--lift)}
+.sbtn-bad{background:linear-gradient(180deg,#d6453a,#b42318);box-shadow:0 5px 0 #7a140d,0 9px 14px rgba(122,20,13,.3),var(--lift)}
+.sbtn-silver{background:linear-gradient(180deg,#e3e9f1,#c3cedb);color:#2a3040;box-shadow:0 5px 0 #8e9bae,0 9px 14px rgba(60,70,90,.2)}
+.sbtn:active{top:4px;box-shadow:0 1px 0 rgba(0,0,0,.25)!important}
+.sbtn:disabled{opacity:.55;top:3px;box-shadow:0 2px 0 rgba(0,0,0,.2)!important}
+/* زر الدخول */
+.who{background:linear-gradient(180deg,#fff,#efe8fb);color:var(--purple);padding:8px 18px;border-radius:10px;font-size:13px;position:relative;top:0;box-shadow:0 5px 0 #b9a8dc,0 10px 16px rgba(10,3,30,.4)}
+.who:hover{background:linear-gradient(180deg,#fff,#e7ddf8)}
+.who:active{top:4px;box-shadow:0 1px 0 #b9a8dc}
+/* التبويبات كمفاتيح */
+nav{gap:8px;margin-top:16px;padding-bottom:0}
+nav button{background:linear-gradient(180deg,#5a2fb0,#442182);color:#eadffd;border-radius:10px 10px 0 0;padding:10px 20px 9px;font-size:13px;position:relative;top:0;box-shadow:0 -1px 0 rgba(255,255,255,.22) inset,0 -4px 0 rgba(10,3,30,.28) inset}
+nav button:not(.on):hover{background:linear-gradient(180deg,#6a3fc4,#512a9f)}
+nav button.on{background:var(--bg);color:var(--purple);box-shadow:none;font-weight:800}
+/* مسار الطلب */
+.flow-head{display:flex;align-items:baseline;gap:12px;margin:2px 2px 12px}
+.flow-head h2{margin:0;font-size:18px;color:var(--text)}
+.flow-head span{font-size:12px;color:var(--muted)}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-bottom:18px;position:relative}
+.stage{background:linear-gradient(180deg,#fff,#f7f3fd);border:1px solid #e2daf3;border-radius:12px;padding:16px 16px 14px;margin:0 7px;cursor:pointer;position:relative;text-align:right;font-family:inherit;color:inherit;display:block;box-shadow:0 6px 0 var(--edge-light),0 12px 18px rgba(68,33,130,.1);top:0;transition:transform .08s,box-shadow .08s}
+.stage:hover{background:linear-gradient(180deg,#fff,#f0e9fc)}
+.stage:active{top:5px;box-shadow:0 1px 0 var(--edge-light)}
+.stage .no{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;display:flex;align-items:center;gap:7px}
+.stage .no i{font-style:normal;width:20px;height:20px;border-radius:50%;background:var(--purple-pale);color:var(--purple);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+.stage .n{font-size:38px;font-weight:800;color:var(--purple);line-height:1.1}
+.stage .l{font-size:12px;color:var(--muted);margin-top:4px}
+.stage.hot{background:linear-gradient(180deg,#6a3fc4,#442182);border-color:#2a1255;box-shadow:0 6px 0 var(--edge-purple),0 14px 22px rgba(68,33,130,.4),0 0 0 4px rgba(140,99,224,.18)}
+.stage.hot:hover{background:linear-gradient(180deg,#7648d6,#4c26a0)}
+.stage.hot:active{box-shadow:0 1px 0 var(--edge-purple)}
+.stage.hot .n,.stage.hot .l,.stage.hot .no{color:#fff}
+.stage.hot .no i{background:rgba(255,255,255,.2);color:#fff}
+.stage:not(:last-child)::after{content:"";position:absolute;top:50%;left:-15px;width:16px;height:4px;margin-top:-2px;background:var(--lavender,#c9b3f5);border-radius:2px;z-index:2}
+.total-strip{display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:var(--purple-pale);border:1px solid #d9cdf1;border-radius:12px;padding:14px 20px;margin-bottom:18px}
+.total-strip .big{font-size:26px;font-weight:800;color:var(--purple);direction:ltr}
+.total-strip .cap{font-size:12px;color:var(--muted)}
+/* بقية العناصر */
+.panel{border-radius:12px;box-shadow:0 4px 0 #eae3f7}
+.stat{border-radius:12px}
+.chip{border:1px solid #e2daf3;background:linear-gradient(180deg,#fff,#f6f2fd);box-shadow:0 3px 0 var(--edge-light);position:relative;top:0;padding:5px 16px;border-radius:8px;font-weight:700;color:var(--muted)}
+.chip:active{top:3px;box-shadow:none}
+.chip.on{background:linear-gradient(180deg,#6a3fc4,#512a9f);color:#fff;border-color:#2a1255;box-shadow:0 3px 0 var(--edge-purple)}
+.badge{background:#fff;color:var(--purple)}
+@media (max-width:720px){
+  .flow{grid-template-columns:repeat(2,1fr);row-gap:14px}
+  .stage:not(:last-child)::after{display:none}
+  .stage{margin:0 5px}
+  nav button{padding:9px 12px;font-size:12px}
+}
+@media (prefers-reduced-motion:reduce){.sbtn,.who,.chip,.stage,nav button{transition:none}}
+@media print{.brand-logo{box-shadow:none}}
 </style>
 </head>
 <body>
@@ -335,11 +400,17 @@ function vDash(){
   const n = s => S.prs.filter(p=>p.status===s).length;
   const act = S.pos.filter(o=>o.status!=='cancelled');
   const sum = act.reduce((a,o)=>a+(o.total||0),0);
-  return `<div class="cards">
-    <div class="stat hot"><div class="n">${n('new')}</div><div class="l">طلبات بانتظار الاعتماد</div></div>
-    <div class="stat"><div class="n">${n('approved')}</div><div class="l">معتمدة بانتظار أمر شراء</div></div>
-    <div class="stat"><div class="n">${S.pos.filter(o=>o.status==='issued').length}</div><div class="l">أوامر شراء قيد الانتظار</div></div>
-    <div class="stat"><div class="n">${money(sum)}</div><div class="l">إجمالي أوامر الشراء (ر.س، شامل الضريبة)</div></div></div>
+  const issued = S.pos.filter(o=>o.status==='issued').length;
+  const recv = S.pos.filter(o=>o.status==='received'||o.status==='closed').length;
+  const st = (i,cnt,lbl,act,hot) => `<button type="button" class="stage${hot?' hot':''}" onclick="${act}"><div class="no"><i>${i}</i>${lbl[0]}</div><div class="n">${cnt}</div><div class="l">${lbl[1]}</div></button>`;
+  return `<div class="flow-head"><h2>مسار المشتريات</h2><span>من الطلب حتى الاستلام</span></div>
+  <div class="flow">
+    ${st(1,n('new'),['طلب جديد','بانتظار اعتمادك'],"S.flt='new';go('requests')",n('new')>0)}
+    ${st(2,n('approved'),['معتمد','بانتظار إصدار أمر شراء'],"S.flt='approved';go('requests')",false)}
+    ${st(3,issued,['أمر شراء','قيد الانتظار'],"go('orders')",false)}
+    ${st(4,recv,['استلام','تم الاستلام أو الإغلاق'],"go('orders')",false)}
+  </div>
+  <div class="total-strip"><div><div class="cap">إجمالي أوامر الشراء (شامل الضريبة)</div><div class="big">${money(sum)} <span style="font-size:14px;font-weight:700">ر.س</span></div></div><span class="sp"></span><div class="cap">${act.length} أمر شراء فعّال</div></div>
   <div class="panel"><h2>طلبات تنتظر قرارك</h2>${prTable(S.prs.filter(p=>p.status==='new'),true)}</div>
   <div class="panel"><h2>آخر أوامر الشراء</h2>${poTable(S.pos.slice(0,6))}</div>`;
 }
