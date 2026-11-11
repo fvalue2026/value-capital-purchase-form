@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>المشتريات — قيمة المالية</title>
+<link rel="icon" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -26,6 +27,9 @@ button,input,select,textarea{font-family:inherit;color:inherit}
 /* ===== غلاف التطبيق ===== */
 header{background:linear-gradient(120deg,#2a1158,var(--purple) 60%,var(--purple-mid));color:#fff;padding:14px 24px 0}
 .top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:14px}
+.brand-logo{background:#fff;border-radius:12px;padding:6px 12px;display:flex;align-items:center}
+.brand-logo img{height:34px;width:auto;display:block}
 .top h1{margin:0;font-size:19px;font-weight:800}
 .top p{margin:0;font-size:12px;opacity:.75}
 .who{border:0;background:rgba(255,255,255,.15);color:#fff;padding:6px 16px;border-radius:99px;font-size:12px;font-weight:700;cursor:pointer}
@@ -204,7 +208,7 @@ tr.click:hover td{background:#faf7ff}
 <body>
 <header>
   <div class="top">
-    <div><h1>المشتريات — قيمة المالية</h1><p>طلبات الشراء وأوامر الشراء</p></div>
+    <div class="brand"><span class="brand-logo"><img src="logo-po.png" alt="قيمة المالية"></span><div><h1>المشتريات — قيمة المالية</h1><p>طلبات الشراء وأوامر الشراء</p></div></div>
     <button class="who" id="who" type="button">جارٍ التحميل…</button>
   </div>
   <nav id="nav"></nav>
