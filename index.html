@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>المشتريات — قيمة المالية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<style>
+:root{
+  --purple:#442182; --purple-mid:#5a3399; --purple-light:#7a55bb; --purple-pale:#ede8f8;
+  --silver:#8896a8; --silver-light:#b8c4d0; --silver-pale:#eef1f4;
+  --border:#dbd5ee; --text:#1c1630; --muted:#6e6590;
+  --danger:#c0392b; --danger-bg:#fdf2f2; --success:#1a7a4a; --success-bg:#f0faf5;
+  --white:#fff; --bg:#f0edf8;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:'Almarai',Calibri,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;direction:rtl}
+button,input,select,textarea{font-family:inherit;color:inherit}
+
+/* ===== غلاف التطبيق ===== */
+header{background:linear-gradient(120deg,#2a1158,var(--purple) 60%,var(--purple-mid));color:#fff;padding:14px 24px 0}
+.top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.top h1{margin:0;font-size:19px;font-weight:800}
+.top p{margin:0;font-size:12px;opacity:.75}
+.who{border:0;background:rgba(255,255,255,.15);color:#fff;padding:6px 16px;border-radius:99px;font-size:12px;font-weight:700;cursor:pointer}
+.who:hover{background:rgba(255,255,255,.28)}
+nav{display:flex;gap:4px;margin-top:12px;flex-wrap:wrap}
+nav button{background:transparent;border:0;color:#d9ccf2;padding:9px 16px;cursor:pointer;border-radius:10px 10px 0 0;font-weight:700;font-size:13px}
+nav button.on{background:var(--bg);color:var(--purple)}
+nav button:not(.on):hover{background:rgba(255,255,255,.1)}
+.badge{display:inline-block;min-width:19px;padding:0 6px;margin-inline-start:6px;border-radius:99px;background:#fff;color:var(--purple);font-size:11px;text-align:center}
+nav button.on .badge{background:var(--purple);color:#fff}
+main{max-width:1100px;margin:0 auto;padding:22px 16px 50px}
+.banner{padding:11px 16px;border-radius:12px;margin-bottom:14px;font-size:13px;background:var(--danger-bg);color:var(--danger)}
+.banner.warn{background:#fdf1d6;color:#8a5a00}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+.stat{background:#fff;border-radius:16px;padding:16px 18px;border:1px solid var(--border)}
+.stat .n{font-size:28px;font-weight:800;color:var(--purple);line-height:1.2}
+.stat .l{font-size:12px;color:var(--muted)}
+.stat.hot{background:linear-gradient(135deg,var(--purple),var(--purple-mid));border:0}
+.stat.hot .n,.stat.hot .l{color:#fff}
+.panel{background:#fff;border:1px solid var(--border);border-radius:16px;padding:18px 20px;margin-bottom:16px}
+.panel h2{margin:0 0 12px;font-size:16px;color:var(--purple)}
+.panel table{width:100%;border-collapse:collapse}
+.panel th{background:var(--purple-pale);color:var(--purple);font-size:12px;text-align:right;padding:8px 10px;white-space:nowrap}
+.panel td{padding:8px 10px;border-bottom:1px solid #eee9f6}
+tr.click{cursor:pointer}
+tr.click:hover td{background:#faf7ff}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.sp{flex:1}
+.st{display:inline-block;padding:2px 12px;border-radius:99px;font-size:12px;font-weight:700;white-space:nowrap}
+.st.new{background:var(--purple-pale);color:var(--purple)}
+.st.approved,.st.received{background:#e3f4ea;color:var(--success)}
+.st.rejected,.st.cancelled{background:#fbe7e5;color:var(--danger)}
+.st.ordered,.st.issued{background:var(--purple);color:#fff}
+.st.closed{background:#e9e6ef;color:#4a4560}
+.empty{text-align:center;color:var(--muted);padding:32px 10px}
+.flt{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.chip{border:1px solid var(--border);background:#fff;border-radius:99px;padding:4px 14px;cursor:pointer;font-size:13px}
+.chip.on{background:var(--purple);border-color:var(--purple);color:#fff}
+.ov{position:fixed;inset:0;background:rgba(28,22,48,.6);overflow:auto;z-index:20;padding:22px 12px 40px}
+.ov .stool .toolbar-brand{color:#fff}
+.ov .stool .toolbar-brand::before{background:#fff}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:10px 22px;border-radius:99px;z-index:40;font-size:13px}
+.logbox{max-width:900px;margin:12px auto 0;background:#fff;border-radius:14px;padding:12px 16px;font-size:12px}
+.logbox div{margin-bottom:4px}
+.rejbox{max-width:900px;margin:12px auto 0;background:#fff;border-radius:14px;padding:12px 16px}
+.rejbox textarea{width:100%;min-height:60px;border:1px solid var(--border);border-radius:8px;padding:8px}
+.rejnote{max-width:900px;margin:12px auto 0;background:var(--danger-bg);color:var(--danger);border-radius:12px;padding:10px 16px;font-size:13px}
+.login{max-width:380px;margin:60px auto;background:#fff;border-radius:16px;padding:22px}
+.login input{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:10px;margin-bottom:10px}
+
+/* ===== النماذج (مطابقة للأصل) ===== */
+.stool{max-width:900px;margin:0 auto 14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.stool.w760{max-width:760px}
+.toolbar-brand{color:var(--purple);font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px}
+.toolbar-brand::before{content:"";width:3px;height:18px;background:var(--silver);border-radius:2px}
+.toolbar-actions{display:flex;gap:8px;flex-wrap:wrap}
+.sbtn{border:none;border-radius:10px;padding:9px 16px;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .2s}
+.sbtn-outline{background:#fff;color:var(--purple);border:1px solid var(--border);box-shadow:0 1px 4px rgba(68,33,130,.08)}
+.sbtn-outline:hover{background:var(--purple-pale)}
+.sbtn-purple{background:linear-gradient(135deg,var(--purple-light),var(--purple));color:#fff;box-shadow:0 3px 12px rgba(68,33,130,.35)}
+.sbtn-purple:hover{transform:translateY(-1px)}
+.sbtn-silver{background:linear-gradient(135deg,#d0d8e4,#b0beca);color:#2a3040}
+.sbtn-ok{background:var(--success);color:#fff}
+.sbtn-bad{background:var(--danger);color:#fff}
+.sbtn:disabled{opacity:.5;cursor:not-allowed}
+.sheet{max-width:900px;margin:0 auto;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(68,33,130,.14),0 0 0 1px rgba(68,33,130,.06)}
+.sheet.pr{max-width:760px}
+.sheet-header{background:linear-gradient(135deg,#3b1c7a 0%,#2a1158 55%,#1f0d42 100%);padding:16px 22px;display:grid;grid-template-columns:130px 1fr 180px;gap:14px;align-items:center;position:relative;overflow:hidden}
+.sheet.pr .sheet-header{grid-template-columns:160px 1fr 130px}
+.sheet-header::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--silver-light),#fff,var(--silver-light))}
+.logo-wrap{display:flex;align-items:center;justify-content:center;padding:7px 10px}
+.logo-wrap img{max-width:120px;max-height:44px;object-fit:contain;display:block}
+.sheet.pr .logo-wrap img{max-width:150px;max-height:58px}
+.header-center{text-align:center}
+.header-center h1{color:#fff;font-size:17px;font-weight:800;margin:0 0 4px}
+.header-center p{margin:0;color:rgba(255,255,255,.45);font-size:10px;letter-spacing:2px;text-transform:uppercase}
+.header-meta{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:10px 12px;text-align:center}
+.meta-label{color:rgba(255,255,255,.45);font-size:9px;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.meta-value{color:var(--silver-light);font-size:13px;font-weight:800;word-break:break-all}
+.meta-date{color:rgba(255,255,255,.55);font-size:10px;margin-top:4px}
+.sheet-body{padding:14px 16px;display:grid;gap:10px}
+.parties{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.section{border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.section-head{background:linear-gradient(90deg,var(--purple-pale),#f8f6fd);padding:7px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
+.section-head h2{font-size:12px;font-weight:800;color:var(--purple);margin:0}
+.section-head-bar{width:3px;height:14px;background:var(--silver);border-radius:2px;flex-shrink:0}
+.step-num{background:var(--purple);color:#fff;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0}
+.section-body{padding:10px 12px}
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mt8{margin-top:8px}
+.field{display:flex;flex-direction:column;gap:3px}
+.field label{font-size:10px;font-weight:700;color:var(--muted)}
+.rq{color:var(--danger)}
+.field input,.field select,.field textarea{border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:12px;background:#faf9fd;outline:none;width:100%;transition:all .2s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--purple-light);background:#fff;box-shadow:0 0 0 3px rgba(90,51,153,.1)}
+.field textarea{min-height:52px;resize:vertical;line-height:1.5}
+.field.error input,.field.error textarea,.field.error select{border-color:var(--danger)!important;background:var(--danger-bg)!important}
+.readonly{background:var(--purple-pale)!important;color:var(--purple)!important;font-weight:800}
+.val{border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:12px;background:#faf9fd;min-height:33px;white-space:pre-wrap;word-break:break-word}
+.remember-row{display:flex;align-items:center;gap:7px;margin-top:9px;font-size:11px;color:var(--muted);font-weight:700}
+.remember-row input{width:15px;height:15px;accent-color:var(--purple);cursor:pointer}
+.remember-row label{cursor:pointer}
+.tbl-wrap{border:1px solid var(--border);border-radius:10px;overflow:hidden;overflow-x:auto}
+.sheet table{width:100%;border-collapse:collapse;table-layout:fixed}
+.sheet thead tr{background:linear-gradient(90deg,var(--purple-pale),#f8f6fd)}
+.sheet th{padding:7px 8px;font-size:10px;font-weight:800;color:var(--purple);text-align:right;border-bottom:1px solid var(--border);background:none}
+.sheet td{padding:4px 5px;border-bottom:1px solid #f0ecf8;vertical-align:middle}
+.sheet tr:last-child td{border-bottom:none}
+.rnum{text-align:center;font-weight:800;color:var(--muted);font-size:11px}
+.sheet td input,.sheet td select{border:1px solid #e2daf0;border-radius:7px;padding:6px 7px;font-size:11px;background:#faf9fd;width:100%;outline:none}
+.sheet td input:focus,.sheet td select:focus{border-color:var(--purple-light);background:#fff}
+.sheet td input[type=number]{text-align:left;direction:ltr}
+.td-total{font-weight:800;font-size:11px;color:var(--purple);text-align:left;direction:ltr;padding:6px 7px!important}
+.ro-cell{font-size:12px;padding:6px 8px!important;word-break:break-word}
+.del-btn{background:var(--danger-bg);color:var(--danger);border:1px solid #f5c6c6;border-radius:7px;padding:5px 8px;font-size:11px;font-weight:700;cursor:pointer;width:100%}
+.tbl-add{margin-top:8px}
+.help-note{display:flex;align-items:center;gap:9px;background:var(--purple-pale);border:1px solid var(--border);border-radius:10px;padding:9px 14px;font-size:11.5px;color:var(--purple);line-height:1.6}
+.totals-wrap{display:flex;justify-content:flex-start;margin-top:10px}
+.totals-box{border:1px solid var(--border);border-radius:12px;overflow:hidden;min-width:280px}
+.totals-row{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;border-bottom:1px solid var(--border);font-size:12px;gap:12px}
+.totals-row:last-child{border-bottom:none}
+.t-label{color:var(--muted);font-weight:600}
+.t-val{font-weight:800;direction:ltr}
+.totals-row.grand{background:linear-gradient(90deg,var(--purple-pale),#f8f6fd)}
+.totals-row.grand .t-label{color:var(--purple);font-size:13px;font-weight:800}
+.totals-row.grand .t-val{color:var(--purple);font-size:14px}
+.disc-in{width:56px!important;border:1px solid var(--border);border-radius:6px;padding:3px 6px;font-size:11px;text-align:center;background:#faf9fd}
+.terms-box{background:var(--purple-pale);border-radius:10px;padding:10px 14px;font-size:11px;color:var(--muted);line-height:1.8}
+.sig-row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.sig-box{border:1px solid var(--silver-pale);border-radius:10px;padding:10px 12px;background:linear-gradient(135deg,#fdfcff,#f8f6fc);position:relative;overflow:hidden}
+.sig-box::before{content:"";position:absolute;top:0;right:0;left:0;height:2px;background:linear-gradient(90deg,var(--silver-light),var(--silver))}
+.sig-box h3{font-size:11px;font-weight:800;color:var(--purple);margin:4px 0 2px}
+.sig-box p{font-size:9px;color:var(--muted);margin:0 0 6px}
+.sig-fields{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:6px}
+.sig-fields input,.sig-fields .val{border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:10px;background:#faf9fd;outline:none;width:100%;min-height:26px}
+.sig-canvas-wrap{position:relative;border:1px dashed #c0b4dc;border-radius:8px;background:#fdfcff;overflow:hidden;height:60px}
+.sig-canvas{display:block;width:100%;height:60px;cursor:crosshair;touch-action:none}
+.sig-img{display:block;width:100%;height:60px;object-fit:contain}
+.sig-clear{position:absolute;top:4px;left:4px;background:rgba(255,255,255,.85);border:1px solid #ddd;border-radius:5px;padding:2px 7px;font-size:9px;font-weight:700;color:var(--danger);cursor:pointer}
+.sig-hint{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:9px;color:#bbb;pointer-events:none;white-space:nowrap}
+.sheet-footer{background:linear-gradient(90deg,var(--purple-pale),#f6f3fc);border-top:1px solid var(--border);padding:8px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.footer-text{font-size:10px;color:var(--muted);font-weight:500}
+.footer-silver{color:var(--silver);font-size:10px;font-weight:700}
+.smsg{display:none;padding:10px 16px;border-radius:10px;font-size:12px;font-weight:700;text-align:center}
+.smsg.show{display:block}
+.smsg.success{background:var(--success-bg);color:var(--success);border:1px solid #a8e6c4}
+.smsg.error{background:var(--danger-bg);color:var(--danger);border:1px solid #f5c6c6}
+.smsg.loading{background:var(--purple-pale);color:var(--purple);border:1px solid #c8bbea}
+
+@media print{
+  @page{size:A4 portrait;margin:7mm 8mm}
+  html,body{background:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  header,.stool,.toast,.nopr,.tbl-add,.del-btn,.sig-clear,.sig-hint,.help-note,.remember-row,.smsg{display:none!important}
+  body.ovopen main{display:none!important}
+  .ov{position:static!important;background:#fff!important;padding:0!important;overflow:visible!important}
+  main{padding:0!important}
+  .sheet{max-width:100%!important;border-radius:0!important;box-shadow:none!important}
+  .sheet-header{padding:10px 14px!important}
+  .sheet-body{padding:8px 10px!important;gap:7px!important}
+  .section-head{padding:5px 10px!important}
+  .section-body{padding:7px 10px!important}
+  .field input,.field select,.field textarea,.val{padding:4px 6px!important;font-size:10px!important;border-color:#ccc!important}
+  .sig-canvas-wrap,.sig-canvas,.sig-img{height:48px!important}
+  .logo-wrap img{max-width:100px!important}
+}
+@media (max-width:720px){
+  header{padding:12px 12px 0}
+  .sheet-header,.sheet.pr .sheet-header{grid-template-columns:1fr;text-align:center}
+  .parties{grid-template-columns:1fr}
+  .g2,.g3{grid-template-columns:repeat(2,1fr)}
+  .sig-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <div><h1>المشتريات — قيمة المالية</h1><p>طلبات الشراء وأوامر الشراء</p></div>
+    <button class="who" id="who" type="button">جارٍ التحميل…</button>
+  </div>
+  <nav id="nav"></nav>
+</header>
+<main id="main"><div class="empty">جارٍ تحميل البيانات…</div></main>
+<div id="layer"></div>
+
+<script>
+/* ===== الثوابت (من النماذج الأصلية) ===== */
+const VAT_RATE = 0.15;
+const UNITS_PR = ['حبة','جهاز','علبة','وحدة','خدمة','أخرى'];
+const DEPTS_PO = ['الإدارة التنفيذية','رأس المال البشري','المالية','المشتريات','تقنية المعلومات','العمليات','الالتزام والمخاطر','التسويق','خدمة العملاء','الشؤون القانونية'];
+const PAY_TERMS = ['فوري عند الاستلام','30 يوم','45 يوم','60 يوم','دفعة مقدمة 50%'];
+const DELIV_METHODS = ['توصيل للمقر','استلام من المورد','شحن دولي'];
+const PR_ST = {new:'جديد',approved:'معتمد',rejected:'مرفوض',ordered:'صدر أمر شراء'};
+const PO_ST = {issued:'قيد الانتظار',received:'تم الاستلام',closed:'مغلق',cancelled:'ملغى'};
+const PROFILE_KEY = 'vc_pr_profile';
+const SIG_ROLES = [['مسؤول المشتريات','إعداد ومراجعة أمر الشراء'],['المفوّض بالاعتماد','الاعتماد النهائي وإصدار الأمر']];
+
+/* ===== أدوات ===== */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money = n => Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const today = () => new Date().toISOString().slice(0,10);
+const fmtDate = d => d ? String(d).slice(0,10) : '—';
+const fmtDT = t => { try { return new Date(t).toLocaleString('ar-SA-u-nu-latn',{dateStyle:'medium',timeStyle:'short'}); } catch(e){ return ''; } };
+const pad = x => String(x).padStart(2,'0');
+const genPON = () => { const n=new Date(); return `PO-${n.getFullYear()}${pad(n.getMonth()+1)}${pad(n.getDate())}-${Math.floor(100+Math.random()*900)}`; };
+const genPRN = () => { const n=new Date(); return `PR-${n.getFullYear()}${pad(n.getMonth()+1)}${pad(n.getDate())}-${Math.floor(1000+Math.random()*9000)}`; };
+const stBadge = (map,k) => `<span class="st ${esc(k)}">${esc(map[k]||k)}</span>`;
+function toast(m){ const t=document.createElement('div'); t.className='toast'; t.textContent=m; document.body.appendChild(t); setTimeout(()=>t.remove(),2800); }
+function calcPO(items, pct){
+  const sub = (items||[]).reduce((a,i)=>a+(Number(i.qty)||0)*(Number(i.price)||0),0);
+  const discAmt = sub*((Number(pct)||0)/100), afterDisc = sub-discAmt, vat = afterDisc*VAT_RATE;
+  return {sub,discAmt,afterDisc,vat,total:afterDisc+vat};
+}
+
+/* ===== الحالة ===== */
+const S = { db:null, auth:null, uid:null, admin:false, prs:[], pos:[], loaded:{pr:false,po:false}, view:'', flt:'all', err:'', seenNew:null, draft:null, prSent:false, poDraft:null, ov:null };
+let unsubs = [];
+
+/* ===== التهيئة (Firebase) ===== */
+(function init(){
+  window.addEventListener('hashchange', route);
+  try {
+    if (typeof firebase === 'undefined' || typeof FIREBASE_CONFIG === 'undefined' || /PASTE|YOUR_/.test(JSON.stringify(FIREBASE_CONFIG))) throw new Error('config');
+    firebase.initializeApp(FIREBASE_CONFIG);
+    S.db = firebase.firestore(); S.auth = firebase.auth();
+  } catch(e) {
+    S.err = 'لم يُضبط الربط بقاعدة البيانات بعد. أكملي خطوات ملف التعليمات ثم الصقي إعدادات Firebase في ملف firebase-config.js.';
+    $('#who').textContent = 'غير متصل'; route(); return;
+  }
+  S.auth.onAuthStateChanged(async u => {
+    if (!u) { try { await S.auth.signInAnonymously(); } catch(e){ S.err='تعذّر تسجيل الدخول المبدئي ('+(e&&e.code||'')+')'; render(); } return; }
+    S.uid = u.uid; S.admin = !u.isAnonymous;
+    $('#who').textContent = S.admin ? 'مسؤول المشتريات · خروج' : 'دخول المسؤول';
+    subscribe(); route();
+  });
+  $('#who').onclick = () => { if (S.admin) S.auth.signOut().then(()=>{ S.prs=[]; S.pos=[]; S.draft=null; closeOv(); location.hash='new'; }); else loginDlg(); };
+  setTimeout(()=>{ if(!S.loaded.pr) { S.err='تأخر الوصول إلى البيانات؛ قد تكون المعروضة غير محدّثة.'; render(); } }, 10000);
+})();
+
+function loginDlg(){
+  $('#layer').innerHTML = `<div class="ov"><form class="login" id="lg"><h2 style="margin:0 0 14px;color:var(--purple)">دخول المسؤول</h2>
+  <input type="email" id="lg-e" placeholder="البريد الإلكتروني" required><input type="password" id="lg-p" placeholder="كلمة المرور" required>
+  <div class="row"><button class="sbtn sbtn-purple">دخول</button><button type="button" class="sbtn sbtn-outline" id="lg-x">إلغاء</button></div></form></div>`;
+  $('#lg-x').onclick = () => $('#layer').innerHTML='';
+  $('#lg').onsubmit = async e => { e.preventDefault();
+    try { await S.auth.signInWithEmailAndPassword($('#lg-e').value.trim(), $('#lg-p').value); $('#layer').innerHTML=''; location.hash='dashboard'; }
+    catch(err){ toast('تعذّر الدخول: بيانات غير صحيحة'); } };
+}
+
+function subscribe(){
+  unsubs.forEach(f=>f()); unsubs=[]; S.loaded={pr:false,po:false}; S.seenNew=null;
+  const onErr = e => { S.err = 'تعذّر قراءة البيانات (' + (e && e.code || 'خطأ') + ').'; render(); };
+  let q = S.db.collection('pr');
+  q = S.admin ? q.orderBy('createdAt','desc') : q.where('requesterId','==',S.uid);
+  unsubs.push(q.onSnapshot(snap=>{
+    const list = snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+    const prevNew = S.prs.filter(p=>p.status==='new').length;
+    S.prs = list; S.loaded.pr = true; S.err='';
+    const nowNew = list.filter(p=>p.status==='new').length;
+    if (S.admin && S.seenNew !== null && nowNew > prevNew) toast('وصل طلب شراء جديد');
+    S.seenNew = nowNew; render();
+  }, onErr));
+  if (S.admin) unsubs.push(S.db.collection('po').orderBy('createdAt','desc').onSnapshot(snap=>{
+    S.pos = snap.docs.map(d=>({id:d.id,...d.data()})); S.loaded.po = true; render();
+  }, onErr));
+}
+
+/* ===== التوجيه والرسم ===== */
+function route(){
+  const h = (location.hash||'').replace('#','');
+  const allowed = S.admin ? ['dashboard','new','requests','orders'] : ['new','requests'];
+  S.view = allowed.includes(h) ? h : (S.admin ? 'dashboard' : 'new');
+  render();
+}
+function go(v){ if (location.hash === '#'+v) route(); else location.hash = v; }
+
+function render(){
+  const newCount = S.prs.filter(p=>p.status==='new').length;
+  const tabs = [];
+  if (S.admin) tabs.push(['dashboard','لوحة المتابعة']);
+  tabs.push(['new','طلب شراء جديد']);
+  tabs.push(['requests', S.admin ? 'طلبات الشراء' : 'طلباتي']);
+  if (S.admin) tabs.push(['orders','أوامر الشراء']);
+  $('#nav').innerHTML = tabs.map(([k,l])=>`<button class="${S.view===k?'on':''}" data-go="${k}">${l}${k==='requests'&&S.admin&&newCount?`<span class="badge">${newCount}</span>`:''}</button>`).join('');
+  $('#nav').querySelectorAll('button').forEach(b=>b.onclick=()=>go(b.dataset.go));
+  const ae = document.activeElement;
+  if (ae && ae.closest && ae.closest('#pr-sheet')) return;   // لا نقطع الكتابة
+  let html = S.err ? `<div class="banner">${esc(S.err)}</div>` : '';
+  if (S.view==='dashboard') html += vDash();
+  else if (S.view==='new') html += vNew();
+  else if (S.view==='requests') html += vReqs();
+  else if (S.view==='orders') html += vOrders();
+  $('#main').innerHTML = html;
+  bind();
+  if (!S.poDraft) updateOverlay();
+}
+
+/* ===== لوحة المتابعة والجداول ===== */
+function vDash(){
+  const n = s => S.prs.filter(p=>p.status===s).length;
+  const act = S.pos.filter(o=>o.status!=='cancelled');
+  const sum = act.reduce((a,o)=>a+(o.total||0),0);
+  return `<div class="cards">
+    <div class="stat hot"><div class="n">${n('new')}</div><div class="l">طلبات بانتظار الاعتماد</div></div>
+    <div class="stat"><div class="n">${n('approved')}</div><div class="l">معتمدة بانتظار أمر شراء</div></div>
+    <div class="stat"><div class="n">${S.pos.filter(o=>o.status==='issued').length}</div><div class="l">أوامر شراء قيد الانتظار</div></div>
+    <div class="stat"><div class="n">${money(sum)}</div><div class="l">إجمالي أوامر الشراء (ر.س، شامل الضريبة)</div></div></div>
+  <div class="panel"><h2>طلبات تنتظر قرارك</h2>${prTable(S.prs.filter(p=>p.status==='new'),true)}</div>
+  <div class="panel"><h2>آخر أوامر الشراء</h2>${poTable(S.pos.slice(0,6))}</div>`;
+}
+function prTable(list, showReq){
+  if (!list.length) return '<div class="empty">لا توجد طلبات.</div>';
+  return `<div style="overflow:auto"><table><tr><th>رقم الطلب</th><th>التاريخ</th>${showReq?'<th>مقدّم الطلب</th>':''}<th>القسم</th><th>الغرض</th><th>الأصناف</th><th>الحالة</th></tr>`+
+   list.map(p=>`<tr class="click" data-pr="${esc(p.id)}"><td><b>${esc(p.no)}</b></td><td>${fmtDate(p.date)}</td>${showReq?`<td>${esc(p.requester)}</td>`:''}<td>${esc(p.dept)}</td><td>${esc((p.purpose||'').slice(0,60))}</td><td>${(p.items||[]).length}</td><td>${stBadge(PR_ST,p.status)}</td></tr>`).join('')+'</table></div>';
+}
+function poTable(list){
+  if (!list.length) return '<div class="empty">لا توجد أوامر شراء.</div>';
+  return `<div style="overflow:auto"><table><tr><th>رقم الأمر</th><th>التاريخ</th><th>المورد</th><th>القسم</th><th>مرجع الطلب</th><th>الإجمالي</th><th>الحالة</th></tr>`+
+   list.map(o=>`<tr class="click" data-po="${esc(o.id)}"><td><b>${esc(o.no)}</b></td><td>${fmtDate(o.date)}</td><td>${esc(o.vendorName)}</td><td>${esc(o.dept||'—')}</td><td>${esc(o.prNo||'—')}</td><td>${money(o.total)}</td><td>${stBadge(PO_ST,o.status)}</td></tr>`).join('')+'</table></div>';
+}
+function vReqs(){
+  let list = S.prs; const f = S.flt; if (f!=='all') list = list.filter(p=>p.status===f);
+  const chips = [['all','الكل'],...Object.entries(PR_ST)].map(([k,l])=>`<button class="chip ${f===k?'on':''}" data-flt="${k}">${l}</button>`).join('');
+  return `<div class="panel"><h2>${S.admin?'جميع طلبات الشراء':'طلباتي (على هذا الجهاز)'}</h2><div class="flt">${chips}</div>${prTable(list,S.admin)}</div>`;
+}
+function vOrders(){
+  return `<div class="panel"><div class="row"><h2 style="margin:0">أوامر الشراء</h2><span class="sp"></span><button class="sbtn sbtn-purple" id="po-blank">＋ أمر شراء جديد</button></div><div style="height:12px"></div>${poTable(S.pos)}</div>`;
+}
+
+/* ===== نموذج طلب الشراء (مطابق للأصل) ===== */
+const blankPRItem = () => ({name:'',qty:1,unit:'',note:''});
+function newDraft(){
+  let p = {}; try { p = JSON.parse(localStorage.getItem(PROFILE_KEY)||'{}'); } catch(e){}
+  return { name:p.name||'', dept:p.dept||'', date:today(), purpose:'', remember:!!p.name, items:[blankPRItem()] };
+}
+function prItemRows(items){
+  return items.map((it,i)=>`<tr data-i="${i}">
+    <td><input type="text" data-f="name" placeholder="اسم المنتج" value="${esc(it.name)}"></td>
+    <td><input type="number" data-f="qty" placeholder="1" min="1" value="${esc(it.qty)}"></td>
+    <td><select data-f="unit"><option value="">—</option>${UNITS_PR.map(u=>`<option ${it.unit===u?'selected':''}>${u}</option>`).join('')}</select></td>
+    <td><input type="text" data-f="note" placeholder="ملاحظات (اختياري)" value="${esc(it.note)}"></td>
+    <td><button type="button" class="del-btn" data-del="${i}">✕</button></td></tr>`).join('');
+}
+function vNew(){
+  if (!S.draft) S.draft = newDraft();
+  const d = S.draft;
+  return `<div id="pr-sheet">
+  <div class="stool w760"><div class="toolbar-brand">نموذج طلب شراء داخلي — قيمة المالية</div>
+   <div class="toolbar-actions"><button class="sbtn sbtn-outline" id="pr-reset">↺ مسح الكل</button><button class="sbtn sbtn-outline" onclick="window.print()">🖨 طباعة / حفظ PDF</button><button class="sbtn sbtn-purple" id="pr-send" ${S.db?'':'disabled'}>✓ إرسال الطلب</button></div></div>
+  <div class="sheet pr">
+   <div class="sheet-header"><div class="logo-wrap"><img src="logo.png" alt="قيمة المالية"></div>
+    <div class="header-center"><h1>نموذج طلب شراء داخلي</h1><p>Internal Purchase Request · Value Capital</p></div>
+    <div class="header-meta"><div class="meta-label">حالة الطلب</div><div class="meta-value">${S.prSent?'تم الإرسال ✓':'بانتظار الإرسال'}</div></div></div>
+   <div class="sheet-body">
+    <div class="section"><div class="section-head"><div class="step-num">1</div><h2>بياناتك الأساسية</h2></div>
+     <div class="section-body"><div class="g3">
+      <div class="field" id="f-name"><label>الاسم الكامل <span class="rq">*</span></label><input data-k="name" type="text" placeholder="اسمك" value="${esc(d.name)}"></div>
+      <div class="field" id="f-dept"><label>القسم / الإدارة <span class="rq">*</span></label><input data-k="dept" type="text" placeholder="مثال: المالية" value="${esc(d.dept)}"></div>
+      <div class="field"><label>تاريخ الطلب</label><input data-k="date" type="date" value="${esc(d.date)}"></div></div>
+      <div class="remember-row"><input type="checkbox" id="rememberMe" data-k="remember" ${d.remember?'checked':''}><label for="rememberMe">تذكّر بياناتي على هذا الجهاز لتعبئتها تلقائيًا في المرة القادمة</label></div></div></div>
+    <div class="section"><div class="section-head"><div class="step-num">2</div><h2>ما الذي تحتاجه؟</h2></div>
+     <div class="section-body"><div class="field" id="f-purpose"><label>الغرض من الطلب <span class="rq">*</span></label><textarea data-k="purpose" placeholder="مثال: شراء أدوات مكتبية لقسم المالية">${esc(d.purpose)}</textarea></div>
+      <div class="tbl-wrap mt8"><table><colgroup><col style="width:38%"><col style="width:12%"><col style="width:18%"><col style="width:26%"><col style="width:6%"></colgroup>
+       <thead><tr><th>اسم المنتج <span class="rq">*</span></th><th>الكمية</th><th>الوحدة</th><th>ملاحظات</th><th></th></tr></thead><tbody id="tbody">${prItemRows(d.items)}</tbody></table></div>
+      <div class="tbl-add"><button class="sbtn sbtn-outline" id="pr-add" style="font-size:11px;padding:6px 12px;border-style:dashed">＋ إضافة صنف آخر</button></div></div></div>
+    <div class="help-note"><span style="font-size:16px">☎</span><span>في حال رغبتِ بالمساعدة في تعبئة النموذج، يمكنكِ التواصل مع <strong>قسم المشتريات</strong> على تحويلة <strong>121 / 117</strong></span></div>
+    <div class="smsg" id="smsg"></div></div>
+   <div class="sheet-footer"><span class="footer-text">نموذج طلب شراء داخلي — قيمة المالية</span><span class="footer-silver">Value Capital · Internal Use Only</span></div>
+  </div></div>`;
+}
+function setMsg(m,t){ const el=$('#smsg'); if(!el) return; el.textContent=m; el.className='smsg show '+t; }
+
+function bind(){
+  document.querySelectorAll('[data-flt]').forEach(b=>b.onclick=()=>{ S.flt=b.dataset.flt; render(); });
+  document.querySelectorAll('[data-pr]').forEach(r=>r.onclick=()=>openPR(r.dataset.pr));
+  document.querySelectorAll('[data-po]').forEach(r=>r.onclick=()=>openPO(r.dataset.po));
+  const nb = $('#po-blank'); if (nb) nb.onclick = ()=>startPO(null);
+  const box = $('#pr-sheet'); if (!box) return;
+  const d = S.draft;
+  box.addEventListener('input', e=>{
+    const k = e.target.dataset.k; if (k) { d[k] = e.target.type==='checkbox' ? e.target.checked : e.target.value; return; }
+    const tr = e.target.closest('tr[data-i]'); if (tr && e.target.dataset.f) d.items[+tr.dataset.i][e.target.dataset.f] = e.target.value;
+  });
+  box.addEventListener('change', e=>{ const k=e.target.dataset.k; if(k==='remember') d.remember=e.target.checked; const tr=e.target.closest('tr[data-i]'); if(tr&&e.target.dataset.f) d.items[+tr.dataset.i][e.target.dataset.f]=e.target.value; });
+  const rows = () => { $('#tbody').innerHTML = prItemRows(d.items); wireDel(); };
+  const wireDel = () => $('#tbody').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{ const i=+b.dataset.del; if(d.items.length===1) d.items[0]=blankPRItem(); else d.items.splice(i,1); rows(); });
+  wireDel();
+  $('#pr-add').onclick = ()=>{ d.items.push(blankPRItem()); rows(); };
+  $('#pr-reset').onclick = ()=>{ S.draft=newDraft(); S.prSent=false; render(); };
+  $('#pr-send').onclick = submitPR;
+}
+
+async function submitPR(){
+  const d = S.draft;
+  document.querySelectorAll('.field.error').forEach(f=>f.classList.remove('error'));
+  const name=d.name.trim(), dept=d.dept.trim(), purpose=d.purpose.trim();
+  const items = d.items.filter(i=>i.name.trim()).map(i=>({name:i.name.trim(),qty:Number(i.qty)||1,unit:i.unit||'',note:(i.note||'').trim()}));
+  let ok = true;
+  if(!name){ $('#f-name').classList.add('error'); ok=false; }
+  if(!dept){ $('#f-dept').classList.add('error'); ok=false; }
+  if(!purpose){ $('#f-purpose').classList.add('error'); ok=false; }
+  if(!items.length) ok=false;
+  if(!ok){ setMsg('❌ يرجى تعبئة الحقول الإلزامية: الاسم، القسم، الغرض من الطلب، وصنف واحد على الأقل','error'); return; }
+  if(!S.db){ setMsg('❌ الموقع غير متصل بقاعدة البيانات','error'); return; }
+  setMsg('⏳ جاري إرسال الطلب...','loading');
+  if (d.remember) { try{ localStorage.setItem(PROFILE_KEY, JSON.stringify({name,dept})); }catch(e){} }
+  const no = genPRN();
+  const doc = { no, requester:name, requesterId:S.uid||'', dept, date:d.date||today(), purpose, items, status:'new', createdAt:Date.now(), log:[{t:Date.now(),by:name,a:'قدّم الطلب'}] };
+  try {
+    await S.db.doc('pr/'+no).set(doc);
+    S.prSent = true; setMsg('✅ تم إرسال الطلب بنجاح برقم '+no+'! سيتم التواصل معك عند مراجعته.','success');
+    const m = $('.meta-value'); if (m) m.textContent='تم الإرسال ✓';
+    setTimeout(()=>{ S.draft=newDraft(); S.prSent=false; if(S.view==='new') render(); }, 3500);
+  } catch(err){ setMsg('❌ فشل الإرسال ('+(err&&err.code||'خطأ')+'). تحقق من الإنترنت وحاولي مجدداً','error'); }
+}
+
+/* ===== عرض الطلب (قراءة فقط، بنفس شكل النموذج) ===== */
+const fv = (l,v) => `<div class="field"><label>${l}</label><div class="val">${esc(v||'—')}</div></div>`;
+function prSheetRO(p){
+  return `<div class="sheet pr">
+   <div class="sheet-header"><div class="logo-wrap"><img src="logo.png" alt=""></div>
+    <div class="header-center"><h1>نموذج طلب شراء داخلي</h1><p>Internal Purchase Request · Value Capital</p></div>
+    <div class="header-meta"><div class="meta-label">${esc(p.no)}</div><div class="meta-value">${esc(PR_ST[p.status]||p.status)}</div></div></div>
+   <div class="sheet-body">
+    <div class="section"><div class="section-head"><div class="step-num">1</div><h2>بيانات مقدّم الطلب</h2></div><div class="section-body"><div class="g3">${fv('الاسم الكامل',p.requester)}${fv('القسم / الإدارة',p.dept)}${fv('تاريخ الطلب',fmtDate(p.date))}</div></div></div>
+    <div class="section"><div class="section-head"><div class="step-num">2</div><h2>ما الذي يحتاجه؟</h2></div><div class="section-body">${fv('الغرض من الطلب',p.purpose)}
+     <div class="tbl-wrap mt8"><table><colgroup><col style="width:38%"><col style="width:12%"><col style="width:18%"><col style="width:32%"></colgroup><thead><tr><th>اسم المنتج</th><th>الكمية</th><th>الوحدة</th><th>ملاحظات</th></tr></thead><tbody>${(p.items||[]).map(i=>`<tr><td class="ro-cell">${esc(i.name)}</td><td class="ro-cell">${esc(i.qty)}</td><td class="ro-cell">${esc(i.unit||'—')}</td><td class="ro-cell">${esc(i.note||'—')}</td></tr>`).join('')}</tbody></table></div></div></div></div>
+   <div class="sheet-footer"><span class="footer-text">نموذج طلب شراء داخلي — قيمة المالية</span><span class="footer-silver">Value Capital · Internal Use Only</span></div></div>`;
+}
+const logHtml = log => (log&&log.length)?`<div class="logbox nopr"><b>سجل الطلب</b>${log.map(l=>`<div>• ${esc(l.a)} — ${esc(l.by)} <span style="color:var(--muted)">${fmtDT(l.t)}</span></div>`).join('')}</div>`:'';
+
+/* ===== النوافذ ===== */
+function openPR(id){ S.ov={type:'pr',id}; updateOverlay(); }
+function openPO(id){ S.ov={type:'po',id}; updateOverlay(); }
+function closeOv(){ S.ov=null; S.poDraft=null; updateOverlay(); }
+function updateOverlay(){
+  const L = $('#layer');
+  if (S.poDraft) { document.body.classList.add('ovopen'); L.innerHTML = poForm(); bindPoForm(); return; }
+  if (!S.ov) { document.body.classList.remove('ovopen'); if (!$('#lg')) L.innerHTML=''; return; }
+  const body = S.ov.type==='pr' ? prDetail() : poDetail();
+  if (!body) { S.ov=null; document.body.classList.remove('ovopen'); L.innerHTML=''; return; }
+  document.body.classList.add('ovopen');
+  L.innerHTML = `<div class="ov" id="ovbg">${body}</div>`;
+  $('#ovbg').addEventListener('mousedown', e=>{ if(e.target.id==='ovbg') closeOv(); });
+  bindDetail();
+}
+
+function prDetail(){
+  const p = S.prs.find(x=>x.id===S.ov.id); if(!p) return '';
+  const po = S.pos.find(o=>o.prId===p.id);
+  const mine = p.requesterId && p.requesterId===S.uid;
+  return `<div class="stool w760"><div class="toolbar-brand">طلب شراء ${esc(p.no)}</div><div class="toolbar-actions">
+    ${S.admin&&p.status==='new'?`<button class="sbtn sbtn-ok" id="a-ok">اعتماد</button><button class="sbtn sbtn-bad" id="a-no">رفض</button>`:''}
+    ${S.admin&&p.status==='approved'?`<button class="sbtn sbtn-purple" id="a-po">إصدار أمر شراء</button>`:''}
+    ${S.admin&&(p.status==='approved'||p.status==='rejected')?`<button class="sbtn sbtn-outline" id="a-re">إعادته إلى «جديد»</button>`:''}
+    ${(mine&&p.status==='new'&&!S.admin)?`<button class="sbtn sbtn-outline" id="a-del">سحب الطلب</button>`:''}
+    ${po?`<button class="sbtn sbtn-outline" data-gopo="${esc(po.id)}">أمر الشراء ${esc(po.no)}</button>`:''}
+    <button class="sbtn sbtn-outline" onclick="window.print()">🖨 طباعة</button><button class="sbtn sbtn-silver" id="x">إغلاق</button></div></div>
+  ${prSheetRO(p)}
+  ${p.status==='rejected'&&p.reason?`<div class="rejnote nopr"><b>سبب الرفض:</b> ${esc(p.reason)}</div>`:''}
+  <div class="rejbox nopr" id="rej" style="display:none"><label style="font-size:12px;font-weight:700">سبب الرفض</label><textarea id="rej-t"></textarea><div class="row" style="margin-top:8px"><button class="sbtn sbtn-bad" id="rej-go">تأكيد الرفض</button></div></div>
+  ${logHtml(p.log)}`;
+}
+const actor = () => 'مسؤول المشتريات';
+async function prAct(p, patch, act){
+  try { await S.db.doc('pr/'+p.id).update({...patch, log:[...(p.log||[]),{t:Date.now(),by:actor(),a:act}]}); }
+  catch(e){ toast('تعذّر التنفيذ: '+(e&&e.code||'خطأ')); }
+}
+function bindDetail(){
+  const b = id => document.getElementById(id);
+  if (b('x')) b('x').onclick = closeOv;
+  document.querySelectorAll('[data-gopo]').forEach(a=>a.onclick=()=>openPO(a.dataset.gopo));
+  if (S.ov.type==='pr') {
+    const p = S.prs.find(z=>z.id===S.ov.id);
+    if (b('a-ok')) b('a-ok').onclick = ()=>prAct(p,{status:'approved',decidedAt:Date.now()},'اعتمد الطلب');
+    if (b('a-no')) b('a-no').onclick = ()=>{ b('rej').style.display=''; b('rej-t').focus(); };
+    if (b('rej-go')) b('rej-go').onclick = ()=>{ const r=b('rej-t').value.trim(); if(!r){toast('اكتبي سبب الرفض');return;} prAct(p,{status:'rejected',reason:r,decidedAt:Date.now()},'رفض الطلب'); };
+    if (b('a-re')) b('a-re').onclick = ()=>prAct(p,{status:'new',reason:''},'أعاد الطلب إلى «جديد»');
+    if (b('a-po')) b('a-po').onclick = ()=>{ S.ov=null; startPO(p); };
+    if (b('a-del')) b('a-del').onclick = async ()=>{ try{ await S.db.doc('pr/'+p.id).delete(); toast('تم سحب الطلب'); closeOv(); }catch(e){ toast('تعذّر السحب'); } };
+  } else {
+    const o = S.pos.find(z=>z.id===S.ov.id);
+    const st = (s,a)=>S.db.doc('po/'+o.id).update({status:s,log:[...(o.log||[]),{t:Date.now(),by:actor(),a}]}).catch(e=>toast('تعذّر التنفيذ'));
+    if (b('o-rc')) b('o-rc').onclick = ()=>st('received','سجّل الاستلام');
+    if (b('o-cl')) b('o-cl').onclick = ()=>st('closed','أغلق الأمر');
+    if (b('o-cn')) b('o-cn').onclick = ()=>st('cancelled','ألغى الأمر');
+    if (b('o-cp')) b('o-cp').onclick = ()=>copyPO(o);
+  }
+}
+
+/* ===== أمر الشراء (مطابق للأصل) ===== */
+const blankPOItem = () => ({desc:'',qty:1,unit:'',price:''});
+function startPO(p){
+  if (!S.admin) return;
+  S.poDraft = { prId:p?p.id:'', prNo:p?p.no:'', no:genPON(), date:today(), buyer:'', delivery:'', dept:p?p.dept:'', terms:'', method:'',
+    vendorName:'', vendorVAT:'', vendorContact:'', vendorPhone:'', vendorEmail:'', quote:'', address:'', notes:'', discountPct:0,
+    items:p&&p.items&&p.items.length ? p.items.map(i=>({desc:i.name+(i.note?' — '+i.note:''),qty:i.qty||1,unit:i.unit||'',price:''})) : [blankPOItem()],
+    sigs:[{name:'',date:'',img:''},{name:'',date:'',img:''}] };
+  updateOverlay();
+}
+const opts = (list,sel,withBlank=true) => (withBlank?'<option value="">اختر...</option>':'')+list.map(x=>`<option ${x===sel?'selected':''}>${esc(x)}</option>`).join('');
+function poItemRows(items){
+  return items.map((it,i)=>{ const t=(Number(it.qty)||0)*(Number(it.price)||0); return `<tr data-i="${i}">
+   <td class="rnum">${i+1}</td>
+   <td><input type="text" data-f="desc" placeholder="اسم الصنف أو وصفه" value="${esc(it.desc)}"></td>
+   <td><input type="number" data-f="qty" min="0.01" step="0.01" value="${esc(it.qty)}"></td>
+   <td><input type="text" data-f="unit" placeholder="حبة / جهاز / خدمة" value="${esc(it.unit)}"></td>
+   <td><input type="number" data-f="price" min="0" step="0.01" placeholder="0.00" value="${esc(it.price)}"></td>
+   <td class="td-total">${money(t)}</td>
+   <td style="text-align:center"><button type="button" class="del-btn" data-del="${i}">✕</button></td></tr>`; }).join('');
+}
+function totalsBox(t, pctHtml){
+  return `<div class="totals-box">
+   <div class="totals-row"><span class="t-label">المجموع قبل الخصم</span><span class="t-val" id="t-sub">${money(t.sub)} ر.س</span></div>
+   <div class="totals-row"><span class="t-label" style="display:flex;align-items:center;gap:6px">الخصم ${pctHtml}</span><span class="t-val" id="t-disc" style="color:var(--danger)">-${money(t.discAmt)} ر.س</span></div>
+   <div class="totals-row"><span class="t-label">المجموع بعد الخصم</span><span class="t-val" id="t-after">${money(t.afterDisc)} ر.س</span></div>
+   <div class="totals-row"><span class="t-label">ضريبة القيمة المضافة (15%)</span><span class="t-val" id="t-vat">${money(t.vat)} ر.س</span></div>
+   <div class="totals-row grand"><span class="t-label">الإجمالي الكلي</span><span class="t-val" id="t-grand">${money(t.total)} ر.س</span></div></div>`;
+}
+const TERMS_HTML = `• يُعدّ هذا الأمر اتفاقية ملزمة بين الطرفين بمجرد توقيعه.<br>• يجب أن تكون الفاتورة مطابقة تماماً لبنود هذا الأمر من حيث الأسعار والكميات.<br>• في حال وجود أي اختلاف، يُرجى التواصل مع إدارة المشتريات قبل التنفيذ.<br>• تخضع هذه المعاملة لأنظمة المملكة العربية السعودية وقواعد هيئة الزكاة والضريبة.`;
+function poHeader(no,date){
+  return `<div class="sheet-header"><div class="logo-wrap"><img src="logo-po.png" alt="قيمة المالية"></div>
+   <div class="header-center"><h1>أمر شراء</h1><p>Purchase Order · Value Capital</p></div>
+   <div class="header-meta"><div class="meta-label">رقم أمر الشراء</div><div class="meta-value">${esc(no||'—')}</div><div class="meta-date">${esc(date||'')}</div></div></div>`;
+}
+const poFooter = `<div class="sheet-footer"><span class="footer-text">هذا الأمر وثيقة رسمية صادرة عن شركة قيمة المالية — يُرجى الاحتفاظ بنسخة منه</span><span class="footer-silver">Value Capital · Purchase Order</span></div>`;
+
+function poForm(){
+  const d = S.poDraft, t = calcPO(d.items,d.discountPct);
+  const inp = (k,l,ph='',type='text') => `<div class="field"><label>${l}</label><input data-k="${k}" type="${type}" placeholder="${ph}" value="${esc(d[k])}"></div>`;
+  const deptOpts = DEPTS_PO.includes(d.dept)||!d.dept ? DEPTS_PO : [...DEPTS_PO,d.dept];
+  return `<div class="ov"><div id="po-sheet">
+  <div class="stool"><div class="toolbar-brand">أمر شراء رسمي — قيمة المالية${d.prNo?' · مرجع '+esc(d.prNo):''}</div>
+   <div class="toolbar-actions"><button class="sbtn sbtn-outline" id="po-add">＋ إضافة صنف</button><button class="sbtn sbtn-outline" id="po-x">✕ إلغاء</button><button class="sbtn sbtn-purple" id="po-send">✓ إصدار الأمر</button></div></div>
+  <div class="sheet">${poHeader(d.no,d.date)}
+   <div class="sheet-body"><div class="parties">
+    <div class="section"><div class="section-head"><div class="section-head-bar"></div><h2>بيانات الشركة المُصدِرة</h2></div><div class="section-body">
+     <div class="g2"><div class="field"><label>رقم أمر الشراء</label><input class="readonly" readonly value="${esc(d.no)}"></div>
+      ${inp('date','تاريخ الإصدار','','date')}
+      <div class="field"><label>اسم الشركة</label><input class="readonly" readonly value="شركة قيمة المالية"></div>
+      ${inp('buyer','اسم مسؤول المشتريات','الاسم الكامل')}
+      ${inp('delivery','تاريخ الاستلام المطلوب','','date')}
+      <div class="field"><label>القسم / الإدارة الطالبة</label><select data-k="dept">${opts(deptOpts,d.dept)}</select></div></div>
+     <div class="g2 mt8"><div class="field"><label>شروط الدفع</label><select data-k="terms">${opts(PAY_TERMS,d.terms)}</select></div>
+      <div class="field"><label>طريقة التسليم</label><select data-k="method">${opts(DELIV_METHODS,d.method)}</select></div></div></div></div>
+    <div class="section"><div class="section-head"><div class="section-head-bar"></div><h2>بيانات المورد</h2></div><div class="section-body">
+     <div class="g2">${inp('vendorName','اسم المورد / الشركة <span class="rq">*</span>','اسم المورد')}${inp('vendorVAT','الرقم الضريبي للمورد','300XXXXXXXXX')}${inp('vendorContact','جهة التواصل','الاسم')}${inp('vendorPhone','رقم الهاتف','05XXXXXXXX')}${inp('vendorEmail','البريد الإلكتروني','vendor@company.com')}${inp('quote','رقم عرض السعر (إن وجد)','QT-XXXX')}</div>
+     <div class="mt8"><div class="field"><label>العنوان</label><textarea data-k="address" placeholder="عنوان المورد التفصيلي..." style="min-height:44px">${esc(d.address)}</textarea></div></div></div></div></div>
+   <div class="section"><div class="section-head"><div class="section-head-bar"></div><h2>تفاصيل الأصناف والخدمات</h2></div><div class="section-body">
+    <div class="tbl-wrap"><table><colgroup><col style="width:32px"><col style="width:28%"><col style="width:60px"><col style="width:80px"><col style="width:100px"><col style="width:100px"><col style="width:46px"></colgroup>
+     <thead><tr><th>#</th><th>الصنف / الوصف</th><th>الكمية</th><th>الوحدة</th><th>سعر الوحدة (ر.س)</th><th>الإجمالي (ر.س)</th><th></th></tr></thead><tbody id="tbody">${poItemRows(d.items)}</tbody></table></div>
+    <div class="tbl-add"><button class="sbtn sbtn-outline" id="po-add2" style="font-size:11px;padding:6px 12px;border-style:dashed">＋ إضافة صنف</button></div>
+    <div class="totals-wrap" id="totals">${totalsBox(t,`<input class="disc-in" type="number" min="0" max="100" step="0.1" data-k="discountPct" value="${esc(d.discountPct)}"><span style="font-size:10px;color:var(--muted)">%</span>`)}</div></div></div>
+   <div class="section"><div class="section-head"><div class="section-head-bar"></div><h2>الشروط والأحكام</h2></div><div class="section-body"><div class="terms-box">
+    <div class="field" style="margin-bottom:8px"><label>ملاحظات خاصة</label><textarea data-k="notes" placeholder="أضف أي شروط أو ملاحظات خاصة بهذا الأمر..." style="min-height:44px">${esc(d.notes)}</textarea></div>${TERMS_HTML}</div></div></div>
+   <div class="section"><div class="section-head"><div class="section-head-bar"></div><h2>الاعتماد والتوقيعات</h2></div><div class="section-body"><div class="sig-row">
+    ${SIG_ROLES.map((r,i)=>`<div class="sig-box"><h3>${r[0]}</h3><p>${r[1]}</p><div class="sig-fields"><input type="text" data-sn="${i}" placeholder="الاسم" value="${esc(d.sigs[i].name)}"><input type="date" data-sd="${i}" value="${esc(d.sigs[i].date)}"></div>
+     <div class="sig-canvas-wrap"><canvas class="sig-canvas" data-sig="${i}"></canvas><span class="sig-hint">✍️ وقّع هنا</span><button type="button" class="sig-clear" data-sc="${i}">مسح</button></div></div>`).join('')}</div></div></div>
+   <div class="smsg" id="smsg"></div></div>${poFooter}</div></div></div>`;
+}
+function refreshPOTotals(){
+  const d=S.poDraft, t=calcPO(d.items,d.discountPct);
+  $('#t-sub').textContent=money(t.sub)+' ر.س'; $('#t-disc').textContent='-'+money(t.discAmt)+' ر.س'; $('#t-after').textContent=money(t.afterDisc)+' ر.س'; $('#t-vat').textContent=money(t.vat)+' ر.س'; $('#t-grand').textContent=money(t.total)+' ر.س';
+}
+function bindPoForm(){
+  const d = S.poDraft, box = $('#po-sheet');
+  const reopen = ()=>{ const y=$('#layer .ov').scrollTop; $('#layer').innerHTML = poForm(); bindPoForm(); $('#layer .ov').scrollTop=y; };
+  box.addEventListener('input', e=>{
+    const k=e.target.dataset.k; if (k) { d[k]=e.target.value; if(k==='discountPct') refreshPOTotals(); return; }
+    if (e.target.dataset.sn!==undefined) { d.sigs[+e.target.dataset.sn].name=e.target.value; return; }
+    if (e.target.dataset.sd!==undefined) { d.sigs[+e.target.dataset.sd].date=e.target.value; return; }
+    const tr=e.target.closest('tr[data-i]'); if(tr&&e.target.dataset.f){ const it=d.items[+tr.dataset.i]; it[e.target.dataset.f]=e.target.value; tr.querySelector('.td-total').textContent=money((Number(it.qty)||0)*(Number(it.price)||0)); refreshPOTotals(); }
+  });
+  box.addEventListener('change', e=>{ const k=e.target.dataset.k; if(k) d[k]=e.target.value; });
+  box.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{ const i=+b.dataset.del; if(d.items.length===1) d.items[0]=blankPOItem(); else d.items.splice(i,1); reopen(); });
+  const add = ()=>{ d.items.push(blankPOItem()); reopen(); };
+  $('#po-add').onclick = add; $('#po-add2').onclick = add;
+  $('#po-x').onclick = closeOv;
+  $('#po-send').onclick = submitPO;
+  box.querySelectorAll('.sig-canvas').forEach(c=>initSig(c, +c.dataset.sig));
+  box.querySelectorAll('[data-sc]').forEach(b=>b.onclick=()=>{ const i=+b.dataset.sc, c=box.querySelector(`canvas[data-sig="${i}"]`); c.getContext('2d').clearRect(0,0,c.width,c.height); d.sigs[i].img=''; c.parentElement.querySelector('.sig-hint').style.display=''; });
+}
+function initSig(canvas, i){
+  const d = S.poDraft, hint = canvas.parentElement.querySelector('.sig-hint');
+  const dpr = window.devicePixelRatio||1;
+  canvas.width = canvas.offsetWidth*dpr; canvas.height = canvas.offsetHeight*dpr;
+  const ctx = canvas.getContext('2d'); ctx.strokeStyle='#2a1158'; ctx.lineWidth=1.8*dpr; ctx.lineCap='round'; ctx.lineJoin='round';
+  if (d.sigs[i].img) { const im=new Image(); im.onload=()=>ctx.drawImage(im,0,0,canvas.width,canvas.height); im.src=d.sigs[i].img; if(hint) hint.style.display='none'; }
+  let drawing=false, lx=0, ly=0;
+  const pos = e => { const r=canvas.getBoundingClientRect(); return [(e.clientX-r.left)*canvas.width/r.width,(e.clientY-r.top)*canvas.height/r.height]; };
+  canvas.addEventListener('pointerdown', e=>{ drawing=true; [lx,ly]=pos(e); canvas.setPointerCapture(e.pointerId); });
+  canvas.addEventListener('pointermove', e=>{ if(!drawing) return; const [x,y]=pos(e); ctx.beginPath(); ctx.moveTo(lx,ly); ctx.lineTo(x,y); ctx.stroke(); [lx,ly]=[x,y]; if(hint) hint.style.display='none'; });
+  const end = ()=>{ if(!drawing) return; drawing=false; d.sigs[i].img = canvas.toDataURL('image/png'); };
+  canvas.addEventListener('pointerup', end); canvas.addEventListener('pointercancel', end);
+}
+async function submitPO(){
+  const d = S.poDraft;
+  const items = d.items.filter(i=>String(i.desc).trim()||i.price).map(i=>({desc:String(i.desc).trim(),qty:Number(i.qty)||0,unit:String(i.unit).trim(),price:Number(i.price)||0}));
+  if (!d.vendorName.trim()) { setMsg('❌ يرجى إدخال اسم المورد قبل الإصدار','error'); return; }
+  if (!items.length) { setMsg('❌ يرجى إضافة صنف واحد على الأقل','error'); return; }
+  setMsg('⏳ جاري إصدار أمر الشراء...','loading');
+  const t = calcPO(items,d.discountPct);
+  const doc = { no:d.no, prId:d.prId, prNo:d.prNo, date:d.date||today(), company:'شركة قيمة المالية', buyer:d.buyer, delivery:d.delivery, dept:d.dept, terms:d.terms, method:d.method,
+    vendorName:d.vendorName.trim(), vendorVAT:d.vendorVAT, vendorContact:d.vendorContact, vendorPhone:d.vendorPhone, vendorEmail:d.vendorEmail, quote:d.quote, address:d.address,
+    items, discountPct:Number(d.discountPct)||0, sub:t.sub, discAmt:t.discAmt, afterDisc:t.afterDisc, vat:t.vat, total:t.total, notes:d.notes, sigs:d.sigs,
+    status:'issued', createdAt:Date.now(), log:[{t:Date.now(),by:actor(),a:'أصدر أمر الشراء'}] };
+  try {
+    await S.db.doc('po/'+d.no).set(doc);
+    const p = d.prId && S.prs.find(x=>x.id===d.prId);
+    if (p) await S.db.doc('pr/'+p.id).update({status:'ordered',poNo:d.no,log:[...(p.log||[]),{t:Date.now(),by:actor(),a:'أصدر أمر الشراء '+d.no}]});
+    toast('صدر أمر الشراء '+d.no); S.poDraft=null; S.ov={type:'po',id:d.no}; go('orders'); updateOverlay();
+  } catch(err){ setMsg('❌ تعذّر الإصدار ('+(err&&err.code||'خطأ')+')','error'); }
+}
+
+function poDetail(){
+  const o = S.pos.find(x=>x.id===S.ov.id); if(!o) return '';
+  const t = {sub:o.sub,discAmt:o.discAmt,afterDisc:o.afterDisc,vat:o.vat,total:o.total};
+  return `<div class="stool"><div class="toolbar-brand">أمر شراء ${esc(o.no)} · ${esc(PO_ST[o.status]||o.status)}</div><div class="toolbar-actions">
+    ${S.admin&&o.status==='issued'?`<button class="sbtn sbtn-ok" id="o-rc">تسجيل الاستلام</button><button class="sbtn sbtn-bad" id="o-cn">إلغاء الأمر</button>`:''}
+    ${S.admin&&o.status==='received'?`<button class="sbtn sbtn-purple" id="o-cl">إغلاق الأمر</button>`:''}
+    <button class="sbtn sbtn-outline" id="o-cp">نسخ الملخص</button><button class="sbtn sbtn-outline" onclick="window.print()">🖨 طباعة</button><button class="sbtn sbtn-silver" id="x">إغلاق</button></div></div>
+  <div class="sheet">${poHeader(o.no,fmtDate(o.date))}
+   <div class="sheet-body"><div class="parties">
+    <div class="section"><div class="section-head"><div class="section-head-bar"></div><h2>بيانات الشركة المُصدِرة</h2></div><div class="section-body">
+     <div class="g2">${fv('رقم أمر الشراء',o.no)}${fv('تاريخ الإصدار',fmtDate(o.date))}${fv('اسم الشركة',o.company)}${fv('اسم مسؤول المشتريات',o.buyer)}${fv('تاريخ الاستلام المطلوب',fmtDate(o.delivery))}${fv('القسم / الإدارة الطالبة',o.dept)}</div>
+     <div class="g2 mt8">${fv('شروط الدفع',o.terms)}${fv('طريقة التسليم',o.method)}</div></div></div>
+    <div class="section"><div class="section-head"><div class="section-head-bar"></div><h2>بيانات المورد</h2></div><div class="section-body">
+     <div class="g2">${fv('اسم المورد / الشركة',o.vendorName)}${fv('الرقم الضريبي للمورد',o.vendorVAT)}${fv('جهة التواصل',o.vendorContact)}${fv('رقم الهاتف',o.vendorPhone)}${fv('البريد الإلكتروني',o.vendorEmail)}${fv('رقم عرض السعر',o.quote)}</div><div class="mt8">${fv('العنوان',o.address)}</div></div></div></div>
+   <div class="section"><div class="section-head"><div class="section-head-bar"></div><h2>تفاصيل الأصناف والخدمات</h2></div><div class="section-body">
+    <div class="tbl-wrap"><table><colgroup><col style="width:32px"><col style="width:34%"><col style="width:60px"><col style="width:80px"><col style="width:100px"><col style="width:100px"></colgroup>
+     <thead><tr><th>#</th><th>الصنف / الوصف</th><th>الكمية</th><th>الوحدة</th><th>سعر الوحدة (ر.س)</th><th>الإجمالي (ر.س)</th></tr></thead>
+     <tbody>${o.items.map((i,n)=>`<tr><td class="rnum">${n+1}</td><td class="ro-cell">${esc(i.desc)}</td><td class="ro-cell">${esc(i.qty)}</td><td class="ro-cell">${esc(i.unit||'—')}</td><td class="ro-cell" style="direction:ltr;text-align:left">${money(i.price)}</td><td class="td-total">${money(i.qty*i.price)}</td></tr>`).join('')}</tbody></table></div>
+    <div class="totals-wrap">${totalsBox(t,`<b>${esc(o.discountPct||0)}</b><span style="font-size:10px;color:var(--muted)">%</span>`)}</div></div></div>
+   <div class="section"><div class="section-head"><div class="section-head-bar"></div><h2>الشروط والأحكام</h2></div><div class="section-body"><div class="terms-box">${o.notes?`<div class="field" style="margin-bottom:8px"><label>ملاحظات خاصة</label><div class="val">${esc(o.notes)}</div></div>`:''}${TERMS_HTML}</div></div></div>
+   <div class="section"><div class="section-head"><div class="section-head-bar"></div><h2>الاعتماد والتوقيعات</h2></div><div class="section-body"><div class="sig-row">
+    ${SIG_ROLES.map((r,i)=>{ const s=(o.sigs||[])[i]||{}; return `<div class="sig-box"><h3>${r[0]}</h3><p>${r[1]}</p><div class="sig-fields"><div class="val">${esc(s.name||'')}</div><div class="val">${esc(s.date||'')}</div></div><div class="sig-canvas-wrap">${s.img?`<img class="sig-img" src="${s.img}" alt="">`:''}</div></div>`; }).join('')}</div></div></div></div>
+   ${poFooter}</div>
+  ${logHtml(o.log)}`;
+}
+async function copyPO(o){
+  const t = `أمر شراء ${o.no}\nالمورد: ${o.vendorName}\nالتاريخ: ${fmtDate(o.date)}\nالاستلام المطلوب: ${fmtDate(o.delivery)}\nالدفع: ${o.terms||'—'}\n`+o.items.map((i,n)=>`${n+1}. ${i.desc} × ${i.qty} ${i.unit||''} @ ${money(i.price)}`).join('\n')+`\nقبل الخصم: ${money(o.sub)}\nالخصم: ${o.discountPct||0}%\nالضريبة 15%: ${money(o.vat)}\nالإجمالي: ${money(o.total)} ر.س`;
+  try { await navigator.clipboard.writeText(t); toast('تم نسخ الملخص'); } catch(e){ toast('تعذّر النسخ'); }
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && (S.ov||S.poDraft)) closeOv(); });
+</script>
+</body>
+</html>

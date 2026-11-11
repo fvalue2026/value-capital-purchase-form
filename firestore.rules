@@ -1,0 +1,27 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // بدّلي البريد بإيميل المسؤول (يمكن إضافة أكثر من بريد داخل القوسين)
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email in ['ADMIN_EMAIL_HERE'];
+    }
+    function signedIn() { return request.auth != null; }
+
+    match /pr/{id} {
+      allow read:   if isAdmin() || (signedIn() && resource.data.requesterId == request.auth.uid);
+      allow create: if isAdmin() || (signedIn()
+                        && request.resource.data.requesterId == request.auth.uid
+                        && request.resource.data.status == 'new');
+      allow update: if isAdmin();
+      allow delete: if isAdmin() || (signedIn()
+                        && resource.data.requesterId == request.auth.uid
+                        && resource.data.status == 'new');
+    }
+
+    match /po/{id} {
+      allow read, write: if isAdmin();
+    }
+  }
+}
