@@ -347,6 +347,17 @@ nav button.on .badge{background:#fff;color:#442182}
 .tbl-add{border-radius:8px}
 @media (max-width:720px){.sheet-header,.sheet.pr .sheet-header{padding:22px 14px 14px}.header-meta{transform:none}}
 @media print{.sheet::before{display:none}.header-meta{transform:none}.sheet-header{border-bottom:1px solid #ccc}.sheet-body{background:#fff}.section{box-shadow:none;border:1px solid #ddd}}
+
+/* إصلاح الطباعة: يمنع انفصال الرأس في صفحة وحده */
+@media print{
+  html,body{height:auto!important;overflow:visible!important}
+  .sheet{overflow:visible!important;zoom:.86}
+  .sheet-body{display:block!important}
+  .sheet-body>*{margin-bottom:7px}
+  .section,.sig-box,.totals-box{break-inside:avoid}
+  .sheet-header{break-after:avoid}
+  .sheet::before{display:none}
+}
 </style>
 </head>
 <body>
@@ -864,6 +875,25 @@ async function copyPO(o){
   try { await navigator.clipboard.writeText(t); toast('تم نسخ الملخص'); } catch(e){ toast('تعذّر النسخ'); }
 }
 document.addEventListener('keydown', e=>{ if(e.key==='Escape' && (S.ov||S.poDraft)) closeOv(); });
+
+/* اسم ملف الطباعة / حفظ PDF: رقم الطلب - اسم الطلب */
+(function(){
+  let orig=null;
+  const clean=t=>String(t||'').replace(/[\\/:*?"<>|\n\r]+/g,' ').replace(/\s+/g,' ').trim().slice(0,80);
+  function docTitle(){
+    try{
+      if (S.poDraft) return clean((S.poDraft.no||'أمر شراء')+' - '+(S.poDraft.vendorName||''));
+      if (S.ov){
+        if (S.ov.type==='pr'){ const p=S.prs.find(x=>x.id===S.ov.id); if(p) return clean(p.no+' - '+(p.purpose||'')); }
+        else { const o=S.pos.find(x=>x.id===S.ov.id); if(o) return clean(o.no+' - '+(o.vendorName||'')); }
+      }
+      if (S.draft && document.getElementById('pr-sheet')) return clean('طلب شراء - '+(S.draft.purpose||S.draft.name||''));
+    }catch(e){}
+    return null;
+  }
+  window.addEventListener('beforeprint',()=>{ const t=docTitle(); if(t){ orig=document.title; document.title=t.replace(/[ -]+$/,''); } });
+  window.addEventListener('afterprint',()=>{ if(orig!==null){ document.title=orig; orig=null; } });
+})();
 </script>
 </body>
 </html>
