@@ -5,7 +5,7 @@ service cloud.firestore {
     // بدّلي البريد بإيميل المسؤول (يمكن إضافة أكثر من بريد داخل القوسين)
     function isAdmin() {
       return request.auth != null
-        && request.auth.token.email in ['ADMIN_EMAIL_HERE'];
+        && request.auth.token.email in ['procurement@valuecapital.sa'];
     }
     function signedIn() { return request.auth != null; }
 
@@ -21,7 +21,14 @@ service cloud.firestore {
     }
 
     match /po/{id} {
-      allow read, write: if isAdmin();
+      allow read, create: if isAdmin();
+      // بعد التوقيع الإلكتروني: لا يُعدَّل الأمر (الأصناف والإجمالي والتوقيع) ولا يُحذف، ويبقى تغيير الحالة فقط
+      allow update: if isAdmin() && (!('signedAt' in resource.data)
+                        || (request.resource.data.items == resource.data.items
+                            && request.resource.data.total == resource.data.total
+                            && request.resource.data.sigs == resource.data.sigs
+                            && request.resource.data.signedAt == resource.data.signedAt));
+      allow delete: if isAdmin() && !('signedAt' in resource.data);
     }
   }
 }

@@ -367,6 +367,24 @@ body.capturing .sheet::before{display:none}
 body.capturing .header-meta{transform:none}
 body.capturing .sheet{box-shadow:none!important;border-radius:0!important;max-width:900px!important;width:900px!important;margin:0!important}
 body.capturing .ov{position:static!important;overflow:visible!important;padding:0!important;background:#fff!important}
+
+.signov{position:fixed;inset:0;z-index:60;background:rgba(42,18,85,.88);overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:24px 14px}
+.signcard{background:#fff;border-radius:14px;width:100%;max-width:720px;padding:22px 24px;box-shadow:0 6px 0 #d9ccf0,0 24px 60px rgba(0,0,0,.35)}
+.signcard h2{margin:0 0 14px;color:#442182;font-size:24px}
+.signsum{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.signsum div{background:#f3eefc;border-radius:8px;padding:10px 12px}
+.signsum span{display:block;font-size:12px;color:#5c5373}.signsum b{font-size:16px;color:#1b1033}
+.signlbl{display:block;font-size:13px;font-weight:700;color:#442182;margin:12px 0 6px}
+.signname{width:100%;font:inherit;font-size:18px;padding:12px 14px;border:2px solid #d9ccf0;border-radius:8px;outline:none}
+.signname:focus{border-color:#442182}
+.signpad{position:relative;border:2px dashed #b9a6e0;border-radius:10px;background:#fdfcff;height:260px;overflow:hidden}
+.signpad canvas{display:block;width:100%;height:100%;touch-action:none;cursor:crosshair}
+.signpad .sig-hint{font-size:16px}
+.signpad .sig-clear{font-size:13px;padding:6px 12px}
+.signnote{font-size:13px;color:#5c5373;margin:12px 0}
+.signact{display:flex;gap:10px}.signact .sbtn{flex:1;font-size:17px;padding:14px}
+.sig-stamp{font-size:10px;color:#1f7a4d;font-weight:700;margin-top:4px}
+@media(max-width:560px){.signsum{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -727,8 +745,47 @@ function bindDetail(){
     if (b('o-cl')) b('o-cl').onclick = ()=>st('closed','أغلق الأمر');
     if (b('o-cn')) b('o-cn').onclick = ()=>st('cancelled','ألغى الأمر');
     if (b('o-cp')) b('o-cp').onclick = ()=>copyPO(o);
+    if (b('o-sg')) b('o-sg').onclick = ()=>openSign(o);
   }
 }
+
+/* ===== توقيع المعتمد (تسليم الجهاز) ===== */
+function openSign(o){
+  closeSign();
+  const w=document.createElement('div'); w.id='signov'; w.className='signov';
+  w.innerHTML=`<div class="signcard"><h2>اعتماد أمر الشراء</h2>
+   <div class="signsum"><div><span>رقم الأمر</span><b>${esc(o.no)}</b></div><div><span>المورد</span><b>${esc(o.vendorName)}</b></div><div><span>عدد الأصناف</span><b>${o.items.length}</b></div><div><span>الإجمالي شامل الضريبة</span><b>${money(o.total)} ر.س</b></div></div>
+   <label class="signlbl">اسم المعتمد</label><input id="sg-name" class="signname" placeholder="الاسم الكامل" autocomplete="off" value="${esc(((o.sigs||[])[1]||{}).name||'')}">
+   <label class="signlbl">التوقيع بالإصبع أو القلم</label>
+   <div class="signpad"><canvas id="sg-cv"></canvas><span class="sig-hint" id="sg-hint">وقّع هنا</span><button type="button" class="sig-clear" id="sg-clr">مسح</button></div>
+   <p class="signnote">بهذا التوقيع يعتمد المفوّض أمر الشراء المبيّن أعلاه، ويُقفل الأمر ولا يمكن تعديله بعد ذلك.</p>
+   <div class="signact"><button class="sbtn sbtn-purple" id="sg-ok">اعتماد وتوقيع</button><button class="sbtn sbtn-outline" id="sg-x">إلغاء</button></div></div>`;
+  document.body.appendChild(w);
+  const cv=document.getElementById('sg-cv'), hint=document.getElementById('sg-hint');
+  const dpr=window.devicePixelRatio||1; cv.width=cv.offsetWidth*dpr; cv.height=cv.offsetHeight*dpr;
+  const ctx=cv.getContext('2d'); ctx.strokeStyle='#2a1158'; ctx.lineWidth=2.6*dpr; ctx.lineCap='round'; ctx.lineJoin='round';
+  let drawing=false,lx=0,ly=0,inked=false;
+  const pos=e=>{const r=cv.getBoundingClientRect();return[(e.clientX-r.left)*cv.width/r.width,(e.clientY-r.top)*cv.height/r.height];};
+  cv.addEventListener('pointerdown',e=>{drawing=true;[lx,ly]=pos(e);cv.setPointerCapture(e.pointerId);e.preventDefault();});
+  cv.addEventListener('pointermove',e=>{if(!drawing)return;const[x,y]=pos(e);ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(x,y);ctx.stroke();[lx,ly]=[x,y];inked=true;hint.style.display='none';});
+  const end=()=>{drawing=false;}; cv.addEventListener('pointerup',end); cv.addEventListener('pointercancel',end);
+  document.getElementById('sg-clr').onclick=()=>{ctx.clearRect(0,0,cv.width,cv.height);inked=false;hint.style.display='';};
+  document.getElementById('sg-x').onclick=closeSign;
+  document.getElementById('sg-ok').onclick=async()=>{
+    const name=document.getElementById('sg-name').value.trim();
+    if(!name){toast('اكتب اسم المعتمد');document.getElementById('sg-name').focus();return;}
+    if(!inked){toast('وقّع في المربع أولاً');return;}
+    const btn=document.getElementById('sg-ok'); btn.disabled=true; btn.textContent='جارٍ الحفظ…';
+    const now=Date.now(), img=cv.toDataURL('image/png');
+    const sigs=[...(o.sigs||[{name:'',date:'',img:''},{name:'',date:'',img:''}])]; sigs[1]={name,date:today(),img,at:now};
+    try{
+      await S.db.doc('po/'+o.id).update({sigs,signedAt:now,signedBy:name,log:[...(o.log||[]),{t:now,by:name,a:'اعتمد ووقّع أمر الشراء إلكترونياً'}]});
+      closeSign(); toast('تم الاعتماد وقُفل الأمر');
+    }catch(e){ btn.disabled=false; btn.textContent='اعتماد وتوقيع'; toast('تعذّر الحفظ: '+(e&&e.code||'خطأ')); }
+  };
+  setTimeout(()=>document.getElementById('sg-name').focus(),50);
+}
+function closeSign(){ const w=document.getElementById('signov'); if(w) w.remove(); }
 
 /* ===== أمر الشراء (مطابق للأصل) ===== */
 const blankPOItem = () => ({desc:'',qty:1,unit:'',price:''});
@@ -857,8 +914,9 @@ async function submitPO(){
 function poDetail(){
   const o = S.pos.find(x=>x.id===S.ov.id); if(!o) return '';
   const t = {sub:o.sub,discAmt:o.discAmt,afterDisc:o.afterDisc,vat:o.vat,total:o.total};
-  return `<div class="stool"><div class="toolbar-brand">أمر شراء ${esc(o.no)} · ${esc(PO_ST[o.status]||o.status)}</div><div class="toolbar-actions">
-    ${S.admin&&o.status==='issued'?`<button class="sbtn sbtn-ok" id="o-rc">تسجيل الاستلام</button><button class="sbtn sbtn-bad" id="o-cn">إلغاء الأمر</button>`:''}
+  return `<div class="stool"><div class="toolbar-brand">أمر شراء ${esc(o.no)} · ${esc(PO_ST[o.status]||o.status)}${o.signedAt?' · 🔒 معتمد وموقّع':''}</div><div class="toolbar-actions">
+    ${S.admin&&o.status!=='cancelled'&&!o.signedAt?`<button class="sbtn sbtn-purple" id="o-sg">✍ توقيع المعتمد</button>`:''}
+    ${S.admin&&o.status==='issued'?`<button class="sbtn sbtn-ok" id="o-rc">تسجيل الاستلام</button>`:''}${S.admin&&o.status==='issued'&&!o.signedAt?`<button class="sbtn sbtn-bad" id="o-cn">إلغاء الأمر</button>`:''}
     ${S.admin&&o.status==='received'?`<button class="sbtn sbtn-purple" id="o-cl">إغلاق الأمر</button>`:''}
     <button class="sbtn sbtn-outline" id="o-cp">نسخ الملخص</button><button class="sbtn sbtn-outline" onclick="savePDF(this,'print')">🖨 طباعة</button><button class="sbtn sbtn-purple" onclick="savePDF(this)">⬇ حفظ PDF</button><button class="sbtn sbtn-silver" id="x">إغلاق</button></div></div>
   <div class="sheet">${poHeader(o.no,fmtDate(o.date))}
@@ -875,7 +933,7 @@ function poDetail(){
     <div class="totals-wrap">${totalsBox(t,`<b>${esc(o.discountPct||0)}</b><span style="font-size:10px;color:var(--muted)">%</span>`)}</div></div></div>
    <div class="section"><div class="section-head"><div class="section-head-bar"></div><h2>الشروط والأحكام</h2></div><div class="section-body"><div class="terms-box">${o.notes?`<div class="field" style="margin-bottom:8px"><label>ملاحظات خاصة</label><div class="val">${esc(o.notes)}</div></div>`:''}${TERMS_HTML}</div></div></div>
    <div class="section"><div class="section-head"><div class="section-head-bar"></div><h2>الاعتماد والتوقيعات</h2></div><div class="section-body"><div class="sig-row">
-    ${SIG_ROLES.map((r,i)=>{ const s=(o.sigs||[])[i]||{}; return `<div class="sig-box"><h3>${r[0]}</h3><p>${r[1]}</p><div class="sig-fields"><div class="val">${esc(s.name||'')}</div><div class="val">${esc(s.date||'')}</div></div><div class="sig-canvas-wrap">${s.img?`<img class="sig-img" src="${s.img}" alt="">`:''}</div></div>`; }).join('')}</div></div></div></div>
+    ${SIG_ROLES.map((r,i)=>{ const s=(o.sigs||[])[i]||{}; return `<div class="sig-box"><h3>${r[0]}</h3><p>${r[1]}</p><div class="sig-fields"><div class="val">${esc(s.name||'')}</div><div class="val">${esc(s.date||'')}</div></div><div class="sig-canvas-wrap">${s.img?`<img class="sig-img" src="${s.img}" alt="">`:''}</div>${s.at?`<div class="sig-stamp">✔ وُقّع إلكترونياً — ${esc(fmtDT(s.at))}</div>`:''}</div>`; }).join('')}</div></div></div></div>
    ${poFooter}</div>
   ${logHtml(o.log)}`;
 }
