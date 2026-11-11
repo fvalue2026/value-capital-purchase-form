@@ -6,7 +6,7 @@
 <title>المشتريات — قيمة المالية</title>
 <link rel="icon" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -22,7 +22,7 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0}
-body{font-family:'Almarai',Calibri,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;direction:rtl}
+body{font-family:'IBM Plex Sans Arabic',Calibri,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;direction:rtl}
 button,input,select,textarea{font-family:inherit;color:inherit}
 
 /* ===== غلاف التطبيق ===== */
@@ -269,12 +269,53 @@ nav button.on{background:var(--bg);color:var(--purple);box-shadow:none;font-weig
 }
 @media (prefers-reduced-motion:reduce){.sbtn,.who,.chip,.stage,nav button{transition:none}}
 @media print{.brand-logo{box-shadow:none}}
+
+/* ===== مكتب المشتريات (الاتجاه المعتمد) ===== */
+body{background:#ebe5f5 repeating-linear-gradient(0deg,rgba(68,33,130,.035) 0 1px,transparent 1px 36px)}
+header{background:transparent;color:var(--text);padding:20px 28px 0;overflow:visible}
+header::after{display:none}
+.top h1{color:#442182;font-size:24px}
+.top p{color:#5c5373;opacity:1;font-size:14px}
+.brand-logo{box-shadow:0 4px 0 #cfc3ea,0 0 0 1px #e4d9f4}
+.who{background:linear-gradient(180deg,#6a3fc4,#512a9f);color:#fff;box-shadow:0 5px 0 #2a1255,0 10px 14px rgba(42,18,85,.3)}
+.who:hover{background:linear-gradient(180deg,#7648d6,#5a2fb0)}
+.who:active{box-shadow:0 1px 0 #2a1255}
+nav{margin-top:18px;gap:8px}
+nav button{background:linear-gradient(180deg,#fff,#f4effc);color:#442182;border:1px solid #e0d6f3;border-bottom:0;box-shadow:0 -4px 0 #d9cdf1 inset}
+nav button:not(.on):hover{background:linear-gradient(180deg,#fff,#ece4fa)}
+nav button.on{background:linear-gradient(180deg,#5b2fbf,#442182);color:#fff;box-shadow:none;border-color:#2a1255}
+nav button.on .badge{background:#fff;color:#442182}
+.badge{background:#442182;color:#fff}
+.desk{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;align-items:start}
+.dh{font-size:16px;font-weight:700;color:#442182;margin:0 2px 16px;display:flex;align-items:center;gap:8px}
+.dn{background:#442182;color:#fff;border-radius:99px;padding:0 10px;font-size:13px}
+.paper{background:#fff;border-radius:8px;padding:18px;box-shadow:0 3px 0 #d9cdf1,0 14px 22px rgba(68,33,130,.12);margin-bottom:22px;position:relative;cursor:pointer;transition:transform .12s,box-shadow .12s}
+.paper:nth-of-type(odd){transform:rotate(-.9deg)}
+.paper:nth-of-type(even){transform:rotate(.7deg)}
+.paper:hover{transform:rotate(0) translateY(-4px);box-shadow:0 7px 0 #d9cdf1,0 22px 30px rgba(68,33,130,.2)}
+.tape{position:absolute;top:-10px;inset-inline-end:22px;width:46px;height:20px;background:#c9b3f5;border-radius:3px;opacity:.9}
+.pm{font-size:12px;color:#5c5373}
+.pt{font-size:18px;font-weight:700;margin:6px 0;color:#1b1033}
+.pfoot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px}
+.stamp{display:inline-block;border:2px solid #442182;color:#442182;border-radius:6px;padding:2px 14px;font-weight:700;font-size:14px;transform:rotate(-4deg);white-space:nowrap}
+.stamp.approved,.stamp.received{border-color:#1f7a4d;color:#1f7a4d}
+.stamp.rejected,.stamp.cancelled{border-color:#b42318;color:#b42318}
+.stamp.closed{border-color:#5c5373;color:#5c5373}
+.sbtn.sm{padding:8px 14px;font-size:12px}
+.paper.slim{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px;margin-bottom:14px;transform:none!important}
+.paper.slim:hover{transform:translateY(-3px)!important}
+.paper-empty{background:rgba(255,255,255,.55);border:2px dashed #cfc3ea;border-radius:8px;padding:26px;text-align:center;color:#5c5373}
+.sumcard{background:linear-gradient(180deg,#5b2fbf,#442182);color:#fff;border-radius:8px;padding:20px;box-shadow:0 5px 0 #2a1255,0 16px 24px rgba(42,18,85,.35);margin-bottom:22px}
+.sumcard .sv{font-size:38px;font-weight:700;direction:ltr;text-align:right;line-height:1.2}
+.sumcard .sl{font-size:13px;opacity:.85}
+@media (max-width:900px){.desk{grid-template-columns:1fr}}
+@media (max-width:720px){header{padding:12px 12px 0}}
 </style>
 </head>
 <body>
 <header>
   <div class="top">
-    <div class="brand"><span class="brand-logo"><img src="logo-po.png" alt="قيمة المالية"></span><div><h1>المشتريات — قيمة المالية</h1><p>طلبات الشراء وأوامر الشراء</p></div></div>
+    <div class="brand"><span class="brand-logo"><img src="logo-po.png" alt="قيمة المالية"></span><div><h1>مكتب المشتريات</h1><p id="today"></p></div></div>
     <button class="who" id="who" type="button">جارٍ التحميل…</button>
   </div>
   <nav id="nav"></nav>
@@ -318,6 +359,7 @@ let unsubs = [];
 
 /* ===== التهيئة (Firebase) ===== */
 (function init(){
+  try{ $('#today').textContent = new Date().toLocaleDateString('ar-SA-u-nu-latn',{weekday:'long',day:'numeric',month:'long',year:'numeric'}); }catch(e){}
   window.addEventListener('hashchange', route);
   try {
     if (typeof firebase === 'undefined' || typeof FIREBASE_CONFIG === 'undefined' || /PASTE|YOUR_/.test(JSON.stringify(FIREBASE_CONFIG))) throw new Error('config');
@@ -400,19 +442,19 @@ function vDash(){
   const n = s => S.prs.filter(p=>p.status===s).length;
   const act = S.pos.filter(o=>o.status!=='cancelled');
   const sum = act.reduce((a,o)=>a+(o.total||0),0);
-  const issued = S.pos.filter(o=>o.status==='issued').length;
-  const recv = S.pos.filter(o=>o.status==='received'||o.status==='closed').length;
-  const st = (i,cnt,lbl,act,hot) => `<button type="button" class="stage${hot?' hot':''}" onclick="${act}"><div class="no"><i>${i}</i>${lbl[0]}</div><div class="n">${cnt}</div><div class="l">${lbl[1]}</div></button>`;
-  return `<div class="flow-head"><h2>مسار المشتريات</h2><span>من الطلب حتى الاستلام</span></div>
-  <div class="flow">
-    ${st(1,n('new'),['طلب جديد','بانتظار اعتمادك'],"S.flt='new';go('requests')",n('new')>0)}
-    ${st(2,n('approved'),['معتمد','بانتظار إصدار أمر شراء'],"S.flt='approved';go('requests')",false)}
-    ${st(3,issued,['أمر شراء','قيد الانتظار'],"go('orders')",false)}
-    ${st(4,recv,['استلام','تم الاستلام أو الإغلاق'],"go('orders')",false)}
-  </div>
-  <div class="total-strip"><div><div class="cap">إجمالي أوامر الشراء (شامل الضريبة)</div><div class="big">${money(sum)} <span style="font-size:14px;font-weight:700">ر.س</span></div></div><span class="sp"></span><div class="cap">${act.length} أمر شراء فعّال</div></div>
-  <div class="panel"><h2>طلبات تنتظر قرارك</h2>${prTable(S.prs.filter(p=>p.status==='new'),true)}</div>
-  <div class="panel"><h2>آخر أوامر الشراء</h2>${poTable(S.pos.slice(0,6))}</div>`;
+  const prCard = (p,btn) => `<div class="paper" data-pr="${esc(p.id)}"><div class="tape"></div><div class="pm">${esc(p.no)} · ${esc(p.dept||'—')}</div><div class="pt">${esc((p.purpose||'—').slice(0,60))}</div><div class="pm">${esc(p.requester||'')} · ${(p.items||[]).length} أصناف</div><div class="pfoot"><span class="stamp ${p.status}">${esc(PR_ST[p.status]||p.status)}</span>${btn||''}</div></div>`;
+  const newL = S.prs.filter(p=>p.status==='new');
+  const appL = S.prs.filter(p=>p.status==='approved');
+  const none = t => `<div class="paper-empty">${t}</div>`;
+  return `<div class="desk">
+    <div class="dcol"><div class="dh">بانتظار اعتمادك <span class="dn">${newL.length}</span></div>
+      ${newL.length?newL.slice(0,6).map(p=>prCard(p)).join(''):none('لا توجد طلبات جديدة')}</div>
+    <div class="dcol"><div class="dh">معتمدة · بانتظار أمر شراء <span class="dn">${appL.length}</span></div>
+      ${appL.length?appL.slice(0,6).map(p=>prCard(p,`<button type="button" class="sbtn sbtn-purple sm" data-startpo="${esc(p.id)}">إصدار أمر شراء</button>`)).join(''):none('لا توجد طلبات معتمدة')}</div>
+    <div class="dcol"><div class="dh">أوامر الشراء <span class="dn">${S.pos.length}</span></div>
+      <div class="sumcard"><div class="sl">إجمالي الأوامر الفعّالة</div><div class="sv">${money(sum)}</div><div class="sl">ريال سعودي · شامل الضريبة</div></div>
+      ${S.pos.slice(0,4).map(o=>`<div class="paper slim" data-po="${esc(o.id)}"><div><b>${esc(o.no)}</b><div class="pm">${esc(o.vendorName||'')}</div></div><span class="stamp ${o.status}">${esc(PO_ST[o.status]||o.status)}</span></div>`).join('') || none('لا توجد أوامر شراء')}</div>
+  </div>`;
 }
 function prTable(list, showReq){
   if (!list.length) return '<div class="empty">لا توجد طلبات.</div>';
@@ -514,6 +556,7 @@ function bind(){
   document.querySelectorAll('[data-flt]').forEach(b=>b.onclick=()=>{ S.flt=b.dataset.flt; render(); });
   document.querySelectorAll('[data-pr]').forEach(r=>r.onclick=()=>openPR(r.dataset.pr));
   document.querySelectorAll('[data-po]').forEach(r=>r.onclick=()=>openPO(r.dataset.po));
+  document.querySelectorAll('[data-startpo]').forEach(b=>b.onclick=e=>{ e.stopPropagation(); const p=S.prs.find(x=>x.id===b.dataset.startpo); if(p) startPO(p); });
   const xp = $('#x-pr'); if (xp) xp.onclick = exportPR;
   const xo = $('#x-po'); if (xo) xo.onclick = exportPO;
   const nb = $('#po-blank'); if (nb) nb.onclick = ()=>startPO(null);
