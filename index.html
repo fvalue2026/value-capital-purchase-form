@@ -10,6 +10,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="firebase-config.js"></script>
 <style>
 :root{
@@ -355,10 +356,44 @@ function poTable(list){
 function vReqs(){
   let list = S.prs; const f = S.flt; if (f!=='all') list = list.filter(p=>p.status===f);
   const chips = [['all','الكل'],...Object.entries(PR_ST)].map(([k,l])=>`<button class="chip ${f===k?'on':''}" data-flt="${k}">${l}</button>`).join('');
-  return `<div class="panel"><h2>${S.admin?'جميع طلبات الشراء':'طلباتي (على هذا الجهاز)'}</h2><div class="flt">${chips}</div>${prTable(list,S.admin)}</div>`;
+  return `<div class="panel"><h2>${S.admin?'جميع طلبات الشراء':'طلباتي (على هذا الجهاز)'}</h2><div class="row"><div class="flt" style="margin:0">${chips}</div><span class="sp"></span>${S.admin?'<button class="sbtn sbtn-outline" id="x-pr">⬇ تصدير Excel</button>':''}</div><div style="height:10px"></div>${prTable(list,S.admin)}</div>`;
 }
 function vOrders(){
-  return `<div class="panel"><div class="row"><h2 style="margin:0">أوامر الشراء</h2><span class="sp"></span><button class="sbtn sbtn-purple" id="po-blank">＋ أمر شراء جديد</button></div><div style="height:12px"></div>${poTable(S.pos)}</div>`;
+  return `<div class="panel"><div class="row"><h2 style="margin:0">أوامر الشراء</h2><span class="sp"></span><button class="sbtn sbtn-outline" id="x-po">⬇ تصدير Excel</button><button class="sbtn sbtn-purple" id="po-blank">＋ أمر شراء جديد</button></div><div style="height:12px"></div>${poTable(S.pos)}</div>`;
+}
+
+
+/* ===== تصدير Excel ===== */
+function saveXlsx(sheets, name){
+  if (typeof XLSX==='undefined'){ toast('تعذّر تحميل مكتبة Excel، تحقق من الاتصال'); return; }
+  const wb = XLSX.utils.book_new();
+  sheets.forEach(([title, rows, widths])=>{
+    const ws = XLSX.utils.json_to_sheet(rows);
+    if (widths) ws['!cols'] = widths.map(w=>({wch:w}));
+    XLSX.utils.book_append_sheet(wb, ws, title);
+  });
+  wb.Workbook = { Views:[{RTL:true}] };
+  XLSX.writeFile(wb, name+'-'+today()+'.xlsx');
+  toast('تم تنزيل ملف Excel');
+}
+function exportPR(){
+  let list = S.prs; if (S.flt!=='all') list = list.filter(p=>p.status===S.flt);
+  if (!list.length){ toast('لا توجد طلبات للتصدير'); return; }
+  const rows = [];
+  list.forEach(p=>{
+    const base = {'رقم الطلب':p.no,'التاريخ':fmtDate(p.date),'مقدّم الطلب':p.requester||'','القسم':p.dept||'','الغرض':p.purpose||'','الحالة':PR_ST[p.status]||p.status,'رقم أمر الشراء':p.poNo||''};
+    const items = (p.items&&p.items.length)?p.items:[{}];
+    items.forEach(i=>rows.push({...base,'الصنف':i.name||'','الكمية':i.qty??'','الوحدة':i.unit||'','ملاحظات الصنف':i.note||''}));
+  });
+  saveXlsx([['طلبات الشراء',rows,[16,12,18,18,34,14,18,28,8,10,24]]],'طلبات-الشراء');
+}
+function exportPO(){
+  if (!S.pos.length){ toast('لا توجد أوامر شراء للتصدير'); return; }
+  const head = S.pos.map(o=>({'رقم الأمر':o.no,'التاريخ':fmtDate(o.date),'مرجع الطلب':o.prNo||'','المورد':o.vendorName||'','الرقم الضريبي':o.vendorVAT||'','القسم':o.dept||'','شروط الدفع':o.terms||'','طريقة التسليم':o.method||'',
+    'الإجمالي قبل الخصم':o.sub??0,'نسبة الخصم %':o.discountPct??0,'مبلغ الخصم':o.discAmt??0,'بعد الخصم':o.afterDisc??0,'ضريبة القيمة المضافة':o.vat??0,'الإجمالي شامل الضريبة':o.total??0,'الحالة':PO_ST[o.status]||o.status}));
+  const lines = [];
+  S.pos.forEach(o=>(o.items||[]).forEach(i=>lines.push({'رقم الأمر':o.no,'المورد':o.vendorName||'','الصنف':i.desc||'','الكمية':i.qty,'الوحدة':i.unit||'','سعر الوحدة':i.price,'الإجمالي':(Number(i.qty)||0)*(Number(i.price)||0)})));
+  saveXlsx([['أوامر الشراء',head,[18,12,18,26,18,18,18,16,16,12,12,12,16,18,14]],['أصناف الأوامر',lines,[18,26,32,8,10,12,14]]],'أوامر-الشراء');
 }
 
 /* ===== نموذج طلب الشراء (مطابق للأصل) ===== */
@@ -408,6 +443,8 @@ function bind(){
   document.querySelectorAll('[data-flt]').forEach(b=>b.onclick=()=>{ S.flt=b.dataset.flt; render(); });
   document.querySelectorAll('[data-pr]').forEach(r=>r.onclick=()=>openPR(r.dataset.pr));
   document.querySelectorAll('[data-po]').forEach(r=>r.onclick=()=>openPO(r.dataset.po));
+  const xp = $('#x-pr'); if (xp) xp.onclick = exportPR;
+  const xo = $('#x-po'); if (xo) xo.onclick = exportPO;
   const nb = $('#po-blank'); if (nb) nb.onclick = ()=>startPO(null);
   const box = $('#pr-sheet'); if (!box) return;
   const d = S.draft;
