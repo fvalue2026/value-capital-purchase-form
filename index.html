@@ -11,6 +11,8 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="firebase-config.js"></script>
 <style>
 :root{
@@ -358,6 +360,13 @@ nav button.on .badge{background:#fff;color:#442182}
   .sheet-header{break-after:avoid}
   .sheet::before{display:none}
 }
+
+/* وضع الالتقاط لملف PDF */
+body.capturing header,body.capturing .stool,body.capturing .toast,body.capturing .nopr,body.capturing .tbl-add,body.capturing .del-btn,body.capturing .sig-clear,body.capturing .sig-hint,body.capturing .help-note,body.capturing .remember-row,body.capturing .smsg{display:none!important}
+body.capturing .sheet::before{display:none}
+body.capturing .header-meta{transform:none}
+body.capturing .sheet{box-shadow:none!important;border-radius:0!important;max-width:900px!important;width:900px!important;margin:0!important}
+body.capturing .ov{position:static!important;overflow:visible!important;padding:0!important;background:#fff!important}
 </style>
 </head>
 <body>
@@ -576,7 +585,7 @@ function vNew(){
   const d = S.draft;
   return `<div id="pr-sheet">
   <div class="stool w760"><div class="toolbar-brand">نموذج طلب شراء داخلي — قيمة المالية</div>
-   <div class="toolbar-actions"><button class="sbtn sbtn-outline" id="pr-reset">↺ مسح الكل</button><button class="sbtn sbtn-outline" onclick="window.print()">🖨 طباعة / حفظ PDF</button><button class="sbtn sbtn-purple" id="pr-send" ${S.db?'':'disabled'}>✓ إرسال الطلب</button></div></div>
+   <div class="toolbar-actions"><button class="sbtn sbtn-outline" id="pr-reset">↺ مسح الكل</button><button class="sbtn sbtn-outline" onclick="window.print()">🖨 طباعة</button><button class="sbtn sbtn-purple" onclick="savePDF(this)">⬇ حفظ PDF</button><button class="sbtn sbtn-purple" id="pr-send" ${S.db?'':'disabled'}>✓ إرسال الطلب</button></div></div>
   <div class="sheet pr">
    <div class="sheet-header"><div class="logo-wrap"><img src="logo-po.png" alt="قيمة المالية"></div>
     <div class="header-center"><h1>نموذج طلب شراء داخلي</h1><p>Internal Purchase Request · Value Capital</p></div>
@@ -688,7 +697,7 @@ function prDetail(){
     ${S.admin&&(p.status==='approved'||p.status==='rejected')?`<button class="sbtn sbtn-outline" id="a-re">إعادته إلى «جديد»</button>`:''}
     ${(mine&&p.status==='new'&&!S.admin)?`<button class="sbtn sbtn-outline" id="a-del">سحب الطلب</button>`:''}
     ${po?`<button class="sbtn sbtn-outline" data-gopo="${esc(po.id)}">أمر الشراء ${esc(po.no)}</button>`:''}
-    <button class="sbtn sbtn-outline" onclick="window.print()">🖨 طباعة</button><button class="sbtn sbtn-silver" id="x">إغلاق</button></div></div>
+    <button class="sbtn sbtn-outline" onclick="window.print()">🖨 طباعة</button><button class="sbtn sbtn-purple" onclick="savePDF(this)">⬇ حفظ PDF</button><button class="sbtn sbtn-silver" id="x">إغلاق</button></div></div>
   ${prSheetRO(p)}
   ${p.status==='rejected'&&p.reason?`<div class="rejnote nopr"><b>سبب الرفض:</b> ${esc(p.reason)}</div>`:''}
   <div class="rejbox nopr" id="rej" style="display:none"><label style="font-size:12px;font-weight:700">سبب الرفض</label><textarea id="rej-t"></textarea><div class="row" style="margin-top:8px"><button class="sbtn sbtn-bad" id="rej-go">تأكيد الرفض</button></div></div>
@@ -851,7 +860,7 @@ function poDetail(){
   return `<div class="stool"><div class="toolbar-brand">أمر شراء ${esc(o.no)} · ${esc(PO_ST[o.status]||o.status)}</div><div class="toolbar-actions">
     ${S.admin&&o.status==='issued'?`<button class="sbtn sbtn-ok" id="o-rc">تسجيل الاستلام</button><button class="sbtn sbtn-bad" id="o-cn">إلغاء الأمر</button>`:''}
     ${S.admin&&o.status==='received'?`<button class="sbtn sbtn-purple" id="o-cl">إغلاق الأمر</button>`:''}
-    <button class="sbtn sbtn-outline" id="o-cp">نسخ الملخص</button><button class="sbtn sbtn-outline" onclick="window.print()">🖨 طباعة</button><button class="sbtn sbtn-silver" id="x">إغلاق</button></div></div>
+    <button class="sbtn sbtn-outline" id="o-cp">نسخ الملخص</button><button class="sbtn sbtn-outline" onclick="window.print()">🖨 طباعة</button><button class="sbtn sbtn-purple" onclick="savePDF(this)">⬇ حفظ PDF</button><button class="sbtn sbtn-silver" id="x">إغلاق</button></div></div>
   <div class="sheet">${poHeader(o.no,fmtDate(o.date))}
    <div class="sheet-body"><div class="parties">
     <div class="section"><div class="section-head"><div class="section-head-bar"></div><h2>بيانات الشركة المُصدِرة</h2></div><div class="section-body">
@@ -880,6 +889,7 @@ document.addEventListener('keydown', e=>{ if(e.key==='Escape' && (S.ov||S.poDraf
 (function(){
   let orig=null;
   const clean=t=>String(t||'').replace(/[\\/:*?"<>|\n\r]+/g,' ').replace(/\s+/g,' ').trim().slice(0,80);
+  window.docTitle=docTitle;
   function docTitle(){
     try{
       if (S.poDraft) return clean((S.poDraft.no||'أمر شراء')+' - '+(S.poDraft.vendorName||''));
@@ -894,6 +904,28 @@ document.addEventListener('keydown', e=>{ if(e.key==='Escape' && (S.ov||S.poDraf
   window.addEventListener('beforeprint',()=>{ const t=docTitle(); if(t){ orig=document.title; document.title=t.replace(/[ -]+$/,''); } });
   window.addEventListener('afterprint',()=>{ if(orig!==null){ document.title=orig; orig=null; } });
 })();
+
+async function savePDF(btn){
+  const el = document.querySelector('#layer .sheet') || document.querySelector('main .sheet');
+  if (!el){ toast('لا يوجد نموذج لحفظه'); return; }
+  if (typeof html2canvas==='undefined' || !(window.jspdf&&window.jspdf.jsPDF)){ toast('تعذّر تحميل مكتبة PDF، تحقق من الاتصال'); return; }
+  const old = btn ? btn.textContent : ''; if (btn){ btn.disabled = true; btn.textContent = 'جارٍ التجهيز…'; }
+  document.body.classList.add('capturing');
+  try{
+    if (document.fonts && document.fonts.ready) await document.fonts.ready;
+    await new Promise(r=>setTimeout(r,80));
+    const cv = await html2canvas(el,{scale:2,backgroundColor:'#ffffff',useCORS:true,logging:false,windowWidth:1000});
+    const pdf = new window.jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+    const pw=210, ph=297, m=8, maxW=pw-2*m, maxH=ph-2*m;
+    let w=maxW, h=cv.height*w/cv.width;
+    if (h>maxH){ h=maxH; w=cv.width*h/cv.height; }
+    pdf.addImage(cv.toDataURL('image/jpeg',0.95),'JPEG',(pw-w)/2,m,w,h);
+    const name=(window.docTitle&&window.docTitle())||'المشتريات';
+    pdf.save(name+'.pdf');
+    toast('تم حفظ الملف');
+  }catch(e){ console.error(e); toast('تعذّر إنشاء الملف'); }
+  finally{ document.body.classList.remove('capturing'); if (btn){ btn.disabled=false; btn.textContent=old; } }
+}
 </script>
 </body>
 </html>
